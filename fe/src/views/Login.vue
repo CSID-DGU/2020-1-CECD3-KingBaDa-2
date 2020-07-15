@@ -39,7 +39,7 @@ export default {
   }
   h1{
     font-size: 48px;
-    font-style: 'Arial Black';
+    font-style: "Arial Black";
   }
   h3{
     font-size: 14px;
