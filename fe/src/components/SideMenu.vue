@@ -12,9 +12,9 @@
           <nav id="all" class="navItems">
             <b-nav vertical>
               <div>
-                <b-nav-item id="home" class="listItem selected" @click="select('home')"><div><img src="../assets/home.png" /></div><div :class="listFont">홈</div></b-nav-item><hr/>
-                <b-nav-item id="notice" class="listItem" @click="select('notice')"><div><img src="../assets/notice.png" /></div><div :class="listFont">공지사항</div></b-nav-item><hr/>
-                <b-nav-item id="dashboard" class="listItem" @click="select('dashboard')"><div><img src="../assets/dashboard.png" /></div><div :class="listFont">대시보드</div></b-nav-item><hr/>
+                <b-nav-item id="home" class="listItem selected" @click="select('home'); $router.push('main');"><div><img src="../assets/home.png" /></div><div :class="listFont">홈</div></b-nav-item><hr/>
+                <b-nav-item id="notice" class="listItem" @click="select('notice'); $router.push('notice');"><div><img src="../assets/notice.png" /></div><div :class="listFont">공지사항</div></b-nav-item><hr/>
+                <b-nav-item id="dashboard" class="listItem" @click="select('dashboard'); $router.push('dashboard');"><div><img src="../assets/dashboard.png" /></div><div :class="listFont">대시보드</div></b-nav-item><hr/>
                 <b-nav-item id="data" class="listItem" @click="select('data')"><div><img src="../assets/data.png" /></div><div :class="listFont">데이터</div></b-nav-item><hr/>
                 <b-nav-item id="setting" class="listItem" @click="select('setting')"><div><img src="../assets/setting.png" /></div><div :class="listFont">설정</div></b-nav-item><hr/>
               </div>

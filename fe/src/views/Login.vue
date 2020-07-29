@@ -30,7 +30,6 @@ export default {
 </script>
 
 <style scoped>
-<<<<<<< HEAD
   #login{
     margin-top: 30px;
     font-family: "굴림", Helvetica, Arial, sans-serif;
@@ -71,45 +70,4 @@ export default {
     right: 0;
   }
 
-=======
-#login {
-  margin-top: 30px;
-  font-family: "굴림", Helvetica, Arial, sans-serif;
-}
-#title {
-  margin-top: 100px;
-}
-h1 {
-  font-size: 48px;
-  font-style: "Arial Black";
-}
-h3 {
-  font-size: 14px;
-  font-style: Arial;
-}
-input {
-  margin: 5px 0;
-  width: 20%;
-  padding: 10px;
-  background-color: #d9d9d9;
-  color: white;
-}
-button {
-  margin-top: 10px;
-  width: 20%;
-  cursor: pointer;
-  padding: 10px;
-  background-color: #6fcedc;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  outline: 0;
-  border: 0;
-}
-img {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
->>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
 </style>

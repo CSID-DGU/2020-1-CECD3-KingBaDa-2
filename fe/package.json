@@ -9,11 +9,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.0",
-<<<<<<< HEAD
-    "bootstrap-vue": "^2.15.0",
-=======
     "bootstrap-vue": "^2.1.0",
->>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
     "core-js": "^3.6.5",
     "sass": "^1.26.10",
     "vue": "^2.6.11",
@@ -39,13 +35,9 @@
     "popper.js": "^1.16.0",
     "portal-vue": "^2.1.6",
     "prettier": "^1.19.1",
-<<<<<<< HEAD
-    "sass-loader": "^9.0.2",
-=======
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-bootstrap-vue": "~0.6.0",
->>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
