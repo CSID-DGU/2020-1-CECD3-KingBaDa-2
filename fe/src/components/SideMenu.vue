@@ -1,12 +1,34 @@
 <template>
-  <sidebar-menu :menu="menu"
-  @toggle-collapse="onToggleCollapse" @item-click="onItemClick" />
+  <div>
+    <b-sidebar id="sidebar-no-header" :width="sidebarWidth" aria-labelledby="sidebar-no-header-title" visible no-header shadow no-close-on-esc>
+        <div>
+          <div class="frame" >
+            <nav>
+              <b-nav vertical>
+                <b-nav-item><div @click="slimize" :class = "sizeButton">{{foldingAction}}</div></b-nav-item>
+              </b-nav>
+            </nav>
+          </div>
+          <nav id="all" class="navItems">
+            <b-nav vertical>
+              <div>
+                <b-nav-item id="home" class="listItem selected" @click="select('home')"><div><img src="../assets/home.png" /></div><div :class="listFont">홈</div></b-nav-item><hr/>
+                <b-nav-item id="notice" class="listItem" @click="select('notice')"><div><img src="../assets/notice.png" /></div><div :class="listFont">공지사항</div></b-nav-item><hr/>
+                <b-nav-item id="dashboard" class="listItem" @click="select('dashboard')"><div><img src="../assets/dashboard.png" /></div><div :class="listFont">대시보드</div></b-nav-item><hr/>
+                <b-nav-item id="data" class="listItem" @click="select('data')"><div><img src="../assets/data.png" /></div><div :class="listFont">데이터</div></b-nav-item><hr/>
+                <b-nav-item id="setting" class="listItem" @click="select('setting')"><div><img src="../assets/setting.png" /></div><div :class="listFont">설정</div></b-nav-item><hr/>
+              </div>
+            </b-nav>
+          </nav>
+        </div>
+    </b-sidebar>
+  </div>
 </template>
-
 <script>
 export default {
-  data () {
+  data() {
     return {
+<<<<<<< HEAD
       menu: [
         {
           href: '/',
@@ -40,77 +62,104 @@ export default {
         }
       ]
     }
+=======
+      sidebarWidth: "130px",
+      slimized: true,
+      foldingAction: ">>",
+      sizeButton: "foldedSizeButton",
+      listFont: "slimizedListFont",
+      TargetID: ""
+    };
+>>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
   },
   methods: {
-   
-  },
-  props: {
-    // Sidebar Collapse state
-    collapsed: {
-      type: Boolean,
-      default: false
+    slimize(){
+      if(!this.slimized){
+        this.sidebarWidth = "130px";
+        this.slimized = true;
+        this.foldingAction = ">>";
+        this.sizeButton = "foldedSizeButton";
+        this.listFont = "slimizedListFont";
+      }
+      else{
+        this.sidebarWidth = "300px";
+        this.slimized = false;
+        this.foldingAction = "<<";
+        this.sizeButton = "unfoldedSizeButton";
+        this.listFont = "defaultListFont";
+      }
     },
-
-    // Sidebar width (expanded)
-    width: {
-      type: String,
-      default: '350px'
-    },
-
-    // Sidebar width (collapsed)
-    widthCollapsed: {
-      type: String,
-      default: '50px'
-    },
-
-    // Keep only one child opened at a time (first level only)
-    showOneChild: {
-      type: Boolean,
-      default: false
-    },
-
-    // Keep all child open
-    showChild: {
-      type: Boolean,
-      default: false
-    },
-
-    // Sidebar right to left
-    rtl: {
-      type: Boolean,
-      default: false
-    },
-
-    // Make sidebar relative to the parent (by default the sidebar is relative to the viewport)
-    relative: {
-      type: Boolean,
-      default: false
-    },
-
-    // Hide toggle collapse btn
-    hideToggle: {
-      type: Boolean,
-      default: false
-    },
-
-    // Sidebar theme (available themes: 'white-theme')
-    theme: {
-      type: String,
-      default: ''
-    },
-
-    // Disable hover on collapse mode
-    disableHover: {
-      type: Boolean,
-      default: false
+    select(clickedID){
+      this.TargetID = document.getElementById(clickedID);
+      document.getElementById('home').classList.remove("selected");
+      document.getElementById('notice').classList.remove("selected");
+      document.getElementById('dashboard').classList.remove("selected");
+      document.getElementById('data').classList.remove("selected");
+      document.getElementById('setting').classList.remove("selected");
+      this.TargetID.classList.add("selected");
     }
   }
-}
+};
 </script>
+<<<<<<< HEAD
 
 <style scoped>
   .v-sidebar-menu {
     background-color: #6FCEDC;
   }
+=======
+<style scope>
+.frame{
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(180deg, rgba(111,194,220,1) 0%, rgba(174,229,236,1) 60%, rgba(239,250,251,1) 100%);
+}
+.navItems{
+  position: relative;
+  top: 100px;
+}
+.listItem{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  height: 80px;
+  margin-bottom: -18px;
+  margin-top: -18px;
+}
+.defaultListFont{
+  color: #000000;
+  font-size: 20px;
+}
+.slimizedListFont{
+  display: none;
+}
+.selected{
+  background-color: #DDDDDD;
+}
+.unfoldedSizeButton{
+  background-color: none;
+  font-size: 30px;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: 0px solid;
+  width: 60px;
+  margin: auto;
+  text-align: center;
+  float: right;
+}
+.foldedSizeButton{
+  background-color: none;
+  font-size: 30px;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: 0px solid;
+  width: 60px;
+  margin: auto;
+  text-align: center;
+}
+
+>>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
 </style>
 
