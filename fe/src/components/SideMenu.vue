@@ -9,39 +9,34 @@ export default {
     return {
       menu: [
         {
-          header: true,
-          title: 'Getting Started',
-          hiddenOnCollapse: true
-        },
-        {
           href: '/',
           title: '홈',
-          icon: 'fa fa-download'
+          icon: 'fa fa-home'
         },
         {
           href: '/basic-usage',
           title: '공지사항',
-          icon: 'fa fa-code'
+          icon: 'fa fa-comment'
         },
-        {
-          header: true,
-          title: 'Usage',
-          hiddenOnCollapse: true
-        },
+        // {
+        //   header: true,
+        //   title: 'Usage',
+        //   hiddenOnCollapse: true
+        // },
         {
           href: '/props',
           title: '대시보드',
-          icon: 'fa fa-cogs'
+          icon: 'fa fa-th'
         },
         {
           href: '/events',
           title: '데이터',
-          icon: 'fa fa-bell'
+          icon: 'fa fa-folder-open'
         },
         {
           href: '/styling',
           title: '설정',
-          icon: 'fa fa-palette'
+          icon: 'fa fa-cog'
         }
       ]
     }
@@ -114,5 +109,8 @@ export default {
 </script>
 
 <style scoped>
-
+  .v-sidebar-menu {
+    background-color: #6FCEDC;
+  }
 </style>
+

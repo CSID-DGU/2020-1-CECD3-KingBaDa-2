@@ -49,7 +49,7 @@ export default {
     margin: 5px 0;
     width: 20%;
     padding: 10px;
-    background-color: #D9D9D9;
+    background-color: #d9d9d956;
     color: white;
   }
   button{
