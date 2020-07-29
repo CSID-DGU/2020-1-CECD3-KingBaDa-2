@@ -28,41 +28,6 @@
 export default {
   data() {
     return {
-<<<<<<< HEAD
-      menu: [
-        {
-          href: '/',
-          title: '홈',
-          icon: 'fa fa-home'
-        },
-        {
-          href: '/basic-usage',
-          title: '공지사항',
-          icon: 'fa fa-comment'
-        },
-        // {
-        //   header: true,
-        //   title: 'Usage',
-        //   hiddenOnCollapse: true
-        // },
-        {
-          href: '/props',
-          title: '대시보드',
-          icon: 'fa fa-th'
-        },
-        {
-          href: '/events',
-          title: '데이터',
-          icon: 'fa fa-folder-open'
-        },
-        {
-          href: '/styling',
-          title: '설정',
-          icon: 'fa fa-cog'
-        }
-      ]
-    }
-=======
       sidebarWidth: "130px",
       slimized: true,
       foldingAction: ">>",
@@ -70,7 +35,6 @@ export default {
       listFont: "slimizedListFont",
       TargetID: ""
     };
->>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
   },
   methods: {
     slimize(){
@@ -101,13 +65,6 @@ export default {
   }
 };
 </script>
-<<<<<<< HEAD
-
-<style scoped>
-  .v-sidebar-menu {
-    background-color: #6FCEDC;
-  }
-=======
 <style scope>
 .frame{
   position: relative;
@@ -160,6 +117,5 @@ export default {
   text-align: center;
 }
 
->>>>>>> fcb5096ed05e4655a1b2f5b6806042b05935ca4b
 </style>
 
