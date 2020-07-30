@@ -8,13 +8,13 @@
         <br><br><br>
     </div>
     <div>
-      <b-button 
-      pill variant="info" 
+      <b-button
+      pill variant="info"
       size = "lg"
       @click="$router.push('Dashboard')">
-        <img 
-        class = "icon-img" 
-        src = "../assets/icon/dashboard.png" 
+        <img
+        class = "icon-img"
+        src = "../assets/icon/dashboard.png"
         /><br>
         대시보드 조회</b-button><br><br>
     </div>
@@ -24,7 +24,7 @@
       {{ 공지사항2 }}<br>
       {{ 공지사항3 }}<br>
     </div>
-    
+
   </div>
 </template>
 
@@ -49,7 +49,7 @@ data () {
     position: absolute;
      top:50%;
      left:50%;
-     transform: translate(-50%, -50%);                                                                   
+     transform: translate(-50%, -50%);
      font-size:5rem;
      color: white;
      z-index: 2;

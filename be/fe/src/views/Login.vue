@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     login() {
-      this.$router.replace("main");
+      this.$router.replace("/id/main");
     }
   }
 };

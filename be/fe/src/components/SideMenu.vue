@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-sidebar id="sidebar-no-header" :width="sidebarWidth" aria-labelledby="sidebar-no-header-title" visible no-header shadow no-close-on-esc>
+    <b-sidebar id="sidebar-no-header" :width="sidebarWidth" aria-labelledby="sidebar-no-header-title" visible no-header shadow no-close-on-esc no-close-on-route-change="true">
         <div>
           <div class="frame" >
             <nav>
@@ -22,6 +22,7 @@
           </nav>
         </div>
     </b-sidebar>
+    <router-view />
   </div>
 </template>
 <script>
@@ -118,4 +119,3 @@ export default {
 }
 
 </style>
-
