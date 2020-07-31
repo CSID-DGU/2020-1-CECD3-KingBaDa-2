@@ -124,7 +124,7 @@ const onlyA = altered.filter(item => {
 
 <style scoped>
  .search {
-   
+
    float: right;
    /* width: 200px;
    display: inline; */
