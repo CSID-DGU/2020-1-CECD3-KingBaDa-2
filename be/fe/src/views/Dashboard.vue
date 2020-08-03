@@ -14,6 +14,7 @@ import dash8 from '@/components/Dash8.vue'
 import dash12 from '@/components/Dash12.vue'
 
 export default {
+  name: 'Dashboard',
   data () {
     return {
       show: 1

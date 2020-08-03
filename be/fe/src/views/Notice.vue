@@ -29,7 +29,7 @@
 import data from "@/data/index.js";
 
 export default {
-  name: "BoardList",
+  name: "Notice",
   data() {
     // 정렬 : https://blog.naver.com/haskim0716n/221681695401
     let contentItems = data.Content.sort((a, b) => {
@@ -48,7 +48,7 @@ export default {
 
     return {
       currentPage: 1, // 현재 페이지
-      perPage: 3, // 페이지당 보여줄 갯수
+      perPage: 10, // 페이지당 보여줄 갯수
       // bootstrap 'b-table' 필드 설정
       fields: [
         {

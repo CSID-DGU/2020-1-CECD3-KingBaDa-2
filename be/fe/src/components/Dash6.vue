@@ -102,7 +102,7 @@
 
 <script>
 export default {
-  
+
 }
 </script>
 

@@ -150,7 +150,7 @@
 
 <script>
 export default {
-  
+
 }
 </script>
 

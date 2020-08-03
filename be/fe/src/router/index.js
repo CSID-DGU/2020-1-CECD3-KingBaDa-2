@@ -10,24 +10,44 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: () => import('../components/test.vue')
+  },
+  {
     path: '/id',
-    name: 'loginedMain',
+    name: 'LoginedMain',
     component: () => import('../components/SideMenu.vue'),
     children:[
       {
-        path: "main",
+        path: "Main",
         name: "Main",
         component: () => import('../views/Main.vue')
       },
       {
-        path: 'notice',
+        path: 'Notice',
         name: 'Notice',
         component: () => import('../views/Notice.vue')
       },
       {
-        path: 'dashboard',
+        path: 'Dashboard',
         name: 'Dashboard',
         component: () => import('../views/Dashboard.vue')
+      },
+      {
+        path: 'Control',
+        name: 'Control',
+        component: () => import('../views/Control.vue')
+      },
+      {
+        path: 'Data',
+        name: 'Data',
+        component: () => import('../views/Data.vue')
+      },
+      {
+        path: 'Setting',
+        name: 'Setting',
+        component: () => import('../views/Setting.vue')
       }
     ]
   }

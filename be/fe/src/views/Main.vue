@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     <div class="backimg">
-      <img src="../assets/backg.png" />
+      <img src="../assets/backg1.jpg" width="100%"/>
       <div class="title">
-        <h1>DIS</h1>
-        <h3>Dashboard Integration System</h3>
+        <div class="DIS">DIS</div>
+        <div class="subDIS">Dashboard Integration System</div>
       </div>
       <br />
       <br />
@@ -34,6 +34,7 @@
 
 <script>
 export default {
+  name: "Main",
   data() {
     return {
       공지사항1: "공지 사항1",
@@ -50,14 +51,20 @@ export default {
   background-size: cover;
 }
 .backimg .title {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 5rem;
-  color: white;
+  color: black;
   z-index: 2;
   text-align: center;
+}
+.DIS{
+  font-size: 50px;
+  font-weight: bold;
+}
+.subDIS{
+  font-size: 30px;
 }
 .icon-img {
   width: auto;
