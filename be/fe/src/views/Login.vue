@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div id="title">
-      <h1>DIS</h1>
-      <h3>Dashboard Integration System</h3>
+    <div class="title">
+      <div class="DIS">DIS</div>
+      <div class="subDIS">Dashboard Integration System</div>
     </div>
     <div id="login">
       <input type="text" placeholder="아이디" /><br />
@@ -18,12 +18,12 @@
 export default {
   data() {
     return {
-      name: "login"
+      name: "Login"
     };
   },
   methods: {
     login() {
-      this.$router.replace("/id/main");
+      this.$router.push("/id/main");
     }
   }
 };
@@ -34,16 +34,22 @@ export default {
     margin-top: 30px;
     font-family: "굴림", Helvetica, Arial, sans-serif;
   }
-  #title{
-    margin-top: 100px;
+  .title {
+    position: relative;
+    margin-top: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    z-index: 2;
+    text-align: center;
   }
-  h1{
-    font-size: 48px;
-    font-style: "Arial Black";
+  .DIS{
+    font-size: 50px;
+    font-weight: bold;
   }
-  h3{
-    font-size: 14px;
-    font-style: Arial;
+  .subDIS{
+    font-size: 30px;
   }
   input{
     margin: 5px 0;
