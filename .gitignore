@@ -184,3 +184,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+### docker add ###
+
+.travis/
