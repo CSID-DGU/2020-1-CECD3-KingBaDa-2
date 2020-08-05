@@ -51,7 +51,7 @@ export default {
   background-size: cover;
 }
 .backimg .title {
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
