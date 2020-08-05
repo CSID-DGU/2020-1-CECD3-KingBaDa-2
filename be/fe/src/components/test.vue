@@ -1,29 +1,32 @@
 <template>
   <div>
-    <template v-for="count in counts" >
-      <VueDragResize
-        :isActive="false"
-        :w="300"
-        :h="300"
-        :x="30"
-        :y="30"
-        dragCancel=".drag"
-        v-on:resizing="resize"
-        @resizestop="componentKey=!componentKey"
-        v-bind:key="count"
-      >
-        <D3BarChart
-          :key="componentKey"
-          :config="barchart_config"
-          :datum="barchart_data"
-          :title="barchart_title"
-          :source="barchart_source"
-          :height="height-80"
-          :v-bind:key="count"
-
-        ></D3BarChart>
-      </VueDragResize>
-    </template>
+    <div class="list" id="list">
+      <template v-for="count in counts" >
+        <VueDragResize
+          :isActive="false"
+          :w="300"
+          :h="300"
+          :x="30"
+          :y="30"
+          :parentW="listWidth"
+          :parentH="listHeight"
+          :parentLimitation="true"
+          v-on:resizing="resize"
+          @resizestop="componentKey=!componentKey"
+          v-bind:key="count"
+        >
+          <D3BarChart
+            :key="componentKey"
+            :config="barchart_config"
+            :datum="barchart_data"
+            :title="barchart_title"
+            :source="barchart_source"
+            :height="height-80"
+            :v-bind:key="count"
+          ></D3BarChart>
+        </VueDragResize>
+      </template>
+    </div>
     <b-button @click="addGraph">add</b-button>
     <b-button @click="deleteGraph">delete</b-button>
   </div>
@@ -34,8 +37,6 @@ import VueDragResize from "vue-drag-resize";
 import { D3BarChart } from "vue-d3-charts";
 
 export default {
-  name: "app",
-
   components: {
     VueDragResize,
     D3BarChart
@@ -45,6 +46,8 @@ export default {
     return {
       chartID: "",
       counts: 1,
+      listWidth: 0,
+      listHeight: 0,
       barchart_title: "연간 전력량 비교",
       barchart_source: "전력량(KW)",
       barchart_data: [
@@ -72,6 +75,15 @@ export default {
       componentKey: 0
     };
   },
+  mounted() {
+      let listEl = document.getElementById('list');
+      this.listWidth = listEl.clientWidth;
+      this.listHeight = listEl.clientHeight;
+      window.addEventListener('resize', ()=>{
+          this.listWidth = listEl.clientWidth;
+          this.listHeight = listEl.clientHeight;
+      })
+  },
   created(){
     this.$nextTick(function(){
       this.componentKey++
@@ -86,17 +98,28 @@ export default {
     },
     addGraph(){
       if(this.counts<12){
-        this.counts++
+        this.counts++;
         this.$nextTick(function(){
-          this.componentKey++
+          this.componentKey++;
         });
       }
     },
     deleteGraph(){
       if(this.counts>0){
-        this.counts--
+        this.counts--;
       }
     }
   }
 };
 </script>
+<style scope>
+.list {
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  box-shadow: 0 0 2px #AAA;
+  background-color: white;
+  }
+</style>
