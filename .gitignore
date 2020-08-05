@@ -161,7 +161,7 @@ $RECYCLE.BIN/
 # .pnp.*
 
 ### fe add ###
-
+build/
 .DS_Store
 node_modules
 /dist

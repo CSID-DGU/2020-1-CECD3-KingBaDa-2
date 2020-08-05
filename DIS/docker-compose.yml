@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: vue-express-site
+    build: .
+    command: npm run docker-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    
