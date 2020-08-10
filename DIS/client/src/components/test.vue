@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="list" id="list">
-      <template v-for="count in counts" >
+      <template v-for="count in counts">
         <VueDragResize
           :isActive="false"
           :w="300"
@@ -15,15 +15,7 @@
           @resizestop="componentKey=!componentKey"
           v-bind:key="count"
         >
-          <D3BarChart
-            :key="componentKey"
-            :config="barchart_config"
-            :datum="barchart_data"
-            :title="barchart_title"
-            :source="barchart_source"
-            :height="height-80"
-            :v-bind:key="count"
-          ></D3BarChart>
+          <ccv-area-chart :data="data" :options="options"></ccv-area-chart>
         </VueDragResize>
       </template>
     </div>
@@ -34,16 +26,83 @@
 
 <script>
 import VueDragResize from "vue-drag-resize";
-import { D3BarChart } from "vue-d3-charts";
 
 export default {
   components: {
-    VueDragResize,
-    D3BarChart
+    VueDragResize
   },
 
   data() {
     return {
+      data: [
+        {
+          group: "Dataset 1",
+          date: "2018-12-31T15:00:00.000Z",
+          value: 0
+        },
+        {
+          group: "Dataset 1",
+          date: "2019-01-05T15:00:00.000Z",
+          value: -37312
+        },
+        {
+          group: "Dataset 1",
+          date: "2019-01-07T15:00:00.000Z",
+          value: -22392
+        },
+        {
+          group: "Dataset 1",
+          date: "2019-01-14T15:00:00.000Z",
+          value: -52576
+        },
+        {
+          group: "Dataset 1",
+          date: "2019-01-18T15:00:00.000Z",
+          value: 20135
+        },
+        {
+          group: "Dataset 2",
+          date: "2018-12-31T15:00:00.000Z",
+          value: 47263
+        },
+        {
+          group: "Dataset 2",
+          date: "2019-01-04T15:00:00.000Z",
+          value: 14178
+        },
+        {
+          group: "Dataset 2",
+          date: "2019-01-07T15:00:00.000Z",
+          value: 23094
+        },
+        {
+          group: "Dataset 2",
+          date: "2019-01-12T15:00:00.000Z",
+          value: 45281
+        },
+        {
+          group: "Dataset 2",
+          date: "2019-01-18T15:00:00.000Z",
+          value: -63954
+        }
+      ],
+      options: {
+        title: "Area (time series - natural curve)",
+        axes: {
+          bottom: {
+            title: "2019 Annual Sales Figures",
+            mapsTo: "date",
+            scaleType: "time"
+          },
+          left: {
+            mapsTo: "value",
+            scaleType: "linear"
+          }
+        },
+        curve: "curveNatural",
+        height: "400px"
+      },
+
       chartID: "",
       counts: 1,
       listWidth: 0,
@@ -76,17 +135,17 @@ export default {
     };
   },
   mounted() {
-      let listEl = document.getElementById('list');
+    let listEl = document.getElementById("list");
+    this.listWidth = listEl.clientWidth;
+    this.listHeight = listEl.clientHeight;
+    window.addEventListener("resize", () => {
       this.listWidth = listEl.clientWidth;
       this.listHeight = listEl.clientHeight;
-      window.addEventListener('resize', ()=>{
-          this.listWidth = listEl.clientWidth;
-          this.listHeight = listEl.clientHeight;
-      })
+    });
   },
-  created(){
-    this.$nextTick(function(){
-      this.componentKey++
+  created() {
+    this.$nextTick(function() {
+      this.componentKey++;
     });
   },
   methods: {
@@ -96,16 +155,16 @@ export default {
       this.top = newRect.top;
       this.left = newRect.left;
     },
-    addGraph(){
-      if(this.counts<12){
+    addGraph() {
+      if (this.counts < 12) {
         this.counts++;
-        this.$nextTick(function(){
+        this.$nextTick(function() {
           this.componentKey++;
         });
       }
     },
-    deleteGraph(){
-      if(this.counts>0){
+    deleteGraph() {
+      if (this.counts > 0) {
         this.counts--;
       }
     }
@@ -119,7 +178,7 @@ export default {
   bottom: 30px;
   left: 30px;
   right: 30px;
-  box-shadow: 0 0 2px #AAA;
+  box-shadow: 0 0 2px #aaa;
   background-color: white;
-  }
+}
 </style>
