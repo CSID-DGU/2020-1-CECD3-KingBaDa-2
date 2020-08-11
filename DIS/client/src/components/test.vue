@@ -154,6 +154,7 @@ export default {
       this.height = newRect.height;
       this.top = newRect.top;
       this.left = newRect.left;
+      this.options.height = newRect.height + 10 + "px";
     },
     addGraph() {
       if (this.counts < 12) {

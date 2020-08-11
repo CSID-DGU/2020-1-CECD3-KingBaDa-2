@@ -15,16 +15,7 @@
         @resizestop="componentKey=!componentKey"
         v-bind:key="index"
       >
-      <b-button @click="deleteGraph">delete</b-button>
-        <D3BarChart
-          :key="componentKey"
-          :config="barchart_config"
-          :datum="barchart_data"
-          :title="barchart_title"
-          :source="barchart_source"
-          :height="graphs[index].height-80"
-          :v-bind:key="index"
-        ></D3BarChart>
+        <ccv-area-chart :data="graph_data" :options="graph_option"></ccv-area-chart>
       </VueDragResize>
     </div>
     <b-button @click="addGraph">add</b-button>
@@ -33,79 +24,65 @@
 
 <script>
 import VueDragResize from "vue-drag-resize";
-import { D3BarChart } from "vue-d3-charts";
 import graphSets from "@/data/graphTest.js";
+import graphData from "@/data/graphData.js";
 
 export default {
   components: {
-    VueDragResize,
-    D3BarChart
+    VueDragResize
   },
 
   data() {
     return {
+      name: "Dashboard",
+      graph_data: [],
+      graph_option: "",
       chartID: "",
       listWidth: 0,
       listHeight: 0,
-      graphs:[],
-      barchart_title: "연간 전력량 비교",
-      barchart_source: "전력량(KW)",
-      barchart_data: [
-        { hours: 1648, production: 9613, year: "2007" },
-        { hours: 2479, production: 6315, year: "2008" },
-        { hours: 3200, production: 2541, year: "2009" }
-      ],
-      barchart_config: {
-        key: "year",
-        currentKey: "2004",
-        values: ["hours"],
-        axis: {
-          yTicks: 3
-        },
-        color: {
-          default: "#222f3e",
-          current: "#41B882"
-        }
-      },
+      graphs: [],
       componentKey: 0
     };
   },
   mounted() {
-    let listEl = document.getElementById('list');
+    let listEl = document.getElementById("list");
     this.listWidth = listEl.clientWidth;
     this.listHeight = listEl.clientHeight;
-    window.addEventListener('resize', ()=>{
-        this.listWidth = listEl.clientWidth;
-        this.listHeight = listEl.clientHeight;
-    })
-  },
-  created(){
-    this.graphs = graphSets.graphs;
-    this.$nextTick(function(){
-      this.componentKey++
+    window.addEventListener("resize", () => {
+      this.listWidth = listEl.clientWidth;
+      this.listHeight = listEl.clientHeight;
     });
   },
+  created() {
+    this.graphs = graphSets.graphs;
+    this.graph_data = graphData.data;
+    this.graph_option = graphData.options;
+    this.$nextTick(function() {
+      this.componentKey++;
+    });
+  },
+
   methods: {
     resize(newRect, index) {
       this.graphs[index].width = newRect.width;
       this.graphs[index].height = newRect.height;
       this.graphs[index].top = newRect.top;
       this.graphs[index].left = newRect.left;
+      this.graph_option.height = newRect.height + "px";
     },
-    addGraph(){
+    addGraph() {
       this.graphs.push({
-        'width':500,
-        'height':300,
-        'top':50,
-        'left':30
+        width: 500,
+        height: 400,
+        top: Math.floor(Math.random() * 100) + 50,
+        left: Math.floor(Math.random() * 100) + 30
       });
       this.index++;
-      this.$nextTick(function(){
+      this.$nextTick(function() {
         this.componentKey++;
       });
     },
-    deleteGraph(){
-
+    deleteGraph() {
       this.index--;
     }
   }
@@ -118,7 +95,7 @@ export default {
   bottom: 30px;
   left: 160px;
   right: 30px;
-  box-shadow: 0 0 2px #AAA;
+  box-shadow: 0 0 2px #aaa;
   background-color: white;
-  }
+}
 </style>
