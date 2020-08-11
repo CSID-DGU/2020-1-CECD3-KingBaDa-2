@@ -1,7 +1,15 @@
 <template>
   <div>
+    <b-button @click="addGraph">add</b-button>
+    <b-button class="deleteButton" v-bind:key = "index" @click="deleteGraph()">delete</b-button>
+    <b-dropdown class="mx-1" right text="menu">
+      <b-dropdown-item @click="addGraph">Item 1</b-dropdown-item>
+      <b-dropdown-item>Item 2</b-dropdown-item>
+      <b-dropdown-item>Item 3</b-dropdown-item>
+    </b-dropdown>
     <div class="list" id="list">
       <VueDragResize
+        id = "graphContainer"
         v-for="(graph, index) in graphs"
         :isActive="false"
         :w="graph.width"
@@ -15,7 +23,6 @@
         @resizestop="componentKey=!componentKey"
         v-bind:key="index"
       >
-      <b-button @click="deleteGraph">delete</b-button>
         <D3BarChart
           :key="componentKey"
           :config="barchart_config"
@@ -27,7 +34,6 @@
         ></D3BarChart>
       </VueDragResize>
     </div>
-    <b-button @click="addGraph">add</b-button>
   </div>
 </template>
 
@@ -50,6 +56,7 @@ export default {
       graphs:[],
       barchart_title: "연간 전력량 비교",
       barchart_source: "전력량(KW)",
+      graphID: document.getElementById("graphContainer"),
       barchart_data: [
         { hours: 1648, production: 9613, year: "2007" },
         { hours: 2479, production: 6315, year: "2008" },
@@ -96,8 +103,9 @@ export default {
       this.graphs.push({
         'width':500,
         'height':300,
-        'top':50,
-        'left':30
+        'top':0,
+        'left':0,
+        'componentKey': 0
       });
       this.index++;
       this.$nextTick(function(){
@@ -105,8 +113,8 @@ export default {
       });
     },
     deleteGraph(){
-
-      this.index--;
+      console.log("delete");
+      this.graphs = [];
     }
   }
 };
