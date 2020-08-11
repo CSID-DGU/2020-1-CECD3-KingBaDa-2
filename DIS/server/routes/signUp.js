@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-/* 로그인 */
+/* 회원가입 */
 router.get('/signUp', function(req, res, next) {
   console.log(req.body)
 });
