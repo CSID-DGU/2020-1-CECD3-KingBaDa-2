@@ -7,8 +7,8 @@
     <div id="login">
       <input type="text" placeholder="아이디" /><br />
       <input type="password" placeholder="비밀번호" /><br />
-      <button @click="login">로그인</button><br />
-      <button @click="login">회원가입</button>
+      <button @click="loginUser">로그인</button><br />
+      <button @click="loginAdmin">회원가입</button>
     </div>
     <img src="../assets/bts.jpg" />
   </div>
@@ -22,8 +22,11 @@ export default {
     };
   },
   methods: {
-    login() {
+    loginUser() {
       this.$router.push("/id/main");
+    },
+    loginAdmin(){
+      this.$router.push("/AdminHome")
     }
   }
 };

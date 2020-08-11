@@ -1,7 +1,15 @@
 <template>
   <div>
+    <b-button @click="addGraph">add</b-button>
+    <b-button class="deleteButton" v-bind:key="index" @click="deleteGraph()">delete</b-button>
+    <b-dropdown class="mx-1" right text="menu">
+      <b-dropdown-item @click="addGraph">Item 1</b-dropdown-item>
+      <b-dropdown-item>Item 2</b-dropdown-item>
+      <b-dropdown-item>Item 3</b-dropdown-item>
+    </b-dropdown>
     <div class="list" id="list">
       <VueDragResize
+        id="graphContainer"
         v-for="(graph, index) in graphs"
         :isActive="false"
         :w="graph.width"
@@ -18,7 +26,6 @@
         <ccv-area-chart :data="graph_data" :options="graph_option"></ccv-area-chart>
       </VueDragResize>
     </div>
-    <b-button @click="addGraph">add</b-button>
   </div>
 </template>
 
@@ -83,7 +90,8 @@ export default {
       });
     },
     deleteGraph() {
-      this.index--;
+      console.log("delete");
+      this.graphs = [];
     }
   }
 };

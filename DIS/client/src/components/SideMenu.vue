@@ -2,7 +2,7 @@
   <div>
     <b-sidebar id="sidebar-no-header" :width="sidebarWidth" aria-labelledby="sidebar-no-header-title" visible no-header shadow no-close-on-esc no-close-on-route-change>
         <div>
-          <div class="frame" >
+          <div class="sideMenuFrame" >
             <nav>
               <b-nav vertical>
                 <b-nav-item><div @click="slimize" :class = "sizeButton">{{foldingAction}}</div></b-nav-item>
@@ -26,7 +26,9 @@
           </nav>
         </div>
     </b-sidebar>
-    <router-view />
+    <div>
+        <router-view/>
+    </div>
   </div>
 </template>
 <script>
@@ -77,7 +79,7 @@ export default {
 };
 </script>
 <style scope>
-.frame{
+.sideMenuFrame{
   position: relative;
   width: 100%;
   height: 400px;
