@@ -2,21 +2,18 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
 
 let app = express();
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/api', require('./routes/api'));
 app.use(history());
 app.use(express.static(path.join(__dirname, '../', 'build')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -35,6 +32,6 @@ app.use(function(err, req, res, next) {
   console.error(err.message);
 });
 
-const cfg = require('');
+// const cfg = require('');
 
 module.exports = app;
