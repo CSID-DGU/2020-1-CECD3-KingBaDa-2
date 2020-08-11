@@ -26,7 +26,7 @@
           </nav>
         </div>
     </b-sidebar>
-    <div>
+    <div class="body">
         <router-view/>
     </div>
   </div>
@@ -79,6 +79,11 @@ export default {
 };
 </script>
 <style scope>
+.body{
+  position: absolute;
+  left: 130px;
+  right: 0px;
+}
 .sideMenuFrame{
   position: relative;
   width: 100%;

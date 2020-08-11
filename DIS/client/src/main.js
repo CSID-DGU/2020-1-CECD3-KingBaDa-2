@@ -9,10 +9,14 @@ import VueSidebarMenu from "vue-sidebar-menu"
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css"
 import "@carbon/charts/styles.css"
 import chartsVue from "@carbon/charts-vue"
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
+Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 Vue.use(VueSidebarMenu)
 Vue.use(chartsVue)
+
 new Vue({
   router,
   store,
