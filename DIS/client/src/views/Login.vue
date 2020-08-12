@@ -22,7 +22,7 @@ export default {
     return {
       name: "Login",
       id: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
