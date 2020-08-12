@@ -75,7 +75,7 @@ export default {
       this.graphs[index].height = newRect.height;
       this.graphs[index].top = newRect.top;
       this.graphs[index].left = newRect.left;
-      this.graph_option.height = newRect.height + "px";
+      this.graph_option.height = newRect.height;
     },
     addGraph() {
       this.graphs.push({
