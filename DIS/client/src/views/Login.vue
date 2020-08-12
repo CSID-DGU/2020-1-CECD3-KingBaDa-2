@@ -27,7 +27,8 @@ export default {
   },
   methods: {
     loginUser() {
-      axios.post("/api/login", this.id, this.password)
+      const dt = {data: {id: this.id, password:this.password}}
+      axios.post("/api/sign/login", dt)
       .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
       .catch(function (error){
         console.log(error.response);
