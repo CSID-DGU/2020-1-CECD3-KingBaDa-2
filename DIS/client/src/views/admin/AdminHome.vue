@@ -16,7 +16,8 @@
             <b-form-input v-model="inputVal1"></b-form-input>
             <div>
               <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-              <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+              <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>항목 이름 :
+              <b-form-input v-model="inputVal2"></b-form-input>
             </div>
           </b-form>
 
@@ -42,21 +43,47 @@
             </b-form>
           </div>
 
-          <b-table striped hover :items="items"></b-table>
+          <b-table
+            striped
+            hover
+            ref="selectableTable"
+            selectable
+            :items="items"
+            :fields="fields"
+            @row-selected="onRowSelected"
+            responsive="sm"
+          >
+            <template v-slot:cell(default)="{ rowSelected }">
+              <template v-if="rowSelected">
+                <span aria-hidden="true">&check;</span>
+                <span class="sr-only">Selected</span>
+              </template>
+              <template v-else>
+                <span aria-hidden="true">&nbsp;</span>
+                <span class="sr-only">Not selected</span>
+              </template>
+            </template>
+          </b-table>
+          <b-button class="mx-2" @click="saveSelected">저장</b-button>
+          <b-button class="mx-2" @click="clearSelected">초기화</b-button>
         </div>
       </b-tab>
 
       <b-tab title="직종 관리">
-        <b-form class="w-75 mx-auto my-5" inline>
-          <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
-          <b-form-select v-model="selected.job" :options="options.job"></b-form-select>
-          <b-form-input v-model="inputVal2"></b-form-input>
-          <b-button class="mx-2" @click="addJob">직종 추가</b-button>
-          <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
-          <b-table class="my-5" striped hover :items="items"></b-table>
-        </b-form>
+        <div class="w-75 mx-auto">
+          <b-form class="w-75 mx-auto my-5" inline>
+            <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
+            <b-table striped hover :items="job"></b-table>
+            <b-form-input v-model="inputVal3"></b-form-input>
+            <b-button class="mx-2" @click="addJob">직종 추가</b-button>
+            <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
+          </b-form>
+          <b-table striped hover :items="items" :fields="fields"></b-table>
+        </div>
       </b-tab>
-    </b-tabs>
+    </b-tabs>default Rows
+    <br />
+    <div v-for="item in selected.row" :key="item.name">{{ item.name }}</div>
   </div>
 </template>
 
@@ -65,8 +92,21 @@ export default {
   name: "AdminHome",
   data() {
     return {
+      fields: [
+        "domain",
+        "name",
+        "Dataset1",
+        "Dataset2",
+        "Dataset3",
+        "Y-axis",
+        "graph",
+        "default"
+      ],
       inputVal1: "",
       inputVal2: "",
+      inputVal3: "",
+      row: [],
+      job: [{ 직종: "시설관리팀" }],
       selected: {
         domain: null,
         sensor: { x1: null, x2: null, x3: null, y: null },
@@ -75,7 +115,7 @@ export default {
         X3: null,
         Y1: null,
         graph: null,
-        job: null
+        row: []
       },
 
       options: {
@@ -121,34 +161,36 @@ export default {
           { value: "bar", text: "bar" },
           { value: "scatter", text: "scatter" },
           { value: "pie", text: "pie" },
-          { value: "table", text: "table" },
-          { value: "gauge", text: "gauge" }
-        ],
-        job: [{ value: null, text: "직종 선택" }]
+          { value: "gauge", text: "gauge" },
+          { value: "table", text: "table" }
+        ]
       },
       items: [
         {
           domain: "전력세이빙",
+          name: "일간 온습도 비교",
           Dataset1: "온도",
           Dataset2: "습도",
-          Dataset3: "",
           "Y-axis": "시간",
-          graph: "bar"
+          graph: "scatter"
         },
         {
           domain: "전력세이빙",
+          name: "월간 습도 비교",
           Dataset1: "습도",
           "Y-axis": "시간",
           graph: "line"
         },
         {
           domain: "전력세이빙",
+          name: "월간 전력량 비교",
           Dataset1: "전력량",
           "Y-axis": "시간",
           graph: "line"
         },
         {
           domain: "전력세이빙",
+          name: "월간 전류 비교",
           Dataset1: "전류",
           "Y-axis": "시간",
           graph: "pie"
@@ -176,6 +218,7 @@ export default {
     addItem() {
       this.items.push({
         domain: this.selected.domain,
+        name: this.inputVal2,
         Dataset1: this.selected.X1,
         Dataset2: this.selected.X2,
         Dataset3: this.selected.X3,
@@ -187,10 +230,9 @@ export default {
       this.items.pop().value;
     },
     addJob() {
-      if (this.inputVal2 != "") {
-        this.options.job.push({
-          value: this.inputVal2,
-          text: this.inputVal2
+      if (this.inputVal3 != "") {
+        this.job.push({
+          직종: this.inputVal3
         });
       } else {
         alert("직종을 입력하세요!");
@@ -201,6 +243,15 @@ export default {
         this.options.job.push({ value: null, text: "직종 선택" });
         alert("삭제할 직종이 없습니다!");
       }
+    },
+    onRowSelected(items) {
+      this.row = items;
+    },
+    saveSelected() {
+      this.selected.row = this.row;
+    },
+    clearSelected() {
+      this.selected.row = [];
     }
   }
 };
