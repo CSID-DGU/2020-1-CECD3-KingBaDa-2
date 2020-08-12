@@ -28,6 +28,6 @@ export default{
   options: {
     "title": "Pie",
     "resizable": true,
-    "height": "400px"
+    "height": "400"
   }
 }

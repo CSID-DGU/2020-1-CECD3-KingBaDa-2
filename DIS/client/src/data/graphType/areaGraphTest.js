@@ -60,6 +60,7 @@ export default {
         scaleType: "time",
       },
       left: {
+        stacked: true,
         mapsTo: "value",
         scaleType: "linear",
       },
