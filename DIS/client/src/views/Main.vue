@@ -11,7 +11,7 @@
       <br />
     </div>
     <div>
-      <b-button pill variant="info" size="lg" @click="$router.push('Dashboard')">
+      <b-button pill variant="info" size="lg" @click="toDashboard">
         <img class="icon-img" src="../assets/icon/dashboard.png" />
         <br />대시보드 조회
       </b-button>
@@ -19,7 +19,7 @@
       <br />
     </div>
     <div>
-      <router-link to="/id/notice">공지사항</router-link>
+      <b-button class="noticeButton" variant="info" @click="toNotice">공지사항</b-button>
       <br />
       <hr />
       {{ 공지사항1 }}
@@ -33,19 +33,40 @@
 </template>
 
 <script>
+
+
 export default {
   name: "Main",
   data() {
     return {
+      path: "",
       공지사항1: "공지 사항1",
       공지사항2: "공지 사항2",
       공지사항3: "공지 사항3"
     };
+  },
+  methods:{
+    toDashboard(){
+      this.path = "Dashboard";
+      this.$EventBus.$emit('Dashboard');
+      this.$router.push('Dashboard');
+    },
+    toNotice(){
+      this.path = "Notice";
+      this.$EventBus.$emit('Notice');
+      this.$router.push('Notice');
+    }
   }
 };
 </script>
 
 <style>
+.noticeButton {
+  background-color: transparent;
+  border-color: transparent;
+  color: #6FCEDC;
+  font-size: 30px;
+}
 .backimg {
   position: relative;
   background-size: cover;

@@ -17,6 +17,8 @@ Vue.config.productionTip = false
 Vue.use(VueSidebarMenu)
 Vue.use(chartsVue)
 
+Vue.prototype.$EventBus = new Vue();
+
 new Vue({
   router,
   store,

@@ -20,10 +20,12 @@
         :minh="200"
         :parentLimitation="true"
         v-on:resizing="resize($event, index)"
-        @resizestop="componentKey=!componentKey"
         v-bind:key="index"
       >
-        <ccv-area-chart :data="graph_data" :options="graph_option"></ccv-area-chart>
+      <div v-if>
+
+          <ccv-area-chart :data="graph_data_example" :options="graphs[index].option" v-bind:key="index"></ccv-area-chart>
+        </div>
       </VueDragResize>
     </div>
   </div>
@@ -31,8 +33,8 @@
 
 <script>
 import VueDragResize from "vue-drag-resize";
-import graphSets from "@/data/graphTest.js";
-import graphData from "@/data/graphData.js";
+import graphSettings from "@/data/graphSettings.js";
+import graphData from "@/data/areaGraphData.js";
 
 export default {
   components: {
@@ -41,16 +43,16 @@ export default {
 
   data() {
     return {
-      name: "Dashboard",
+      name: "Dashboard", //페이지 이름
+      graphs: [], //그래프 설정
       graph_data: [],
-      graph_option: "",
-      chartID: "",
-      listWidth: 0,
-      listHeight: 0,
-      graphs: [],
-      componentKey: 0
+      listWidth: 0, //컨테이너 가로
+      listHeight: 0, //컨테이너 세로
+      graph_option_example: "", //그래프 설정 예시
+      graph_data_example: [] //그래프 데이터 예시
     };
   },
+  //외부 컨테이너 초기화
   mounted() {
     let listEl = document.getElementById("list");
     this.listWidth = listEl.clientWidth;
@@ -61,12 +63,10 @@ export default {
     });
   },
   created() {
-    this.graphs = graphSets.graphs;
-    this.graph_data = graphData.data;
-    this.graph_option = graphData.options;
-    this.$nextTick(function() {
-      this.componentKey++;
-    });
+    this.graphs = graphSettings.graphs;
+    this.graphs_data = graphSettings.datum;
+    this.graph_data_example = graphData.data;
+    this.graph_option_example = graphData.options;
   },
 
   methods: {
@@ -75,22 +75,24 @@ export default {
       this.graphs[index].height = newRect.height;
       this.graphs[index].top = newRect.top;
       this.graphs[index].left = newRect.left;
-      this.graph_option.height = newRect.height + "px";
+      this.graphs[index].option.height = newRect.height;
     },
+
     addGraph() {
       this.graphs.push({
         width: 500,
         height: 400,
         top: Math.floor(Math.random() * 100) + 50,
-        left: Math.floor(Math.random() * 100) + 30
+        left: Math.floor(Math.random() * 100) + 30,
+        option: this.graph_option_example
       });
+      this.graph_data.push({
+        datum: this.graph_data_exmaple
+      })
       this.index++;
-      this.$nextTick(function() {
-        this.componentKey++;
-      });
     },
+
     deleteGraph() {
-      console.log("delete");
       this.graphs = [];
     }
   }
