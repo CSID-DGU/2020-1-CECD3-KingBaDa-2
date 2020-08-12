@@ -27,8 +27,8 @@ export default {
   },
   methods: {
     loginUser() {
-      const dt = {data: {id: this.id, password:this.password}}
-      axios.post("/api/sign/login", dt)
+      const dt = [{id:this.id} , {password:this.password}]
+      axios.post("/api/elastic/get", dt)
       .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
       .catch(function (error){
         console.log(error.response);
