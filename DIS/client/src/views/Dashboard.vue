@@ -1,11 +1,10 @@
 <template>
   <div>
-    <b-button @click="addGraph">add</b-button>
-    <b-button class="deleteButton" v-bind:key="index" @click="deleteGraph()">delete</b-button>
-    <b-dropdown class="mx-1" right text="menu">
-      <b-dropdown-item @click="addGraph">Item 1</b-dropdown-item>
-      <b-dropdown-item>Item 2</b-dropdown-item>
-      <b-dropdown-item>Item 3</b-dropdown-item>
+
+    <b-dropdown class="mx-1" right text="add">
+      <b-dropdown-item @click="addGraph(1)">areaGraph</b-dropdown-item>
+      <b-dropdown-item @click="addGraph(2)">barGraph</b-dropdown-item>
+      <b-dropdown-item @click="addGraph(3)">pieGraph</b-dropdown-item>
     </b-dropdown>
     <div class="list" id="list">
       <VueDragResize
@@ -22,19 +21,21 @@
         v-on:resizing="resize($event, index)"
         v-bind:key="index"
       >
-      <div v-if>
-
-          <ccv-area-chart :data="graph_data_example" :options="graphs[index].option" v-bind:key="index"></ccv-area-chart>
-        </div>
+      <ccv-area-chart :data="graph_data[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
+      <ccv-simple-bar-chart :data="graph_data[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==2"></ccv-simple-bar-chart>
+      <ccv-pie-chart :data="graph_data[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==3"></ccv-pie-chart>
       </VueDragResize>
     </div>
+    <b-button class="deleteButton" v-bind:key="index" @click="deleteGraph()">delete</b-button>
   </div>
 </template>
 
 <script>
 import VueDragResize from "vue-drag-resize";
 import graphSettings from "@/data/graphSettings.js";
-import graphData from "@/data/areaGraphData.js";
+import areaGraphData from "@/data/areaGraphTest.js";
+import barGraphData from "@/data/barGraphTest.js";
+import pieGraphData from "@/data/pieGraphTest.js";
 
 export default {
   components: {
@@ -48,8 +49,7 @@ export default {
       graph_data: [],
       listWidth: 0, //컨테이너 가로
       listHeight: 0, //컨테이너 세로
-      graph_option_example: "", //그래프 설정 예시
-      graph_data_example: [] //그래프 데이터 예시
+      graphType: 0
     };
   },
   //외부 컨테이너 초기화
@@ -65,8 +65,6 @@ export default {
   created() {
     this.graphs = graphSettings.graphs;
     this.graphs_data = graphSettings.datum;
-    this.graph_data_example = graphData.data;
-    this.graph_option_example = graphData.options;
   },
 
   methods: {
@@ -78,18 +76,47 @@ export default {
       this.graphs[index].option.height = newRect.height;
     },
 
-    addGraph() {
-      this.graphs.push({
-        width: 500,
-        height: 400,
-        top: Math.floor(Math.random() * 100) + 50,
-        left: Math.floor(Math.random() * 100) + 30,
-        option: this.graph_option_example
-      });
-      this.graph_data.push({
-        datum: this.graph_data_exmaple
-      })
-      this.index++;
+    addGraph(graphType) {
+      if(graphType == 1){
+        this.graphs.push({
+          width: 500,
+          height: 400,
+          top: Math.floor(Math.random() * 100) + 50,
+          left: Math.floor(Math.random() * 100) + 30,
+          graphType: graphType,
+          option: areaGraphData.options
+        });
+        this.graph_data.push({
+          datum: areaGraphData.data
+        })
+      }
+      else if(graphType == 2){
+        this.graphs.push({
+          width: 500,
+          height: 400,
+          top: Math.floor(Math.random() * 100) + 50,
+          left: Math.floor(Math.random() * 100) + 30,
+          graphType: graphType,
+          option: barGraphData.options
+        });
+        this.graph_data.push({
+          datum: barGraphData.data
+        })
+      }
+      else if(graphType == 3){
+        this.graphs.push({
+          width: 500,
+          height: 400,
+          top: Math.floor(Math.random() * 100) + 50,
+          left: Math.floor(Math.random() * 100) + 30,
+          graphType: graphType,
+          option: pieGraphData.options
+        });
+        this.graph_data.push({
+          datum: pieGraphData.data
+        })
+      }
+
     },
 
     deleteGraph() {
