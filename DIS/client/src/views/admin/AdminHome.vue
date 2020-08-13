@@ -3,7 +3,11 @@
     <div style="background-color:#6FCEDC">
       <div class="white-font big-font">관리자페이지</div>
       <div>
-        <b-button variant="light" class="white-font text-right transparent small-font">
+        <b-button
+          @click="logout"
+          variant="light"
+          class="white-font text-right transparent small-font"
+        >
           <img src="../../assets/logout.png" />로그아웃
         </b-button>
       </div>
@@ -12,7 +16,11 @@
       <b-tab title="항목 관리" active>
         <div class="w-75 mx-auto">
           <b-form class="my-5" inline>
-            <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
+            <b-form-select v-model="selected.domain" :options="options.domain">
+              <template v-slot:first>
+                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+              </template>
+            </b-form-select>
             <b-form-input v-model="inputVal1"></b-form-input>
             <div>
               <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
@@ -23,19 +31,50 @@
 
           <div>
             <b-form inline>
-              <b-form-select v-model="selected.sensor.x1" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X1" :options="options.X1"></b-form-select>
+              <b-form-select class="mr-5" v-model="selected.X1" :options="options.X1">
+                <template v-slot:first>
+                  <b-form-select-option value="null">dataset1 선택</b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select class="mr-5" v-model="selected.X2" :options="options.X2">
+                <template v-slot:first>
+                  <b-form-select-option value="null">dataset2 선택</b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select class="mr-5" v-model="selected.X3" :options="options.X3">
+                <template v-slot:first>
+                  <b-form-select-option value="null">dataset3 선택</b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select class="mr-5" v-model="selected.X4" :options="options.X4">
+                <template v-slot:first>
+                  <b-form-select-option value="null">dataset4 선택</b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select class="mr-5" v-model="selected.X5" :options="options.X5">
+                <template v-slot:first>
+                  <b-form-select-option value="null">dataset5 선택</b-form-select-option>
+                </template>
+              </b-form-select>
 
-              <b-form-select v-model="selected.sensor.x2" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X2" :options="options.X2"></b-form-select>
+              <b-form-select class="mr-5" v-model="selected.Y1" :options="options.Y1">
+                <template v-slot:first>
+                  <b-form-select-option value="null">value1 선택</b-form-select-option>
+                  <b-form-select-option value="시간">시간</b-form-select-option>
+                </template>
+              </b-form-select>
+              <b-form-select class="mr-5" v-model="selected.Y2" :options="options.Y2">
+                <template v-slot:first>
+                  <b-form-select-option value="null">value2 선택</b-form-select-option>
+                  <b-form-select-option value="시간">시간</b-form-select-option>
+                </template>
+              </b-form-select>
 
-              <b-form-select v-model="selected.sensor.x3" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X3" :options="options.X3"></b-form-select>
-
-              <b-form-select v-model="selected.sensor.y" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.Y1" :options="options.Y"></b-form-select>
-
-              <b-form-select v-model="selected.graph" :options="options.graph"></b-form-select>
+              <b-form-select v-model="selected.graph" :options="options.graph">
+                <template v-slot:first>
+                  <b-form-select-option value="null">그래프 선택</b-form-select-option>
+                </template>
+              </b-form-select>
               <div class="mx-auto my-5">
                 <b-button class="mx-2" @click="addItem">항목 추가</b-button>
                 <b-button class="mx-2" @click="deleteItem">항목 제거</b-button>
@@ -71,8 +110,12 @@
 
       <b-tab title="직종 관리">
         <div class="w-75 mx-auto">
-          <b-form class="w-75 mx-auto my-5" inline>
-            <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
+          <b-form class="w-50 mx-auto my-5" inline>
+            <b-form-select v-model="selected.domain" :options="options.domain">
+              <template v-slot:first>
+                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+              </template>
+            </b-form-select>
             <b-table striped hover :items="job"></b-table>
             <b-form-input v-model="inputVal3"></b-form-input>
             <b-button class="mx-2" @click="addJob">직종 추가</b-button>
@@ -98,7 +141,10 @@ export default {
         "Dataset1",
         "Dataset2",
         "Dataset3",
-        "Y-axis",
+        "Dataset4",
+        "Dataset5",
+        "value1",
+        "value2",
         "graph",
         "default"
       ],
@@ -109,54 +155,58 @@ export default {
       job: [{ 직종: "시설관리팀" }],
       selected: {
         domain: null,
-        sensor: { x1: null, x2: null, x3: null, y: null },
         X1: null,
         X2: null,
         X3: null,
+        X4: null,
+        X5: null,
         Y1: null,
+        Y2: null,
         graph: null,
         row: []
       },
 
       options: {
         domain: [
-          { value: null, text: "도메인 선택" },
           { value: "전력세이빙", text: "전력세이빙" },
           { value: "헬스케어", text: "헬스케어" }
         ],
-        sensor: [
-          { value: null, text: "센서 선택" },
-          { value: "통합감지센서", text: "통합감지센서" },
-          { value: "스마트플러그", text: "스마트플러그" },
-          { value: "레이더센서", text: "레이더센서" }
-        ],
         X1: [
-          { value: null, text: "dataset1 선택" },
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
         X2: [
-          { value: null, text: "dataset2 선택" },
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
         X3: [
-          { value: null, text: "dataset3 선택" },
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
-        Y: [
-          { value: null, text: "Y축 선택" },
-          { value: "시간", text: "시간" },
+        X4: [
+          { value: "온도", text: "온도" },
+          { value: "습도", text: "습도" },
+          { value: "미세먼지", text: "미세먼지" }
+        ],
+        X5: [
+          { value: "온도", text: "온도" },
+          { value: "습도", text: "습도" },
+          { value: "미세먼지", text: "미세먼지" }
+        ],
+        Y1: [
+          { value: "온도", text: "온도" },
+          { value: "습도", text: "습도" },
+          { value: "미세먼지", text: "미세먼지" }
+        ],
+        Y2: [
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
         graph: [
-          { value: null, text: "그래프 선택" },
           { value: "line", text: "line" },
           { value: "bar", text: "bar" },
           { value: "scatter", text: "scatter" },
@@ -171,28 +221,29 @@ export default {
           name: "일간 온습도 비교",
           Dataset1: "온도",
           Dataset2: "습도",
-          "Y-axis": "시간",
+          value1: "온도",
+          value2: "습도",
           graph: "scatter"
         },
         {
           domain: "전력세이빙",
           name: "월간 습도 비교",
           Dataset1: "습도",
-          "Y-axis": "시간",
+          value1: "시간",
           graph: "line"
         },
         {
           domain: "전력세이빙",
           name: "월간 전력량 비교",
           Dataset1: "전력량",
-          "Y-axis": "시간",
+          value1: "시간",
           graph: "line"
         },
         {
           domain: "전력세이빙",
           name: "월간 전류 비교",
           Dataset1: "전류",
-          "Y-axis": "시간",
+          value1: "시간",
           graph: "pie"
         }
       ]
@@ -210,8 +261,7 @@ export default {
       }
     },
     deleteDomain() {
-      if (this.options.domain.pop().value == null) {
-        this.options.domain.push({ value: null, text: "도메인 선택" });
+      if (this.options.domain.pop() == null) {
         alert("삭제할 도메인이 없습니다!");
       }
     },
@@ -222,7 +272,10 @@ export default {
         Dataset1: this.selected.X1,
         Dataset2: this.selected.X2,
         Dataset3: this.selected.X3,
-        "Y-axis": this.selected.Y1,
+        Dataset4: this.selected.X4,
+        Dataset5: this.selected.X5,
+        value1: this.selected.Y1,
+        value2: this.selected.Y2,
         graph: this.selected.graph
       });
     },
@@ -239,19 +292,20 @@ export default {
       }
     },
     deleteJob() {
-      if (this.options.job.pop().value == null) {
-        this.options.job.push({ value: null, text: "직종 선택" });
-        alert("삭제할 직종이 없습니다!");
-      }
+      this.job.pop();
     },
     onRowSelected(items) {
       this.row = items;
     },
     saveSelected() {
       this.selected.row = this.row;
+      alert("저장되었습니다!");
     },
     clearSelected() {
       this.selected.row = [];
+    },
+    logout() {
+      this.$router.push("/");
     }
   }
 };
