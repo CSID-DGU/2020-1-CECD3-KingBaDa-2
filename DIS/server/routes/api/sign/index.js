@@ -3,18 +3,21 @@ const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const request = require('request');
+const config = require('../../../config/config');
 
 let mysql = require('mysql');
 const { createConnection } = require('net');
+
+const { db: {host, port, name, user, password}} = config;
 
 router.post('/login', (req, res, next) => {
     console.log(req.body.data)
     let connection = mysql.createConnection({
         host: '192.168.0.5',
-        port: 3306,
-        user: 'root',
-        password: 'password',
-        database: 'bts_test'
+        port: port,
+        user: user,
+        password: password,
+        database: name
     });
     connection.connect();
     connection.query('select * from UserInfo', function(err, rows, fields) {
