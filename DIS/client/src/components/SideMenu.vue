@@ -100,12 +100,14 @@
       </div>
     </b-sidebar>
     <div>
-      <router-view />
+        <router-view/>
     </div>
   </div>
 </template>
 <script>
 export default {
+  name: "SideMenu",
+
   data() {
     return {
       sidebarWidth: "130px",
@@ -117,6 +119,24 @@ export default {
       userName: "차민형",
       userDomain: "시설관리팀"
     };
+  },
+  created(){
+    this.$EventBus.$on('Dashboard', () => {
+      document.getElementById('home').classList.remove("selected");
+      document.getElementById('notice').classList.remove("selected");
+      document.getElementById('dashboard').classList.add("selected");
+      document.getElementById('control').classList.remove("selected");
+      document.getElementById('data').classList.remove("selected");
+      document.getElementById('setting').classList.remove("selected");
+    }),
+    this.$EventBus.$on('Notice', () => {
+      document.getElementById('home').classList.remove("selected");
+      document.getElementById('notice').classList.add("selected");
+      document.getElementById('dashboard').classList.remove("selected");
+      document.getElementById('control').classList.remove("selected");
+      document.getElementById('data').classList.remove("selected");
+      document.getElementById('setting').classList.remove("selected");
+    })
   },
   methods: {
     slimize() {
