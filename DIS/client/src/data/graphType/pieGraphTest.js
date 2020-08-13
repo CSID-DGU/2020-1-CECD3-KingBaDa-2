@@ -34,6 +34,6 @@ export default{
     "pie": {
       "alignment": "center"
     },
-    "height": "400px"
+    "height": "400"
   }
 }

@@ -35,6 +35,6 @@ export default{
         ]
       }
     },
-    "height": "100px"
+    "height": "100"
   }
 }

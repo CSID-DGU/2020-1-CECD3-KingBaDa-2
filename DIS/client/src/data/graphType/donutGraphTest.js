@@ -37,6 +37,6 @@ export default{
       },
       "alignment": "center"
     },
-    "height": "400px"
+    "height": "400"
   }
 }

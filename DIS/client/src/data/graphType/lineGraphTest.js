@@ -136,6 +136,6 @@ export default{
       }
     },
     "curve": "curveMonotoneX",
-    "height": "400px"
+    "height": "400"
   }
 }
