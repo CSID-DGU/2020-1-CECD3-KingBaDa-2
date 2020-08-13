@@ -25,7 +25,6 @@ router.post('/get', function(req, res, next) {
             }
         }
     }
-
     let obj=new Object();
     search.forEach(function(element){
         obj.match=element;
@@ -49,9 +48,17 @@ router.post('/get', function(req, res, next) {
     */
     }).then(function(response) {
     let hits = response.hits.hits;//결과배열
-    console.log(hits[0]._source);//결과 첫번째의 _source의 id 출력
+    console.log(hits);
+    // let result = new Object();
+    //console.log(hits[0]._source);//결과 첫번째의 _source의 id 출력
+    //
+    //   파싱부분
+    //
+    res.json(hits);
+
     }, function(error) {
     console.trace(error.message);
     });
+
 });
 module.exports = router;
