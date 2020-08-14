@@ -41,7 +41,22 @@ export default {
       this.$router.push("/id/main")
     },
     loginAdmin(){
-      this.$router.push("/AdminHome")
+      let userData = {
+        id:this.id,
+        pw:this.password
+      }
+      axios.post("/api/sign/admin-login", userData)
+      .then((r) => {
+        console.log("r: ", r);
+        if(r){
+          this.$router.push("/AdminHome");
+        } else {
+          alert('id, password 확인');
+        }
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
     }
   }
 };
