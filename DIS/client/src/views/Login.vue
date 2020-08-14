@@ -27,13 +27,11 @@ export default {
   },
   methods: {
     loginUser() {
-      const dt = {
-        key:"name,value",
-        search:[
-          {name:this.id},{location1:this.password}
-        ]
-      }
-      axios.post("/api/elastic/get2", dt)
+      const dt = [
+          {name:this.id},
+          {location1:this.password}
+      ]
+      axios.post("/api/elastic/get", dt)
       .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
       .catch(function (error){
         console.log(error.response);
@@ -41,7 +39,27 @@ export default {
       this.$router.push("/id/main")
     },
     loginAdmin(){
-      this.$router.push("/AdminHome")
+      // console.log('call login admin api');
+      let userData = {
+        id:this.id,
+        pw:this.password
+      }
+      axios.post("/api/sign/admin-login", userData)
+      .then((r) => {
+        // console.log("r: ", r);
+        if(r){
+          if(r.data.data==1){
+            this.$router.push("/AdminHome");
+          } else {
+            alert('id, password 확인');
+          }
+        } else {
+          alert('id, password 확인');
+        }
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
     }
   }
 };
