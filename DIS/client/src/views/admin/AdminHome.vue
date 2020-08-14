@@ -24,7 +24,7 @@
             </b-form-select>
             <div>
               항목 이름 :
-              <b-form-input class="ml-3" v-model="inputVal2"></b-form-input>
+              <b-form-input placeholder="추가 할 도메인 이름 입력" class="ml-3" v-model="inputVal2"></b-form-input>
             </div>
           </b-form>
 
@@ -34,7 +34,7 @@
                 <b-card title="dataset 설정">
                   <b-button v-b-modal.modal-1 class="mx-2">dataset 설정</b-button>
                   <template v-slot:footer>
-                    선택된 dataset :
+                    선택된 Dataset :
                     <span
                       v-for="dataset_item in selected.dataset"
                       :key="dataset_item"
@@ -149,31 +149,39 @@
       <!-- <b-tab title="모달테스트"></b-tab> -->
     </b-tabs>
     <b-modal id="modal-1" title="dataset 설정" @cancel="resetDataset">
-      <b-form-select v-model="dataset" :options="options.dataset">
+      <b-form-select @change="addDataset" v-model="dataset" :options="options.dataset">
         <template v-slot:first>
           <b-form-select-option value="null">dataset 선택</b-form-select-option>
         </template>
       </b-form-select>
-      <b-button class="mx-2" @click="addDataset">dataset 추가</b-button>
-      <b-button class="mx-2" @click="resetDataset">초기화</b-button>
-      <b-list-group>
-        <b-list-group-item
-          v-for="dataset_item in selected.dataset"
-          :key="dataset_item"
-        >{{ dataset_item }}</b-list-group-item>
+
+      <b-list-group class="my-3">
+        <b-list-group-item>
+          <strong>추가 Dataset 목록</strong>
+        </b-list-group-item>
+        <b-list-group-item v-for="dataset_item in selected.dataset" :key="dataset_item">
+          {{ dataset_item }}
+          <b-button @click="deleteDatasetItem">삭제</b-button>
+        </b-list-group-item>
       </b-list-group>
+      <b-button class="mx-2" @click="resetDataset">모두 삭제</b-button>
     </b-modal>
     <b-modal id="modal-2" title="value 설정" @cancel="resetValue">
-      <b-form-select v-model="value" :options="options.value">
+      <b-form-select @change="addValue" v-model="value" :options="options.value">
         <template v-slot:first>
           <b-form-select-option value="null">value 선택</b-form-select-option>
         </template>
       </b-form-select>
-      <b-button class="mx-2" @click="addValue">value 추가</b-button>
-      <b-button class="mx-2" @click="resetValue">초기화</b-button>
-      <b-list-group>
-        <b-list-group-item v-for="value_item in selected.value" :key="value_item">{{ value_item }}</b-list-group-item>
+      <b-list-group class="my-3">
+        <b-list-group-item>
+          <strong>추가 Value 목록</strong>
+        </b-list-group-item>
+        <b-list-group-item v-for="value_item in selected.value" :key="value_item">
+          {{ value_item }}
+          <b-button @click="deleteValueItem">삭제</b-button>
+        </b-list-group-item>
       </b-list-group>
+      <b-button class="mx-2" @click="resetValue">모두 삭제</b-button>
     </b-modal>
   </div>
 </template>
@@ -291,16 +299,22 @@ export default {
       }
     },
     addItem() {
-      this.items.push({
-        domain: this.selected.domain,
-        name: this.inputVal2,
-        Dataset: this.selected.dataset,
-        value: this.selected.value,
-        graph: this.selected.graph,
-        range: this.selected.range
-      });
-      if (this.selected.status == "defaultGraph") {
-        this.items[this.items.length - 1].status = "default";
+      if (this.selected.domain == null) alert("도메인을 선택해주세요!");
+      else if (this.inputVal2 == "") alert("항목 이름을 입력해주세요!");
+      else if (this.selected.graph == null)
+        alert("그래프 종류를 선택해주세요!");
+      else {
+        this.items.push({
+          domain: this.selected.domain,
+          name: this.inputVal2,
+          Dataset: this.selected.dataset,
+          value: this.selected.value,
+          graph: this.selected.graph,
+          range: this.selected.range
+        });
+        if (this.selected.status == "defaultGraph") {
+          this.items[this.items.length - 1].status = "default";
+        }
       }
     },
     deleteItem() {
@@ -332,8 +346,13 @@ export default {
       this.selected.value = [];
     },
     onRowSelected(items) {
-      this.row = items;
-      this.inputVal2 = this.selected.name;
+      this.options.forEach(function(element, index) {
+        console.log(index);
+        if (element.name == items.name) {
+          this.options.splice(index, 1);
+        }
+      });
+      this.options.splice(this.options.lastIndexOf(items.name), 1);
     },
     saveSelected() {
       this.selected.row = this.row;
@@ -341,6 +360,18 @@ export default {
     },
     clearSelected() {
       this.options.pop();
+    },
+    deleteDatasetItem(dataset_item) {
+      this.selected.dataset.splice(
+        this.selected.dataset.lastIndexOf(dataset_item),
+        1
+      );
+    },
+    deleteValueItem(value_item) {
+      this.selected.value.splice(
+        this.selected.value.lastIndexOf(value_item),
+        1
+      );
     },
     logout() {
       this.$router.push("/");
