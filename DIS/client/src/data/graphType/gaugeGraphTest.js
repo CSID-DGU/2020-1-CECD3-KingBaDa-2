@@ -12,7 +12,7 @@ export default{
   options:{
     "title": "Gauge semicircular -- danger status",
     "resizable": true,
-    "height": "250px",
+    "height": "250",
     "width": "100%",
     "gauge": {
       "type": "semi",

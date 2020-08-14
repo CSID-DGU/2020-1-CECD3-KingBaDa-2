@@ -77,7 +77,7 @@ export default{
     }
   ],
   options: {
-    "title": "Stacked area (time series)",
+    "title": "Stacked area (time series) - Zoom bar enabled",
     "axes": {
       "left": {
         "stacked": true,

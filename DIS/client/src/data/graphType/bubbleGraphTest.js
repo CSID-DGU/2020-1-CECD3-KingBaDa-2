@@ -136,6 +136,6 @@ export default{
     "bubble": {
       "radiusMapsTo": "surplus"
     },
-    "height": "400px"
+    "height": "400"
   }
 }

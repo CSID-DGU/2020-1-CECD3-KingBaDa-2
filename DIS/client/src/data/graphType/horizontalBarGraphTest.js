@@ -32,6 +32,6 @@ export default{
         "mapsTo": "value"
       }
     },
-    "height": "400px"
+    "height": "400"
   }
 }

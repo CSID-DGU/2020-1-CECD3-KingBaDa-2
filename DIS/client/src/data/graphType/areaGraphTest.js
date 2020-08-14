@@ -65,6 +65,6 @@ export default{
       }
     },
     "curve": "curveNatural",
-    "height": "400px"
+    "height": "400"
   }
 }
