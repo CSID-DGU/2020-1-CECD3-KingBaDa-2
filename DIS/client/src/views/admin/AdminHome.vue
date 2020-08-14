@@ -27,7 +27,6 @@
               <b-form-input placeholder="추가 할 도메인 이름 입력" class="ml-3" v-model="inputVal2"></b-form-input>
             </div>
           </b-form>
-
           <div>
             <div>
               <b-card-group deck>
@@ -52,7 +51,6 @@
                     >{{ value_item }}&nbsp;</span>
                   </template>
                 </b-card>
-
                 <b-card title="그래프 설정">
                   <b-form-select v-model="selected.graph" :options="options.graph">
                     <template v-slot:first>
@@ -92,7 +90,6 @@
             select-mode="single"
             :items="items"
             :fields="fields"
-            @row-selected="onRowSelected"
             responsive="sm"
           >
             <template v-slot:cell(default)="{ rowSelected }">
@@ -108,7 +105,6 @@
           </b-table>
         </div>
       </b-tab>
-
       <b-tab title="도메인, 직종 관리">
         <div class="w-50 mx-auto">
           <b-list-group>
@@ -122,7 +118,6 @@
           </b-list-group>
           <b-form class="my-5" inline>
             <b-form-input v-model="inputVal1"></b-form-input>
-
             <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
             <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
           </b-form>
@@ -137,7 +132,10 @@
             <b-list-group-item>
               <strong>직종</strong>
             </b-list-group-item>
-            <b-list-group-item v-for="jobs in job" :key="jobs.type">{{ jobs.type }}</b-list-group-item>
+            <b-list-group-item v-for="jobs in job" :key="jobs.type">
+              <b-badge>{{ jobs.domain }}</b-badge>
+              {{ jobs.type }}
+            </b-list-group-item>
           </b-list-group>
           <b-form class="my-5" inline>
             <b-form-input v-model="inputVal3"></b-form-input>
@@ -154,7 +152,6 @@
           <b-form-select-option value="null">dataset 선택</b-form-select-option>
         </template>
       </b-form-select>
-
       <b-list-group class="my-3">
         <b-list-group-item>
           <strong>추가 Dataset 목록</strong>
@@ -345,15 +342,14 @@ export default {
     resetValue() {
       this.selected.value = [];
     },
-    onRowSelected(items) {
-      this.options.forEach(function(element, index) {
-        console.log(index);
-        if (element.name == items.name) {
-          this.options.splice(index, 1);
-        }
-      });
-      this.options.splice(this.options.lastIndexOf(items.name), 1);
-    },
+    // onRowSelected(items) {
+    //   this.options.forEach(function(element, index) {
+    //     console.log(index);
+    //     if (element.name == items.name) {
+    //       this.options.splice(index, 1);
+    //     }
+    //   });
+    // },
     saveSelected() {
       this.selected.row = this.row;
       alert("저장되었습니다!");
