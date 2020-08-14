@@ -48,6 +48,11 @@
       </VueDragResize>
     </div>
     <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
+    <b-dropdown size="lg" text="Large" class="m-2">
+      <b-dropdown-item-button>Action</b-dropdown-item-button>
+      <b-dropdown-item-button>Another action</b-dropdown-item-button>
+      <b-dropdown-item-button>Something else here</b-dropdown-item-button>
+    </b-dropdown>
   </div>
 </template>
 
@@ -321,7 +326,7 @@ export default {
 <style scope>
 .list {
   position: absolute;
-  top: 50px;
+  top: 60px;
   bottom: 30px;
   left: 160px;
   right: 30px;
