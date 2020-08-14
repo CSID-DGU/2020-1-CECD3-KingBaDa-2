@@ -3,60 +3,178 @@
     <div style="background-color:#6FCEDC">
       <div class="white-font big-font">관리자페이지</div>
       <div>
-        <b-button variant="light" class="white-font text-right transparent small-font">
+        <b-button
+          @click="logout"
+          variant="light"
+          class="white-font text-right transparent small-font"
+        >
           <img src="../../assets/logout.png" />로그아웃
         </b-button>
       </div>
     </div>
     <b-tabs content-class="mt-3" align="center">
       <b-tab title="항목 관리" active>
+        <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
         <div class="w-75 mx-auto">
           <b-form class="my-5" inline>
-            <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
-            <b-form-input v-model="inputVal1"></b-form-input>
+            <b-form-select class="mx-5" v-model="selected.domain" :options="options.domain">
+              <template v-slot:first>
+                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+              </template>
+            </b-form-select>
             <div>
-              <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-              <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+              항목 이름 :
+              <b-form-input class="ml-3" v-model="inputVal2"></b-form-input>
             </div>
           </b-form>
 
           <div>
-            <b-form inline>
-              <b-form-select v-model="selected.sensor.x1" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X1" :options="options.X1"></b-form-select>
+            <div>
+              <b-card-group deck>
+                <b-card title="dataset 설정">
+                  <b-button v-b-modal.modal-1 class="mx-2">dataset 설정</b-button>
+                  <template v-slot:footer>
+                    선택된 dataset :
+                    <span
+                      v-for="dataset_item in selected.dataset"
+                      :key="dataset_item"
+                    >{{ dataset_item }}&nbsp;</span>
+                  </template>
+                </b-card>
 
-              <b-form-select v-model="selected.sensor.x2" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X2" :options="options.X2"></b-form-select>
+                <b-card title="value 설정">
+                  <b-button v-b-modal.modal-2 class="mx-2">value 설정</b-button>
+                  <template v-slot:footer>
+                    선택된 Value :
+                    <span
+                      v-for="value_item in selected.value"
+                      :key="value_item"
+                    >{{ value_item }}&nbsp;</span>
+                  </template>
+                </b-card>
 
-              <b-form-select v-model="selected.sensor.x3" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.X3" :options="options.X3"></b-form-select>
-
-              <b-form-select v-model="selected.sensor.y" :options="options.sensor"></b-form-select>
-              <b-form-select class="mr-5" v-model="selected.Y1" :options="options.Y"></b-form-select>
-
-              <b-form-select v-model="selected.graph" :options="options.graph"></b-form-select>
-              <div class="mx-auto my-5">
-                <b-button class="mx-2" @click="addItem">항목 추가</b-button>
-                <b-button class="mx-2" @click="deleteItem">항목 제거</b-button>
-              </div>
-            </b-form>
+                <b-card title="그래프 설정">
+                  <b-form-select v-model="selected.graph" :options="options.graph">
+                    <template v-slot:first>
+                      <b-form-select-option value="null">그래프 선택</b-form-select-option>
+                    </template>
+                  </b-form-select>
+                  <b-form-group label="그래프 표시 범위">
+                    <b-form-radio-group
+                      id="radio-group"
+                      v-model="selected.range"
+                      name="radio-range"
+                    >
+                      <b-form-radio value="year">연간</b-form-radio>
+                      <b-form-radio value="month">월간</b-form-radio>
+                      <b-form-radio value="day">일간</b-form-radio>
+                      <b-form-radio value="none">범위 없음</b-form-radio>
+                    </b-form-radio-group>
+                  </b-form-group>
+                  <b-form-checkbox
+                    id="defaultCheck"
+                    v-model="selected.status"
+                    name="checkbox-1"
+                    value="defaultGraph"
+                  >디폴트 그래프 설정</b-form-checkbox>
+                  <template v-slot:footer>선택된 그래프 : {{selected.graph}}</template>
+                </b-card>
+              </b-card-group>
+            </div>
           </div>
-
-          <b-table striped hover :items="items"></b-table>
+          <b-button class="mx-2 my-5" @click="addItem">추가</b-button>
+          <b-button class="mx-2 my-5" @click="deleteItem">삭제</b-button>
+          <b-table
+            striped
+            hover
+            ref="selectableTable"
+            selectable
+            select-mode="single"
+            :items="items"
+            :fields="fields"
+            @row-selected="onRowSelected"
+            responsive="sm"
+          >
+            <template v-slot:cell(default)="{ rowSelected }">
+              <template v-if="rowSelected">
+                <span aria-hidden="true">&check;</span>
+                <span class="sr-only">Selected</span>
+              </template>
+              <template v-else>
+                <span aria-hidden="true">&nbsp;</span>
+                <span class="sr-only">Not selected</span>
+              </template>
+            </template>
+          </b-table>
         </div>
       </b-tab>
 
-      <b-tab title="직종 관리">
-        <b-form class="w-75 mx-auto my-5" inline>
-          <b-form-select v-model="selected.domain" :options="options.domain"></b-form-select>
-          <b-form-select v-model="selected.job" :options="options.job"></b-form-select>
-          <b-form-input v-model="inputVal2"></b-form-input>
-          <b-button class="mx-2" @click="addJob">직종 추가</b-button>
-          <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
-          <b-table class="my-5" striped hover :items="items"></b-table>
-        </b-form>
+      <b-tab title="도메인, 직종 관리">
+        <div class="w-50 mx-auto">
+          <b-list-group>
+            <b-list-group-item>
+              <strong>도메인</strong>
+            </b-list-group-item>
+            <b-list-group-item
+              v-for="domain_item in options.domain"
+              :key="domain_item.value"
+            >{{ domain_item.value }}</b-list-group-item>
+          </b-list-group>
+          <b-form class="my-5" inline>
+            <b-form-input v-model="inputVal1"></b-form-input>
+
+            <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
+            <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+          </b-form>
+          <b-form class="w-50 my-2" inline>
+            <b-form-select v-model="selected.domain" :options="options.domain">
+              <template v-slot:first>
+                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+              </template>
+            </b-form-select>
+          </b-form>
+          <b-list-group>
+            <b-list-group-item>
+              <strong>직종</strong>
+            </b-list-group-item>
+            <b-list-group-item v-for="jobs in job" :key="jobs.type">{{ jobs.type }}</b-list-group-item>
+          </b-list-group>
+          <b-form class="my-5" inline>
+            <b-form-input v-model="inputVal3"></b-form-input>
+            <b-button class="mx-2" @click="addJob">직종 추가</b-button>
+            <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
+          </b-form>
+        </div>
       </b-tab>
+      <!-- <b-tab title="모달테스트"></b-tab> -->
     </b-tabs>
+    <b-modal id="modal-1" title="dataset 설정" @cancel="resetDataset">
+      <b-form-select v-model="dataset" :options="options.dataset">
+        <template v-slot:first>
+          <b-form-select-option value="null">dataset 선택</b-form-select-option>
+        </template>
+      </b-form-select>
+      <b-button class="mx-2" @click="addDataset">dataset 추가</b-button>
+      <b-button class="mx-2" @click="resetDataset">초기화</b-button>
+      <b-list-group>
+        <b-list-group-item
+          v-for="dataset_item in selected.dataset"
+          :key="dataset_item"
+        >{{ dataset_item }}</b-list-group-item>
+      </b-list-group>
+    </b-modal>
+    <b-modal id="modal-2" title="value 설정" @cancel="resetValue">
+      <b-form-select v-model="value" :options="options.value">
+        <template v-slot:first>
+          <b-form-select-option value="null">value 선택</b-form-select-option>
+        </template>
+      </b-form-select>
+      <b-button class="mx-2" @click="addValue">value 추가</b-button>
+      <b-button class="mx-2" @click="resetValue">초기화</b-button>
+      <b-list-group>
+        <b-list-group-item v-for="value_item in selected.value" :key="value_item">{{ value_item }}</b-list-group-item>
+      </b-list-group>
+    </b-modal>
   </div>
 </template>
 
@@ -65,93 +183,93 @@ export default {
   name: "AdminHome",
   data() {
     return {
+      fields: [
+        "domain",
+        "name",
+        "Dataset",
+        "value",
+        "graph",
+        "range",
+        "status"
+      ],
       inputVal1: "",
       inputVal2: "",
+      inputVal3: "",
+      dataset: null,
+      value: null,
+      row: [],
+      job: [
+        { domain: "전력세이빙", type: "시설관리처" },
+        { domain: "전력세이빙", type: "총무처" }
+      ],
       selected: {
+        status: null,
         domain: null,
-        sensor: { x1: null, x2: null, x3: null, y: null },
-        X1: null,
-        X2: null,
-        X3: null,
-        Y1: null,
+        dataset: [],
+        value: [],
         graph: null,
-        job: null
+        row: [],
+        range: null
       },
 
       options: {
         domain: [
-          { value: null, text: "도메인 선택" },
           { value: "전력세이빙", text: "전력세이빙" },
           { value: "헬스케어", text: "헬스케어" }
         ],
-        sensor: [
-          { value: null, text: "센서 선택" },
-          { value: "통합감지센서", text: "통합감지센서" },
-          { value: "스마트플러그", text: "스마트플러그" },
-          { value: "레이더센서", text: "레이더센서" }
-        ],
-        X1: [
-          { value: null, text: "dataset1 선택" },
+        dataset: [
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
-        X2: [
-          { value: null, text: "dataset2 선택" },
-          { value: "온도", text: "온도" },
-          { value: "습도", text: "습도" },
-          { value: "미세먼지", text: "미세먼지" }
-        ],
-        X3: [
-          { value: null, text: "dataset3 선택" },
-          { value: "온도", text: "온도" },
-          { value: "습도", text: "습도" },
-          { value: "미세먼지", text: "미세먼지" }
-        ],
-        Y: [
-          { value: null, text: "Y축 선택" },
-          { value: "시간", text: "시간" },
+        value: [
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
           { value: "미세먼지", text: "미세먼지" }
         ],
         graph: [
-          { value: null, text: "그래프 선택" },
           { value: "line", text: "line" },
           { value: "bar", text: "bar" },
           { value: "scatter", text: "scatter" },
           { value: "pie", text: "pie" },
-          { value: "table", text: "table" },
           { value: "gauge", text: "gauge" }
-        ],
-        job: [{ value: null, text: "직종 선택" }]
+        ]
       },
       items: [
         {
           domain: "전력세이빙",
-          Dataset1: "온도",
-          Dataset2: "습도",
-          Dataset3: "",
-          "Y-axis": "시간",
-          graph: "bar"
+          name: "일간 온습도 비교",
+          Dataset: "testbed",
+          value: ["온도", "습도"],
+          graph: "scatter",
+          range: "day",
+          status: "default"
         },
         {
           domain: "전력세이빙",
-          Dataset1: "습도",
-          "Y-axis": "시간",
-          graph: "line"
+          name: "월간 습도 비교",
+          Dataset: "testbed",
+          value: "습도",
+          graph: "line",
+          range: "month",
+          status: "default"
         },
         {
           domain: "전력세이빙",
-          Dataset1: "전력량",
-          "Y-axis": "시간",
-          graph: "line"
+          name: "월간 전력량 비교",
+          Dataset: "testbed",
+          value: "전력량",
+          graph: "line",
+          range: "month",
+          status: "default"
         },
         {
           domain: "전력세이빙",
-          Dataset1: "전류",
-          "Y-axis": "시간",
-          graph: "pie"
+          name: "강의실별 전력량 비교",
+          Dataset: ["6114", "2113", "3321", "5146"],
+          value: "전류",
+          graph: "pie",
+          range: "none"
         }
       ]
     };
@@ -168,39 +286,64 @@ export default {
       }
     },
     deleteDomain() {
-      if (this.options.domain.pop().value == null) {
-        this.options.domain.push({ value: null, text: "도메인 선택" });
+      if (this.options.domain.pop() == null) {
         alert("삭제할 도메인이 없습니다!");
       }
     },
     addItem() {
       this.items.push({
         domain: this.selected.domain,
-        Dataset1: this.selected.X1,
-        Dataset2: this.selected.X2,
-        Dataset3: this.selected.X3,
-        "Y-axis": this.selected.Y1,
-        graph: this.selected.graph
+        name: this.inputVal2,
+        Dataset: this.selected.dataset,
+        value: this.selected.value,
+        graph: this.selected.graph,
+        range: this.selected.range
       });
+      if (this.selected.status == "defaultGraph") {
+        this.items[this.items.length - 1].status = "default";
+      }
     },
     deleteItem() {
-      this.items.pop().value;
+      this.items.pop();
     },
     addJob() {
-      if (this.inputVal2 != "") {
-        this.options.job.push({
-          value: this.inputVal2,
-          text: this.inputVal2
+      if (this.inputVal3 != "") {
+        this.job.push({
+          domain: this.selected.domain,
+          type: this.inputVal3
         });
       } else {
         alert("직종을 입력하세요!");
       }
     },
     deleteJob() {
-      if (this.options.job.pop().value == null) {
-        this.options.job.push({ value: null, text: "직종 선택" });
-        alert("삭제할 직종이 없습니다!");
-      }
+      this.job.pop();
+    },
+    addDataset() {
+      this.selected.dataset.push(this.dataset);
+    },
+    resetDataset() {
+      this.selected.dataset = [];
+    },
+    addValue() {
+      this.selected.value.push(this.value);
+    },
+    resetValue() {
+      this.selected.value = [];
+    },
+    onRowSelected(items) {
+      this.row = items;
+      this.inputVal2 = this.selected.name;
+    },
+    saveSelected() {
+      this.selected.row = this.row;
+      alert("저장되었습니다!");
+    },
+    clearSelected() {
+      this.options.pop();
+    },
+    logout() {
+      this.$router.push("/");
     }
   }
 };
