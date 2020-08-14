@@ -1,83 +1,48 @@
 <template>
   <div class="background">
-    <div role="tablist">
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-1 variant="info">Accordion 1</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>{{ text }}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-2 variant="info">Accordion 2</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>{{ text }}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-3 variant="info">Accordion 3</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>{{deviceInfo[0].device[3]}}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1" v-for="device in deviceInfo" v-bind:key = "device">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-3 variant="info">{{device.class}}</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>{{deviceInfo[0].device[3]}}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-    </div>
+    <b-card no-body>
+      <b-tabs card>
+        <b-tab v-for="building in buildings" :title="building.buildingName" v-bind:key="building">
+          <div role="tablist">
+            <b-card no-body class="mb-1" v-for="(deviceInfo,index) in building.deviceInfos" v-bind:key="deviceInfo">
+              <b-card-header header-tag="header" class="p-1" role="tab">
+                <b-button block v-b-toggle="deviceInfo.class" variant="info">{{deviceInfo.class}}</b-button>
+              </b-card-header>
+              <b-collapse :id="deviceInfo.class" accordion="my-accordion" role="tabpanel">
+                <b-card-body>
+                  <b-card-text v-for="device in building.deviceInfos[index].devices" v-bind:key="device">{{device}}</b-card-text>
+                </b-card-body>
+              </b-collapse>
+            </b-card>
+          </div>
+        </b-tab>
+      </b-tabs>
+    </b-card>
   </div>
 </template>
 
 <script>
+import controlData from "@/data/controlData.js";
+//import axios from 'axios'
 
 export default {
   name: "Control",
   data() {
     return {
       text: " test",
-      deviceInfo: [
-        {
-          class: "5103",
-          device: [
-            {name: "온도1", state: false},
-            {name: "온도2", state: true},
-            {name: "온도3", state: false},
-            {name: "온도4", state: true}
-          ]
-        },
-        {
-          class: "5104",
-          device: [
-            {name: "온도1", state: false},
-            {name: "온도2", state: true},
-            {name: "온도3", state: false},
-            {name: "온도4", state: true}
-          ]
-        }
-      ]
+      buildings: []
     };
   },
+
+  created(){
+    this.buildings = controlData.buildings;
+    console.log(this.buildings);
+  },
+
+  mounted(){
+
+  },
+
   methods: {
   }
 };

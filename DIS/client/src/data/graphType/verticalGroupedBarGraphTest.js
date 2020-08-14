@@ -112,6 +112,6 @@ export default{
         "mapsTo": "key"
       }
     },
-    "height": "400px"
+    "height": "400"
   }
 }

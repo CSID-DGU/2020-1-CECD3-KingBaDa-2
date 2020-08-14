@@ -157,6 +157,7 @@ export default {
     this.graphs = graphSettings.graphs;
   },
 
+
   methods: {
     resize(newRect, index) {
       this.graphs[index].width = newRect.width;
