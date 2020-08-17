@@ -17,15 +17,14 @@
               <b-nav-item>
                 <div @click="slimize" :class="sizeButton">{{foldingAction}}</div>
               </b-nav-item>
-              <br />
-              <br />
-              <br />
-              <br />
+              <div>
+                <b-avatar variant="primary" src="" size="4rem"></b-avatar>
+              </div>
               <br />
               <div>{{userName}}</div>
               <div>{{userDomain}}</div>
               <b-nav-item>
-                <div @click="logout">로그아웃</div>
+                <b-button @click="logout" variant="info" class="logoutBtn"><img src="../assets/logout.png" /><div>로그아웃</div></b-button>
               </b-nav-item>
             </b-nav>
           </nav>
@@ -171,6 +170,13 @@ export default {
 };
 </script>
 <style scope>
+.logoutBtn{
+  background-color: transparent;
+  border-color: transparent;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
 .body {
   position: absolute;
   left: 130px;
