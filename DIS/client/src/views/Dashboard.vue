@@ -48,11 +48,24 @@
       </VueDragResize>
     </div>
     <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
-    <b-dropdown size="lg" text="Large" class="m-2">
+    <b-dropdown size="lg" text="그래프 목록" class="m-2">
       <b-dropdown-item-button>Action</b-dropdown-item-button>
       <b-dropdown-item-button>Another action</b-dropdown-item-button>
-      <b-dropdown-item-button>Something else here</b-dropdown-item-button>
+      <b-dropdown-item-button v-b-modal.addGraph>+ 그래프 추가</b-dropdown-item-button>
     </b-dropdown>
+    <b-modal id="addGraph" centered title="그래프 추가">
+      <b-container fluid>
+        <b-row>
+          <b-col></b-col>
+          <b-col><b-dropdown text="항목 선택"></b-dropdown></b-col>
+          <b-col></b-col>
+        </b-row>
+      </b-container>
+      <template v-slot:modal-footer="{ok, cancel}">
+        <b-button size="sm" variant="success" @click="ok"> 그래프 생성 </b-button>
+        <b-button size="sm" variant="outline-secondary" @click="cancel"> 삭제 </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -112,6 +125,15 @@ export default {
       this.graphs[index].left = newRect.left;
       this.graphs[index].option.height = newRect.height;
     },
+
+    ok(){
+
+    },
+
+    cancel(){
+
+    },
+
     //area graph
     addGraph(graphType) {
 

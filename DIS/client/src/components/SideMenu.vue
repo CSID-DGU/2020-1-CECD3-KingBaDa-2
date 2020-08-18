@@ -173,7 +173,7 @@ export default {
 .logoutBtn{
   background-color: transparent;
   border-color: transparent;
-  font-size: 18px;
+  font-size: 15px;
   color: white;
   font-weight: bold;
 }
@@ -195,7 +195,7 @@ export default {
 }
 .navItems {
   position: relative;
-  top: 100px;
+  top: 50px;
 }
 .listItem {
   display: flex;

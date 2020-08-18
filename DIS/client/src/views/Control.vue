@@ -40,11 +40,6 @@ export default {
   },
 
   mounted(){
-    axios.get("/api/elastic/get", dt)
-    .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
-    .catch(function (error){
-      console.log(error.response);
-    });
   },
 
   methods: {
