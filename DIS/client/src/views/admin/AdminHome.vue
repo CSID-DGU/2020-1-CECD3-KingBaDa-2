@@ -192,6 +192,7 @@
 
 <script>
 import NoticeComp from "@/components/NoticeComp.vue";
+import axios from 'axios';
 
 export default {
   name: "AdminHome",
@@ -209,6 +210,7 @@ export default {
         "range",
         "status"
       ],
+      admin_id: "admin1",
       inputVal1: "",
       inputVal2: "",
       inputVal3: "",
@@ -295,13 +297,34 @@ export default {
       ]
     };
   },
+  mounted(){
+    this.getDomain();
+  },
   methods: {
+    getDomain() {
+      axios.get("/api/admin/domain?admin_id="+this.admin_id)
+        .then((r) => {
+        // console.log(r.data);
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
+    },
     addDomain() {
       if (this.inputVal1 != "") {
-        this.options.domain.push({
-          value: this.inputVal1,
-          text: this.inputVal1
+        axios.post("/api/admin/domain", [ {admin_id:this.admin_id}, {user_domain:this.inputVal1} ])
+          .then((r) => {
+        // console.log("r: ", r);
+          console.log(r);
+        })
+        .catch(function (error){
+          console.log(error.response);
         });
+        this.getDomain();
+        // this.options.domain.push({
+        //   value: this.inputVal1,
+        //   text: this.inputVal1
+        // });
       } else {
         alert("도메인을 입력하세요!");
       }
