@@ -4,7 +4,7 @@ const http = require('http');
 const elasticsearch = require('elasticsearch');
 /*[{id:123},{password:123}]
 검색조건에 해당하는 모든 결과를 json으로 리턴
-*/ 
+*/
 router.post('/get', function(req, res, next) {
     let search = req.body;
     let client = elasticsearch.Client({
@@ -46,9 +46,9 @@ router.post('/get', function(req, res, next) {
 /*
 {key:"name,value", search:[{name:this.id},{location1:this.password}]}
 key는 검색한 결과에서 가져올 부분
-search는 검색조건 
+search는 검색조건
 */
-router.post('/get2', function(req, res, next) {
+router.post('/get2', async function(req, res, next) {
     let key = req.body.key;
     let search = req.body.search;
     let keysplit = key.split(',');
@@ -56,6 +56,7 @@ router.post('/get2', function(req, res, next) {
     host: '192.168.0.5:9200'
     });
     let frame ={
+        size:100,
         query:{
             bool:{
                 must:[
@@ -69,14 +70,14 @@ router.post('/get2', function(req, res, next) {
         obj.match=element;
         frame.query.bool.must.push(obj);
     });
-    client.search({
+    await client.search({
     index: 'test',
     type: '_doc',
     body: frame,
     }).then(function(response) {
     let hits = response.hits.hits;//결과배열
     let jsonArray=new Array();
-    let json; 
+    let json;
     hits.forEach(function(element){ //검색결과 순회
         json = new Object();
         for(let i in keysplit){ //key들 순회

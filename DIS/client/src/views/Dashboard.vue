@@ -15,81 +15,43 @@
         v-on:resizing="resize($event, index)"
         v-bind:key="index"
       >
-      <ccv-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
-      <ccv-stacked-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==2"></ccv-stacked-area-chart>
-      <ccv-simple-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==3||graphs[index].graphType==6"></ccv-simple-bar-chart>
-      <ccv-grouped-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==4||graphs[index].graphType==7"></ccv-grouped-bar-chart>
-      <ccv-stacked-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==5||graphs[index].graphType==8"></ccv-stacked-bar-chart>
-      <ccv-bubble-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==9"></ccv-bubble-chart>
-      <ccv-donut-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==10"></ccv-donut-chart>
-      <ccv-line-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==11"></ccv-line-chart>
-      <ccv-pie-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==12"></ccv-pie-chart>
-      <ccv-gauge-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==13"></ccv-gauge-chart>
-      <ccv-meter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==14"></ccv-meter-chart>
-      <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
+      <div class="graphContainer">
+        <ccv-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
+        <ccv-stacked-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==2"></ccv-stacked-area-chart>
+        <ccv-simple-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==3||graphs[index].graphType==6"></ccv-simple-bar-chart>
+        <ccv-grouped-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==4||graphs[index].graphType==7"></ccv-grouped-bar-chart>
+        <ccv-stacked-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==5||graphs[index].graphType==8"></ccv-stacked-bar-chart>
+        <ccv-bubble-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==9"></ccv-bubble-chart>
+        <ccv-donut-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==10"></ccv-donut-chart>
+        <ccv-line-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==11"></ccv-line-chart>
+        <ccv-pie-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==12"></ccv-pie-chart>
+        <ccv-gauge-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==13"></ccv-gauge-chart>
+        <ccv-meter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==14"></ccv-meter-chart>
+        <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
+      </div>
       </VueDragResize>
     </div>
     <b-container fluid>
       <b-row>
         <b-col></b-col>
         <b-col>
-          <b-dropdown class="mx-1" right text="add">
-            <b-dropdown-item @click="addGraph(1)">area graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(2)">stacked area graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(3)">vertical bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(4)">vertical grouped bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(5)">vertical stacked bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(6)">horizontal bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(7)">horizontal grouped bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(8)">horizontal stacked bar graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(9)">bubble graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(10)">donut graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(11)">line graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(12)">pie graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(13)">gauge graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(14)">meter graph</b-dropdown-item>
-            <b-dropdown-item @click="addGraph(15)">radar graph</b-dropdown-item>
-          </b-dropdown>
           <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
         </b-col>
         <b-col>
           <b-dropdown size="lg" text="그래프 목록" class="m-2">
-            <b-dropdown-item-button>Action</b-dropdown-item-button>
-            <b-dropdown-item-button>Another action</b-dropdown-item-button>
+            <div v-for="(graph, index) in graphs" v-bind:key="index">
+              <b-dropdown-item-button>{{graph.option.title}}</b-dropdown-item-button><b-button></b-button>
+            </div>
+          <hr/>
             <b-dropdown-item-button v-b-modal.addGraph>+ 그래프 추가</b-dropdown-item-button>
           </b-dropdown>
         </b-col>
       </b-row>
     </b-container>
     <b-modal id="addGraph" centered title="그래프 추가">
-      <b-container fluid>
-        <b-row>
-          <b-col></b-col>
-          <b-col>
-            <!-- <b-dropdown :text="dropdownText">
-              <b-dropdown-item @click="modalItemClick(1)">area graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(2)">stacked area graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(3)">vertical bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(4)">vertical grouped bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(5)">vertical stacked bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(6)">horizontal bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(7)">horizontal grouped bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(8)">horizontal stacked bar graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(9)">bubble graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(10)">donut graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(11)">line graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(12)">pie graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(13)">gauge graph</b-dropdown-item>
-              <b-dropdown-item @click="modalItemClick(14)">meter graph</b-dropdown-item>
-            </b-dropdown> -->
-
-            <b-dropdown :text="dropdownText">
-              <b-dropdown-item v-for="(item, index) in itemTests" v-bind:key="index" @click="modalItemClick(item.title, item.graphType)">{{item.title}}</b-dropdown-item>
-            </b-dropdown>
-          </b-col>
-          <b-col></b-col>
-        </b-row>
-      </b-container>
+        <b-dropdown :text="dropdownText" block menu-class="w-100">
+          <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item.title, item.graphType)">{{item.title}}</b-dropdown-item>
+        </b-dropdown>
       <template v-slot:modal-footer="{cancel}">
         <b-button size="sm" variant="success" @click="addGraph(graphType)"> 그래프 생성 </b-button>
         <b-button size="sm" variant="outline-secondary" @click="cancel"> 닫기 </b-button>
@@ -117,6 +79,8 @@ import pieGraphData from "@/data/graphType/pieGraphTest.js";
 import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
 import meterGraphData from "@/data/graphType/meterGraphTest.js";
 
+import axios from 'axios';
+
 export default {
   components: {
     VueDragResize
@@ -125,16 +89,18 @@ export default {
   data() {
     return {
       name: "Dashboard", //페이지 이름
-      graphs: [], //그래프 설정
+      graphs: [], //그래프 리스트
       listWidth: 0, //컨테이너 가로
       listHeight: 0, //컨테이너 세로
       graphTitle: "", //그래프 제목
       graphType: 0, //그래프 타입
       TCO: null, //제목 변경된 그래프 옵션
       dropdownText: "그래프 선택",
-      itemTests:[
-        {'title': '강의실 별 전력 사용량',
-         'graphType': 1},
+      listContents:[],
+      datum: [],
+      items:[
+        {'title': '센서별',
+         'graphType': 11},
         {'title': '강의실 별 전력 사용량 비교',
          'graphType': 12},
         {'title': '온도',
@@ -142,14 +108,34 @@ export default {
       ]
     };
   },
-  //외부 컨테이너 초기화
+
   mounted() {
+    //외부 컨테이너 초기화
     let listEl = document.getElementById("list");
     this.listWidth = listEl.clientWidth;
     this.listHeight = listEl.clientHeight;
     window.addEventListener("resize", () => {
       this.listWidth = listEl.clientWidth;
       this.listHeight = listEl.clientHeight;
+    });
+
+    // 데이터 받아오기
+    let dt = {key:"model,date,value", search:[{loc2:"00"}]}
+
+    axios.post("/api/elastic/get2", dt)
+    .then((r) => {
+      let datumArray = new Array();
+      r.data.forEach(function(data){
+        let object = new Object();
+        object.group = data.model;
+        object.date = data.date;
+        object.value = data.value;
+        datumArray.push(object);
+      })
+      this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
+    })
+    .catch(function (error){
+      console.log(error.response);
     });
   },
   created() {
@@ -162,14 +148,12 @@ export default {
       this.graphs[index].height = newRect.height;
       this.graphs[index].top = newRect.top;
       this.graphs[index].left = newRect.left;
-      this.graphs[index].option.height = newRect.height;
     },
 
     modalItemClick(title, graphType){
-      console.log(title,graphType);
+      this.dropdownText = title;
       this.graphTitle = title;
       this.graphType = graphType;
-      this.dropdownText = title;
     },
 
     //area graph
@@ -186,7 +170,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: areaGraphData.data
+          datum: this.datum
         })
       }
 
@@ -336,7 +320,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: lineGraphData.data
+          datum: this.datum
         })
       }
 
@@ -389,6 +373,7 @@ export default {
         console.log("잘못된 그래프");
       }
 
+
     },
 
     deleteGraph() {
@@ -407,5 +392,10 @@ export default {
   right: 30px;
   box-shadow: 0 0 2px #aaa;
   background-color: white;
+}
+.graphContainer{
+  position: relative;
+  width: 100%;
+  height: 95%;
 }
 </style>
