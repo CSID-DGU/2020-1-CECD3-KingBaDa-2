@@ -125,7 +125,6 @@ export default{
     "title": "Bubble (time series)",
     "axes": {
       "bottom": {
-        "title": "2019 Annual Sales Figures",
         "scaleType": "time",
         "mapsTo": "date"
       },

@@ -1,23 +1,5 @@
 <template>
   <div>
-
-    <b-dropdown class="mx-1" right text="add">
-      <b-dropdown-item @click="addGraph(1)">area graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(2)">stacked area graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(3)">vertical bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(4)">vertical grouped bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(5)">vertical stacked bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(6)">horizontal bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(7)">horizontal grouped bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(8)">horizontal stacked bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(9)">bubble graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(10)">donut graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(11)">line graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(12)">pie graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(13)">gauge graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(14)">meter graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(15)">radar graph</b-dropdown-item>
-    </b-dropdown>
     <div class="list" id="list">
       <VueDragResize
         id="graphContainer"
@@ -47,23 +29,70 @@
       <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
       </VueDragResize>
     </div>
-    <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
-    <b-dropdown size="lg" text="그래프 목록" class="m-2">
-      <b-dropdown-item-button>Action</b-dropdown-item-button>
-      <b-dropdown-item-button>Another action</b-dropdown-item-button>
-      <b-dropdown-item-button v-b-modal.addGraph>+ 그래프 추가</b-dropdown-item-button>
-    </b-dropdown>
+    <b-container fluid>
+      <b-row>
+        <b-col></b-col>
+        <b-col>
+          <b-dropdown class="mx-1" right text="add">
+            <b-dropdown-item @click="addGraph(1)">area graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(2)">stacked area graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(3)">vertical bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(4)">vertical grouped bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(5)">vertical stacked bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(6)">horizontal bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(7)">horizontal grouped bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(8)">horizontal stacked bar graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(9)">bubble graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(10)">donut graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(11)">line graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(12)">pie graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(13)">gauge graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(14)">meter graph</b-dropdown-item>
+            <b-dropdown-item @click="addGraph(15)">radar graph</b-dropdown-item>
+          </b-dropdown>
+          <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
+        </b-col>
+        <b-col>
+          <b-dropdown size="lg" text="그래프 목록" class="m-2">
+            <b-dropdown-item-button>Action</b-dropdown-item-button>
+            <b-dropdown-item-button>Another action</b-dropdown-item-button>
+            <b-dropdown-item-button v-b-modal.addGraph>+ 그래프 추가</b-dropdown-item-button>
+          </b-dropdown>
+        </b-col>
+      </b-row>
+    </b-container>
     <b-modal id="addGraph" centered title="그래프 추가">
       <b-container fluid>
         <b-row>
           <b-col></b-col>
-          <b-col><b-dropdown text="항목 선택"></b-dropdown></b-col>
+          <b-col>
+            <!-- <b-dropdown :text="dropdownText">
+              <b-dropdown-item @click="modalItemClick(1)">area graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(2)">stacked area graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(3)">vertical bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(4)">vertical grouped bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(5)">vertical stacked bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(6)">horizontal bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(7)">horizontal grouped bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(8)">horizontal stacked bar graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(9)">bubble graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(10)">donut graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(11)">line graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(12)">pie graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(13)">gauge graph</b-dropdown-item>
+              <b-dropdown-item @click="modalItemClick(14)">meter graph</b-dropdown-item>
+            </b-dropdown> -->
+
+            <b-dropdown :text="dropdownText">
+              <b-dropdown-item v-for="(item, index) in itemTests" v-bind:key="index" @click="modalItemClick(item.title, item.graphType)">{{item.title}}</b-dropdown-item>
+            </b-dropdown>
+          </b-col>
           <b-col></b-col>
         </b-row>
       </b-container>
-      <template v-slot:modal-footer="{ok, cancel}">
-        <b-button size="sm" variant="success" @click="ok"> 그래프 생성 </b-button>
-        <b-button size="sm" variant="outline-secondary" @click="cancel"> 삭제 </b-button>
+      <template v-slot:modal-footer="{cancel}">
+        <b-button size="sm" variant="success" @click="addGraph(graphType)"> 그래프 생성 </b-button>
+        <b-button size="sm" variant="outline-secondary" @click="cancel"> 닫기 </b-button>
       </template>
     </b-modal>
   </div>
@@ -87,7 +116,6 @@ import lineGraphData from "@/data/graphType/lineGraphTest.js";
 import pieGraphData from "@/data/graphType/pieGraphTest.js";
 import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
 import meterGraphData from "@/data/graphType/meterGraphTest.js";
-import radarGraphData from "@/data/graphType/radarGraphTest.js";
 
 export default {
   components: {
@@ -99,7 +127,19 @@ export default {
       name: "Dashboard", //페이지 이름
       graphs: [], //그래프 설정
       listWidth: 0, //컨테이너 가로
-      listHeight: 0 //컨테이너 세로
+      listHeight: 0, //컨테이너 세로
+      graphTitle: "", //그래프 제목
+      graphType: 0, //그래프 타입
+      TCO: null, //제목 변경된 그래프 옵션
+      dropdownText: "그래프 선택",
+      itemTests:[
+        {'title': '강의실 별 전력 사용량',
+         'graphType': 1},
+        {'title': '강의실 별 전력 사용량 비교',
+         'graphType': 12},
+        {'title': '온도',
+         'graphType': 11}
+      ]
     };
   },
   //외부 컨테이너 초기화
@@ -116,7 +156,6 @@ export default {
     this.graphs = graphSettings.graphs;
   },
 
-
   methods: {
     resize(newRect, index) {
       this.graphs[index].width = newRect.width;
@@ -126,12 +165,11 @@ export default {
       this.graphs[index].option.height = newRect.height;
     },
 
-    ok(){
-
-    },
-
-    cancel(){
-
+    modalItemClick(title, graphType){
+      console.log(title,graphType);
+      this.graphTitle = title;
+      this.graphType = graphType;
+      this.dropdownText = title;
     },
 
     //area graph
@@ -139,196 +177,211 @@ export default {
 
       //area graph
       if(graphType == 1){
+        this.TCO = areaGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: areaGraphData.options,
+          option: this.TCO,
           datum: areaGraphData.data
         })
       }
 
       //stacked area graph
       if(graphType == 2){
+        this.TCO = stackedAreaGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: stackedAreaGraphData.options,
+          option: this.TCO,
           datum: stackedAreaGraphData.data
         })
       }
 
       // vertical bar graph
       else if(graphType == 3){
+        this.TCO = verticalBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: verticalBarGraphData.options,
+          option: this.TCO,
           datum: verticalBarGraphData.data
         })
       }
 
       // vertical grouped bar graph
       else if(graphType == 4){
+        this.TCO = verticalGroupedBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: verticalGroupedBarGraphData.options,
+          option: this.TCO,
           datum: verticalGroupedBarGraphData.data
         })
       }
 
       // vertical stacked bar graph
       else if(graphType == 5){
+        this.TCO = verticalStackedBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: verticalStackedBarGraphData.options,
+          option: this.TCO,
           datum: verticalStackedBarGraphData.data
         })
       }
 
       // horizontal bar graph
       else if(graphType == 6){
+        this.TCO = horizontalBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: horizontalBarGraphData.options,
+          option: this.TCO,
           datum: horizontalBarGraphData.data
         })
       }
 
       // horizontal grouped bar graph
       else if(graphType == 7){
+        this.TCO = horizontalGroupedBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: horizontalGroupedBarGraphData.options,
+          option: this.TCO,
           datum: horizontalGroupedBarGraphData.data
         })
       }
 
       // horizontal stacked bar graph
       else if(graphType == 8){
+        this.TCO = horizontalStackedBarGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: horizontalStackedBarGraphData.options,
+          option: this.TCO,
           datum: horizontalStackedBarGraphData.data
         })
       }
 
       // bubble graph
       else if(graphType == 9){
+        this.TCO = bubbleGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: bubbleGraphData.options,
+          option: this.TCO,
           datum: bubbleGraphData.data
         })
       }
 
       // donut graph
       else if(graphType == 10){
+        this.TCO = donutGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: donutGraphData.options,
+          option: this.TCO,
           datum: donutGraphData.data
         })
       }
 
       // line graph
       else if(graphType == 11){
+        this.TCO = lineGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: lineGraphData.options,
+          option: this.TCO,
           datum: lineGraphData.data
         })
       }
 
       // pie graph
       else if(graphType == 12){
+        this.TCO = pieGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: pieGraphData.options,
+          option: this.TCO,
           datum: pieGraphData.data
         })
       }
 
       // gauge graph
       else if(graphType == 13){
+        this.TCO = gaugeGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: gaugeGraphData.options,
+          option: this.TCO,
           datum: gaugeGraphData.data
         })
       }
 
       // meter graph
       else if(graphType == 14){
+        this.TCO = meterGraphData.options;
+        this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-          option: meterGraphData.options,
+          option: this.TCO,
           datum: meterGraphData.data
-        })
-      }
-
-      // radar graph
-      else if(graphType == 15){
-        this.graphs.push({
-          width: 500,
-          height: 400,
-          top: Math.floor(Math.random() * 100) + 50,
-          left: Math.floor(Math.random() * 100) + 30,
-          graphType: graphType,
-          option: radarGraphData.options,
-          datum: radarGraphData.data
         })
       }
 

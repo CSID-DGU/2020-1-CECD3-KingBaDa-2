@@ -55,7 +55,6 @@ export default{
     "title": "Area (time series - natural curve)",
     "axes": {
       "bottom": {
-        "title": "2019 Annual Sales Figures",
         "mapsTo": "date",
         "scaleType": "time"
       },
