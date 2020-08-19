@@ -18,13 +18,16 @@
                 <div @click="slimize" :class="sizeButton">{{foldingAction}}</div>
               </b-nav-item>
               <div>
-                <b-avatar variant="primary" src="" size="4rem"></b-avatar>
+                <b-avatar variant="primary" src size="4rem"></b-avatar>
               </div>
               <br />
               <div>{{userName}}</div>
               <div>{{userDomain}}</div>
               <b-nav-item>
-                <b-button @click="logout" variant="info" class="logoutBtn"><img src="../assets/logout.png" /><div>로그아웃</div></b-button>
+                <b-button @click="logout" variant="info" class="logoutBtn">
+                  <img src="../assets/logout.png" />
+                  <div>로그아웃</div>
+                </b-button>
               </b-nav-item>
             </b-nav>
           </nav>
@@ -170,10 +173,10 @@ export default {
 };
 </script>
 <style scope>
-.logoutBtn{
+.logoutBtn {
   background-color: transparent;
   border-color: transparent;
-  font-size: 18px;
+  font-size: 15px;
   color: white;
   font-weight: bold;
 }
@@ -195,7 +198,7 @@ export default {
 }
 .navItems {
   position: relative;
-  top: 100px;
+  top: 50px;
 }
 .listItem {
   display: flex;

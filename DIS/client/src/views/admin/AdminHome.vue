@@ -24,7 +24,7 @@
             </b-form-select>
             <div>
               항목 이름 :
-              <b-form-input placeholder="추가 할 도메인 이름 입력" class="ml-3" v-model="inputVal2"></b-form-input>
+              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputVal2"></b-form-input>
             </div>
           </b-form>
           <div>
@@ -106,43 +106,50 @@
         </div>
       </b-tab>
       <b-tab title="도메인, 직종 관리">
-        <div class="w-50 mx-auto">
-          <b-list-group>
-            <b-list-group-item>
-              <strong>도메인</strong>
-            </b-list-group-item>
-            <b-list-group-item
-              v-for="domain_item in options.domain"
-              :key="domain_item.value"
-            >{{ domain_item.value }}</b-list-group-item>
-          </b-list-group>
-          <b-form class="my-5" inline>
-            <b-form-input v-model="inputVal1"></b-form-input>
-            <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-            <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
-          </b-form>
-          <b-form class="w-50 my-2" inline>
-            <b-form-select v-model="selected.domain" :options="options.domain">
-              <template v-slot:first>
-                <b-form-select-option value="null">도메인 선택</b-form-select-option>
-              </template>
-            </b-form-select>
-          </b-form>
-          <b-list-group>
-            <b-list-group-item>
-              <strong>직종</strong>
-            </b-list-group-item>
-            <b-list-group-item v-for="jobs in job" :key="jobs.type">
-              <b-badge>{{ jobs.domain }}</b-badge>
-              {{ jobs.type }}
-            </b-list-group-item>
-          </b-list-group>
-          <b-form class="my-5" inline>
-            <b-form-input v-model="inputVal3"></b-form-input>
-            <b-button class="mx-2" @click="addJob">직종 추가</b-button>
-            <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
-          </b-form>
+        <div class="w-75 mt-5 mx-auto">
+          <b-card-group deck>
+            <b-card title="도메인 관리">
+              <b-list-group>
+                <b-list-group-item>
+                  <strong>도메인</strong>
+                </b-list-group-item>
+                <b-list-group-item
+                  v-for="domain_item in options.domain"
+                  :key="domain_item.value"
+                >{{ domain_item.value }}</b-list-group-item>
+              </b-list-group>
+              <b-form class="my-5" inline>
+                <b-form-input v-model="inputVal1"></b-form-input>
+                <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
+                <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+              </b-form>
+            </b-card>
+            <b-card title="직종 관리">
+              <b-list-group>
+                <b-list-group-item>
+                  <strong>직종</strong>
+                </b-list-group-item>
+                <b-list-group-item v-for="jobs in job" :key="jobs.type">
+                  <b-badge>{{ jobs.domain }}</b-badge>
+                  {{ jobs.type }}
+                </b-list-group-item>
+              </b-list-group>
+              <b-form class="my-5" inline>
+                <b-form-select class="mr-5" v-model="selected.domain" :options="options.domain">
+                  <template v-slot:first>
+                    <b-form-select-option value="null">도메인 선택</b-form-select-option>
+                  </template>
+                </b-form-select>
+                <b-form-input v-model="inputVal3"></b-form-input>
+                <b-button class="mx-2" @click="addJob">직종 추가</b-button>
+                <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
+              </b-form>
+            </b-card>
+          </b-card-group>
         </div>
+      </b-tab>
+      <b-tab title="요청 사항">
+        <NoticeComp />
       </b-tab>
       <!-- <b-tab title="모달테스트"></b-tab> -->
     </b-tabs>
@@ -184,8 +191,13 @@
 </template>
 
 <script>
+import NoticeComp from "@/components/NoticeComp.vue";
+
 export default {
   name: "AdminHome",
+  components: {
+    NoticeComp
+  },
   data() {
     return {
       fields: [
@@ -223,14 +235,17 @@ export default {
           { value: "헬스케어", text: "헬스케어" }
         ],
         dataset: [
-          { value: "온도", text: "온도" },
-          { value: "습도", text: "습도" },
-          { value: "미세먼지", text: "미세먼지" }
+          { value: "testbed", text: "testbed" },
+          { value: "6114", text: "6114" },
+          { value: "2113", text: "2113" },
+          { value: "3321", text: "3321" },
+          { value: "5146", text: "5146" }
         ],
         value: [
           { value: "온도", text: "온도" },
           { value: "습도", text: "습도" },
-          { value: "미세먼지", text: "미세먼지" }
+          { value: "미세먼지", text: "미세먼지" },
+          { value: "전력량", text: "전력량" }
         ],
         graph: [
           { value: "line", text: "line" },
@@ -272,7 +287,7 @@ export default {
           domain: "전력세이빙",
           name: "강의실별 전력량 비교",
           Dataset: ["6114", "2113", "3321", "5146"],
-          value: "전류",
+          value: "전력량",
           graph: "pie",
           range: "none"
         }
@@ -318,11 +333,13 @@ export default {
       this.items.pop();
     },
     addJob() {
-      if (this.inputVal3 != "") {
+      if (this.inputVal3 != "" && this.selected.domain != null) {
         this.job.push({
           domain: this.selected.domain,
           type: this.inputVal3
         });
+      } else if (this.selected.domain == null) {
+        alert("도메인을 선택하세요!");
       } else {
         alert("직종을 입력하세요!");
       }
