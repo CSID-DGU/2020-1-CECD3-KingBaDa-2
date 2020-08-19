@@ -226,7 +226,8 @@ export default {
         value: [],
         graph: null,
         row: [],
-        range: null
+        range: null,
+        date: { start: null, end: null }
       },
 
       options: {
@@ -306,9 +307,7 @@ export default {
       }
     },
     deleteDomain() {
-      if (this.options.domain.pop() == null) {
-        alert("삭제할 도메인이 없습니다!");
-      }
+      this.options.domain.pop();
     },
     addItem() {
       if (this.selected.domain == null) alert("도메인을 선택해주세요!");
@@ -340,9 +339,12 @@ export default {
         });
       } else if (this.selected.domain == null) {
         alert("도메인을 선택하세요!");
+      } else if (this.selected.domain == "null") {
+        alert("도메인을 선택하세요!");
       } else {
         alert("직종을 입력하세요!");
       }
+      console.log(this.selected.domain);
     },
     deleteJob() {
       this.job.pop();
