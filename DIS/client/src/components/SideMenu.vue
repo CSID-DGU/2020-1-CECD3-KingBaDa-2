@@ -18,13 +18,16 @@
                 <div @click="slimize" :class="sizeButton">{{foldingAction}}</div>
               </b-nav-item>
               <div>
-                <b-avatar variant="primary" src="" size="4rem"></b-avatar>
+                <b-avatar variant="primary" src size="4rem"></b-avatar>
               </div>
               <br />
               <div>{{userName}}</div>
               <div>{{userDomain}}</div>
               <b-nav-item>
-                <b-button @click="logout" variant="info" class="logoutBtn"><img src="../assets/logout.png" /><div>로그아웃</div></b-button>
+                <b-button @click="logout" variant="info" class="logoutBtn">
+                  <img src="../assets/logout.png" />
+                  <div>로그아웃</div>
+                </b-button>
               </b-nav-item>
             </b-nav>
           </nav>
@@ -99,7 +102,7 @@
       </div>
     </b-sidebar>
     <div>
-        <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
@@ -119,23 +122,23 @@ export default {
       userDomain: "시설관리팀"
     };
   },
-  created(){
-    this.$EventBus.$on('Dashboard', () => {
-      document.getElementById('home').classList.remove("selected");
-      document.getElementById('notice').classList.remove("selected");
-      document.getElementById('dashboard').classList.add("selected");
-      document.getElementById('control').classList.remove("selected");
-      document.getElementById('data').classList.remove("selected");
-      document.getElementById('setting').classList.remove("selected");
+  created() {
+    this.$EventBus.$on("Dashboard", () => {
+      document.getElementById("home").classList.remove("selected");
+      document.getElementById("notice").classList.remove("selected");
+      document.getElementById("dashboard").classList.add("selected");
+      document.getElementById("control").classList.remove("selected");
+      document.getElementById("data").classList.remove("selected");
+      document.getElementById("setting").classList.remove("selected");
     }),
-    this.$EventBus.$on('Notice', () => {
-      document.getElementById('home').classList.remove("selected");
-      document.getElementById('notice').classList.add("selected");
-      document.getElementById('dashboard').classList.remove("selected");
-      document.getElementById('control').classList.remove("selected");
-      document.getElementById('data').classList.remove("selected");
-      document.getElementById('setting').classList.remove("selected");
-    })
+      this.$EventBus.$on("Notice", () => {
+        document.getElementById("home").classList.remove("selected");
+        document.getElementById("notice").classList.add("selected");
+        document.getElementById("dashboard").classList.remove("selected");
+        document.getElementById("control").classList.remove("selected");
+        document.getElementById("data").classList.remove("selected");
+        document.getElementById("setting").classList.remove("selected");
+      });
   },
   methods: {
     slimize() {
@@ -170,10 +173,10 @@ export default {
 };
 </script>
 <style scope>
-.logoutBtn{
+.logoutBtn {
   background-color: transparent;
   border-color: transparent;
-  font-size: 18px;
+  font-size: 15px;
   color: white;
   font-weight: bold;
 }
@@ -195,7 +198,7 @@ export default {
 }
 .navItems {
   position: relative;
-  top: 100px;
+  top: 50px;
 }
 .listItem {
   display: flex;
