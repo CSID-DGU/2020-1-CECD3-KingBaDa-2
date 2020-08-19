@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const http = require('http');
 const elasticsearch = require('elasticsearch');
-/*[{id:123},{password:123}]
+/*
+[{id:123},{password:123}]
 검색조건에 해당하는 모든 결과를 json으로 리턴
 */ 
 router.post('/get', function(req, res, next) {
