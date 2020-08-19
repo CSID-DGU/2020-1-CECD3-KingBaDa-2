@@ -6,6 +6,7 @@ const moment = require('moment');
 
 router.use('/sign', require('./sign'));
 router.use('/elastic', require('./elastic'));
+router.use('/admin', require('./admin'));
 
 router.all('*', require('./notFound'));
 
