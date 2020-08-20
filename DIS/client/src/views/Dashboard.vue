@@ -34,17 +34,25 @@
     <b-container fluid>
       <b-row>
         <b-col></b-col>
+        <b-col></b-col>
         <b-col>
-          <b-button class="deleteButton" @click="deleteGraph()">delete</b-button>
-        </b-col>
-        <b-col>
-          <b-dropdown size="lg" text="그래프 목록" class="m-2">
-            <div v-for="(graph, index) in graphs" v-bind:key="index">
-              <b-dropdown-item-button>{{graph.option.title}}</b-dropdown-item-button><b-button></b-button>
-            </div>
-          <hr/>
-            <b-dropdown-item-button v-b-modal.addGraph>+ 그래프 추가</b-dropdown-item-button>
-          </b-dropdown>
+          <b-button v-b-toggle.sidebar-right size="lg">그래프 목록</b-button>
+          <b-sidebar id="sidebar-right" title="그래프 목록" right shadow>
+            <b-list-group>
+              <b-list-group-item v-for="(graph, index) in graphs" v-bind:key="index" class="graphList">
+                <b-row>
+                  <b-col>
+                    <div class="graphList">
+                      {{graph.option.title}}
+                    </div>
+                  </b-col>
+                  <b-col cols="3">
+                    <b-button variant="light" class="deleteBtn" @click="deleteGraph(index)"><img src="../assets/bin.png"></b-button>
+                  </b-col>
+                </b-list-group-item>
+              <b-list-group-item button v-b-modal.addGraph variant="info" style="font-weight:bold"> + 그래프 추가 </b-list-group-item>
+            </b-list-group>
+          </b-sidebar>
         </b-col>
       </b-row>
     </b-container>
@@ -376,8 +384,8 @@ export default {
 
     },
 
-    deleteGraph() {
-      this.graphs = [];
+    deleteGraph(index) {
+      this.graphs.splice(index, 1);
     }
 
   }
@@ -386,7 +394,7 @@ export default {
 <style scope>
 .list {
   position: absolute;
-  top: 60px;
+  top: 50px;
   bottom: 30px;
   left: 160px;
   right: 30px;
@@ -398,4 +406,16 @@ export default {
   width: 100%;
   height: 95%;
 }
+.graphList{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  font-size: 15px;
+}
+.deleteBtn{
+  background-color: transparent;
+  border-color: transparent;
+}
+
 </style>
