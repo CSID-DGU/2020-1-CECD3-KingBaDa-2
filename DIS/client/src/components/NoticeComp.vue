@@ -21,7 +21,7 @@
         @row-clicked="rowClick"
       ></b-table>
       <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="center"></b-pagination>
-      <b-button @click="writeContent">글쓰기</b-button>
+      <!-- <b-button @click="writeContent">글쓰기</b-button> -->
     </b-card>
   </div>
 </template>
@@ -30,7 +30,7 @@
 import data from "@/data/index.js";
 
 export default {
-  name: "Notice",
+  name: "NoticeComp",
   data() {
     // 정렬 : https://blog.naver.com/haskim0716n/221681695401
     let contentItems = data.Content.sort((a, b) => {
@@ -71,6 +71,7 @@ export default {
       ],
       items: items,
       selected: "",
+      text: "",
       options: [
         { value: "a", text: "제목" },
         { value: "b", text: "글쓴이" },
@@ -79,11 +80,7 @@ export default {
     };
   },
   methods: {
-    // rowClick(item, index, e) {
-    //   this.$router.push({
-    //     path: `/board/detail/${item.content_id}`
-    //   });
-    // },
+    rowClick() {}
     // writeContent() {
     //   this.$router.push({
     //     path: `/board/create`
