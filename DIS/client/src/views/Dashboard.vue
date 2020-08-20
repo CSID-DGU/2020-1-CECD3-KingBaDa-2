@@ -49,6 +49,7 @@
                   <b-col cols="3">
                     <b-button variant="light" class="deleteBtn" @click="deleteGraph(index)"><img src="../assets/bin.png"></b-button>
                   </b-col>
+                </b-row>
                 </b-list-group-item>
               <b-list-group-item button v-b-modal.addGraph variant="info" style="font-weight:bold"> + 그래프 추가 </b-list-group-item>
             </b-list-group>
@@ -72,7 +73,7 @@
 import VueDragResize from "vue-drag-resize";
 import graphSettings from "@/data/graphSettings.js";
 
-import areaGraphData from "@/data/graphType/areaGraphTest.js";
+//import areaGraphData from "@/data/graphType/areaGraphTest.js";
 import stackedAreaGraphData from "@/data/graphType/stackedAreaGraphTest.js";
 import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
 import verticalGroupedBarGraphData from "@/data/graphType/verticalGroupedBarGraphTest.js"
@@ -82,7 +83,7 @@ import horizontalGroupedBarGraphData from "@/data/graphType/horizontalGroupedBar
 import horizontalStackedBarGraphData from "@/data/graphType/horizontalStackedBarGraphTest.js";
 import bubbleGraphData from "@/data/graphType/bubbleGraphTest.js";
 import donutGraphData from "@/data/graphType/donutGraphTest.js";
-import lineGraphData from "@/data/graphType/lineGraphTest.js";
+//import lineGraphData from "@/data/graphType/lineGraphTest.js";
 import pieGraphData from "@/data/graphType/pieGraphTest.js";
 import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
 import meterGraphData from "@/data/graphType/meterGraphTest.js";
@@ -110,9 +111,9 @@ export default {
         {'title': '센서별',
          'graphType': 11},
         {'title': '강의실 별 전력 사용량 비교',
-         'graphType': 12},
+         'graphType': 1},
         {'title': '온도',
-         'graphType': 11}
+         'graphType': 1}
       ]
     };
   },
@@ -145,6 +146,7 @@ export default {
     .catch(function (error){
       console.log(error.response);
     });
+
   },
   created() {
     this.graphs = graphSettings.graphs;
@@ -169,8 +171,21 @@ export default {
 
       //area graph
       if(graphType == 1){
-        this.TCO = areaGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO =  {
+          "title": this.graphTitle,
+          "axes": {
+            "bottom": {
+              "mapsTo": "date",
+              "scaleType": "time"
+            },
+            "left": {
+              "mapsTo": "value",
+              "scaleType": "linear"
+            }
+          },
+          "curve": "curveNatural",
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -183,9 +198,22 @@ export default {
       }
 
       //stacked area graph
-      if(graphType == 2){
-        this.TCO = stackedAreaGraphData.options;
-        this.TCO.title = this.graphTitle;
+      else if(graphType == 2){
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "stacked": true,
+              "mapsTo": "value"
+            },
+            "bottom": {
+              "scaleType": "time",
+              "mapsTo": "date"
+            }
+          },
+          "curve": "curveMonotoneX",
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -199,8 +227,19 @@ export default {
 
       // vertical bar graph
       else if(graphType == 3){
-        this.TCO = verticalBarGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "mapsTo": "value"
+            },
+            "bottom": {
+              "mapsTo": "group",
+              "scaleType": "labels"
+            }
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -214,7 +253,19 @@ export default {
 
       // vertical grouped bar graph
       else if(graphType == 4){
-        this.TCO = verticalGroupedBarGraphData.options;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "mapsTo": "value"
+            },
+            "bottom": {
+              "scaleType": "labels",
+              "mapsTo": "key"
+            }
+          },
+          "height": "400"
+        };
         this.TCO.title = this.graphTitle;
         this.graphs.push({
           width: 500,
@@ -229,8 +280,20 @@ export default {
 
       // vertical stacked bar graph
       else if(graphType == 5){
-        this.TCO = verticalStackedBarGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "mapsTo": "value",
+              "stacked": true
+            },
+            "bottom": {
+              "mapsTo": "key",
+              "scaleType": "labels"
+            }
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -244,8 +307,19 @@ export default {
 
       // horizontal bar graph
       else if(graphType == 6){
-        this.TCO = horizontalBarGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "mapsTo": "group",
+              "scaleType": "labels"
+            },
+            "bottom": {
+              "mapsTo": "value"
+            }
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -259,8 +333,19 @@ export default {
 
       // horizontal grouped bar graph
       else if(graphType == 7){
-        this.TCO = horizontalGroupedBarGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "scaleType": "labels",
+              "mapsTo": "key"
+            },
+            "bottom": {
+              "mapsTo": "value"
+            }
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -274,8 +359,20 @@ export default {
 
       // horizontal stacked bar graph
       else if(graphType == 8){
-        this.TCO = horizontalStackedBarGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "left": {
+              "scaleType": "labels",
+              "mapsTo": "key"
+            },
+            "bottom": {
+              "stacked": true,
+              "mapsTo": "value"
+            }
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -289,8 +386,22 @@ export default {
 
       // bubble graph
       else if(graphType == 9){
-        this.TCO = bubbleGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "bottom": {
+              "scaleType": "time",
+              "mapsTo": "date"
+            },
+            "left": {
+              "mapsTo": "value"
+            }
+          },
+          "bubble": {
+            "radiusMapsTo": "surplus"
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -304,8 +415,20 @@ export default {
 
       // donut graph
       else if(graphType == 10){
-        this.TCO = donutGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "resizable": true,
+          "legend": {
+            "alignment": "center"
+          },
+          "donut": {
+            "center": {
+              "label": "Browsers"
+            },
+            "alignment": "center"
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -319,8 +442,21 @@ export default {
 
       // line graph
       else if(graphType == 11){
-        this.TCO = lineGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "axes": {
+            "bottom": {
+              "mapsTo": "date",
+              "scaleType": "time"
+            },
+            "left": {
+              "mapsTo": "value",
+              "scaleType": "linear"
+            }
+          },
+          "curve": "curveMonotoneX",
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -334,8 +470,17 @@ export default {
 
       // pie graph
       else if(graphType == 12){
-        this.TCO = pieGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "resizable": true,
+          "legend": {
+            "alignment": "center"
+          },
+          "pie": {
+            "alignment": "center"
+          },
+          "height": "400"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -349,8 +494,16 @@ export default {
 
       // gauge graph
       else if(graphType == 13){
-        this.TCO = gaugeGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "resizable": true,
+          "height": "250",
+          "width": "100%",
+          "gauge": {
+            "type": "semi",
+            "status": "danger"
+          }
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -364,8 +517,38 @@ export default {
 
       // meter graph
       else if(graphType == 14){
-        this.TCO = meterGraphData.options;
-        this.TCO.title = this.graphTitle;
+        this.TCO = {
+          "title": this.graphTitle,
+          "meter": {
+            "peak": 80,
+            "status": {
+              "ranges": [
+                {
+                  "range": [
+                    0,
+                    50
+                  ],
+                  "status": "success"
+                },
+                {
+                  "range": [
+                    50,
+                    70
+                  ],
+                  "status": "warning"
+                },
+                {
+                  "range": [
+                    70,
+                    100
+                  ],
+                  "status": "danger"
+                }
+              ]
+            }
+          },
+          "height": "100"
+        };
         this.graphs.push({
           width: 500,
           height: 400,
@@ -380,8 +563,6 @@ export default {
       else{
         console.log("잘못된 그래프");
       }
-
-
     },
 
     deleteGraph(index) {
