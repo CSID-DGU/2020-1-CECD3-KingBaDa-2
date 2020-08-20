@@ -71,6 +71,7 @@ export default {
       ],
       items: items,
       selected: "",
+      text: "",
       options: [
         { value: "a", text: "제목" },
         { value: "b", text: "글쓴이" },
@@ -79,11 +80,7 @@ export default {
     };
   },
   methods: {
-    // rowClick(item, index, e) {
-    //   this.$router.push({
-    //     path: `/board/detail/${item.content_id}`
-    //   });
-    // },
+    rowClick() {}
     // writeContent() {
     //   this.$router.push({
     //     path: `/board/create`
