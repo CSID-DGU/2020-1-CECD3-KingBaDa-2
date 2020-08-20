@@ -24,7 +24,7 @@
             </b-form-select>
             <div>
               항목 이름 :
-              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputVal2"></b-form-input>
+              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputItem"></b-form-input>
             </div>
           </b-form>
           <div>
@@ -42,7 +42,17 @@
                 </b-card>
 
                 <b-card title="value 설정">
-                  <b-button v-b-modal.modal-2 class="mx-2">value 설정</b-button>
+                  <b-button v-b-modal.modal-2 class="mx-2 mb-3">value 설정</b-button>
+                  <b-form-radio-group
+                    id="valTypegroup"
+                    v-model="selected.valType"
+                    name="radio-valType"
+                  >
+                    <b-form-radio value="sum">누적값</b-form-radio>
+                    <b-form-radio value="avg">평균값</b-form-radio>
+                    <b-form-radio value="max">최대값</b-form-radio>
+                    <b-form-radio value="min">최소값</b-form-radio>
+                  </b-form-radio-group>
                   <template v-slot:footer>
                     선택된 Value :
                     <span
@@ -52,23 +62,14 @@
                   </template>
                 </b-card>
                 <b-card title="그래프 설정">
-                  <b-form-select v-model="selected.graph" :options="options.graph">
+                  <b-button v-b-modal.modal-3 class="mx-2 mb-3">그래프 표시 범위 설정</b-button>
+
+                  <b-form-select class="my-2" v-model="selected.graph" :options="options.graph">
                     <template v-slot:first>
                       <b-form-select-option value="null">그래프 선택</b-form-select-option>
                     </template>
                   </b-form-select>
-                  <b-form-group label="그래프 표시 범위">
-                    <b-form-radio-group
-                      id="radio-group"
-                      v-model="selected.range"
-                      name="radio-range"
-                    >
-                      <b-form-radio value="year">연간</b-form-radio>
-                      <b-form-radio value="month">월간</b-form-radio>
-                      <b-form-radio value="day">일간</b-form-radio>
-                      <b-form-radio value="none">범위 없음</b-form-radio>
-                    </b-form-radio-group>
-                  </b-form-group>
+
                   <b-form-checkbox
                     id="defaultCheck"
                     v-model="selected.status"
@@ -119,7 +120,7 @@
                 >{{ domain_item.value }}</b-list-group-item>
               </b-list-group>
               <b-form class="my-5" inline>
-                <b-form-input v-model="inputVal1"></b-form-input>
+                <b-form-input v-model="inputDomain"></b-form-input>
                 <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
                 <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
               </b-form>
@@ -140,7 +141,7 @@
                     <b-form-select-option value="null">도메인 선택</b-form-select-option>
                   </template>
                 </b-form-select>
-                <b-form-input v-model="inputVal3"></b-form-input>
+                <b-form-input v-model="inputJob"></b-form-input>
                 <b-button class="mx-2" @click="addJob">직종 추가</b-button>
                 <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
               </b-form>
@@ -187,12 +188,64 @@
       </b-list-group>
       <b-button class="mx-2" @click="resetValue">모두 삭제</b-button>
     </b-modal>
+    <b-modal id="modal-3" title="range 설정" @cancel="resetValue">
+      <b-form-group>
+        <b-form-radio-group id="rangegroup" v-model="selected.range" name="radio-range">
+          <b-form-radio value="year">연간</b-form-radio>
+          <b-form-radio value="month">월간</b-form-radio>
+          <b-form-radio value="day">일간</b-form-radio>
+          <b-form-radio value="oneDay">하루</b-form-radio>
+        </b-form-radio-group>
+      </b-form-group>
+      <div v-if="selected.range == 'year'">
+        <label for="sb-wrap">시작 날짜</label>
+        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+
+        <label for="sb-wrap">끝 날짜</label>
+        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+      </div>
+      <div v-if="selected.range == 'month'">
+        <label for="sb-wrap">시작 날짜</label>
+        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+        <b-form-spinbutton class="mb-3" id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+
+        <label for="sb-wrap">끝 날짜</label>
+        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+        <b-form-spinbutton id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+      </div>
+      <div v-if="selected.range == 'day'">
+        <label for="datepicker1">시작 날짜</label>
+        <b-form-datepicker
+          class="my-3"
+          id="datepicker1"
+          placeholder="시작날짜 선택"
+          local="en"
+          dark="true"
+        ></b-form-datepicker>
+
+        <label for="datepicker2">끝 날짜</label>
+        <b-form-datepicker
+          class="my-3"
+          dark="true"
+          id="datepicker2"
+          placeholder="끝날짜 선택"
+          local="en"
+        ></b-form-datepicker>
+      </div>
+      <div v-if="selected.range == 'oneDay'">
+        <div>
+          <label for="datepicker3">표시 날짜</label>
+          <b-form-datepicker class="my-3" id="datepicker3" placeholder="표시날짜 선택" local="en"></b-form-datepicker>
+        </div>
+      </div>
+      <div v-else></div>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import NoticeComp from "@/components/NoticeComp.vue";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "AdminHome",
@@ -206,14 +259,15 @@ export default {
         "name",
         "Dataset",
         "value",
+        "valType",
         "graph",
         "range",
         "status"
       ],
       admin_id: "admin1",
-      inputVal1: "",
-      inputVal2: "",
-      inputVal3: "",
+      inputDomain: "",
+      inputItem: "",
+      inputJob: "",
       dataset: null,
       value: null,
       row: [],
@@ -229,7 +283,8 @@ export default {
         graph: null,
         row: [],
         range: null,
-        date: { start: null, end: null }
+        date: { start: null, end: null },
+        valType: "sum"
       },
 
       options: {
@@ -264,6 +319,7 @@ export default {
           name: "일간 온습도 비교",
           Dataset: "testbed",
           value: ["온도", "습도"],
+          valType: "sum",
           graph: "scatter",
           range: "day",
           status: "default"
@@ -273,6 +329,7 @@ export default {
           name: "월간 습도 비교",
           Dataset: "testbed",
           value: "습도",
+          valType: "avg",
           graph: "line",
           range: "month",
           status: "default"
@@ -282,6 +339,7 @@ export default {
           name: "월간 전력량 비교",
           Dataset: "testbed",
           value: "전력량",
+          valType: "sum",
           graph: "line",
           range: "month",
           status: "default"
@@ -291,56 +349,98 @@ export default {
           name: "강의실별 전력량 비교",
           Dataset: ["6114", "2113", "3321", "5146"],
           value: "전력량",
+          valType: "sum",
           graph: "pie",
           range: "none"
         }
       ]
     };
   },
-  mounted(){
+  mounted() {
     this.getDomain();
   },
   methods: {
     getDomain() {
-      axios.get("/api/admin/domain?admin_id="+this.admin_id)
-        .then((r) => {
-        // console.log(r.data);
-      })
-      .catch(function (error){
-        console.log(error.response);
-      });
-    },
-    addDomain() {
-      if (this.inputVal1 != "") {
-        axios.post("/api/admin/domain", [ {admin_id:this.admin_id}, {user_domain:this.inputVal1} ])
-          .then((r) => {
-        // console.log("r: ", r);
-          console.log(r);
+      let tempArr;
+      axios
+        .get("/api/admin/domain?admin_id=" + this.admin_id)
+        .then(r => {
+          tempArr = r.data;
+          for (var n in tempArr) {
+            this.options.domain.push({
+              domain: tempArr[n].user_domain,
+              type: tempArr[n].user_domain
+            });
+          }
         })
-        .catch(function (error){
+        .catch(function(error) {
           console.log(error.response);
         });
-        this.getDomain();
-        // this.options.domain.push({
-        //   value: this.inputVal1,
-        //   text: this.inputVal1
-        // });
+    },
+    addDomain() {
+      if (this.inputDomain != "") {
+        axios
+          .post("/api/admin/domain", [
+            { admin_id: this.admin_id },
+            { user_domain: this.inputDomain }
+          ])
+          .then(r => {
+            console.log(r);
+            this.options.domain.push({
+              value: this.inputDomain,
+              text: this.inputDomain
+            });
+          })
+          .catch(function(error) {
+            console.log(error.response);
+          });
       } else {
         alert("도메인을 입력하세요!");
       }
     },
     deleteDomain() {
-      this.options.domain.pop();
+      axios
+        .delete("/api/admin/domain", {
+          data: {
+            admin_id: this.admin_id,
+            user_domain: this.options.domain[this.options.domain - 1].value
+          },
+          withCredentials: true
+        })
+        .then(res => {
+          console.log(res.data);
+          this.options.domain.pop();
+        })
+        .catch(function(error) {
+          console.log(error.response);
+        });
+    },
+    getItem() {
+      let tempArr;
+      axios
+        .get("/api/admin/domain?admin_id=" + this.admin_id)
+        .then(r => {
+          tempArr = r.data;
+          for (var n in tempArr) {
+            this.options.domain.push({
+              domain: tempArr[n].user_domain,
+              type: tempArr[n].user_domain
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response);
+        });
     },
     addItem() {
       if (this.selected.domain == null) alert("도메인을 선택해주세요!");
-      else if (this.inputVal2 == "") alert("항목 이름을 입력해주세요!");
+      else if (this.inputItem == "") alert("항목 이름을 입력해주세요!");
       else if (this.selected.graph == null)
         alert("그래프 종류를 선택해주세요!");
       else {
         this.items.push({
           domain: this.selected.domain,
-          name: this.inputVal2,
+          name: this.inputItem,
           Dataset: this.selected.dataset,
           value: this.selected.value,
           graph: this.selected.graph,
@@ -355,10 +455,10 @@ export default {
       this.items.pop();
     },
     addJob() {
-      if (this.inputVal3 != "" && this.selected.domain != null) {
+      if (this.inputJob != "" && this.selected.domain != null) {
         this.job.push({
           domain: this.selected.domain,
-          type: this.inputVal3
+          type: this.inputJob
         });
       } else if (this.selected.domain == null) {
         alert("도메인을 선택하세요!");
@@ -384,14 +484,6 @@ export default {
     resetValue() {
       this.selected.value = [];
     },
-    // onRowSelected(items) {
-    //   this.options.forEach(function(element, index) {
-    //     console.log(index);
-    //     if (element.name == items.name) {
-    //       this.options.splice(index, 1);
-    //     }
-    //   });
-    // },
     saveSelected() {
       this.selected.row = this.row;
       alert("저장되었습니다!");
@@ -414,6 +506,14 @@ export default {
     logout() {
       this.$router.push("/");
     }
+    // onRowSelected(items) {
+    //   this.options.forEach(function(element, index) {
+    //     console.log(index);
+    //     if (element.name == items.name) {
+    //       this.options.splice(index, 1);
+    //     }
+    //   });
+    // },
   }
 };
 </script>
