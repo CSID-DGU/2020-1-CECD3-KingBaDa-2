@@ -1,25 +1,5 @@
 <template>
   <div>
-<<<<<<< HEAD
-=======
-    <b-dropdown class="mx-1" right text="add">
-      <b-dropdown-item @click="addGraph(1)">area graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(2)">stacked area graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(3)">vertical bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(4)">vertical grouped bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(5)">vertical stacked bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(6)">horizontal bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(7)">horizontal grouped bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(8)">horizontal stacked bar graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(9)">bubble graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(10)">donut graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(11)">line graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(12)">pie graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(13)">gauge graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(14)">meter graph</b-dropdown-item>
-      <b-dropdown-item @click="addGraph(15)">radar graph</b-dropdown-item>
-    </b-dropdown>
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
     <div class="list" id="list">
       <VueDragResize
         id="graphContainer"
@@ -35,14 +15,13 @@
         v-on:resizing="resize($event, index)"
         v-bind:key="index"
       >
-<<<<<<< HEAD
       <div class="graphContainer">
         <ccv-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
         <ccv-stacked-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==2"></ccv-stacked-area-chart>
         <ccv-simple-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==3||graphs[index].graphType==6"></ccv-simple-bar-chart>
         <ccv-grouped-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==4||graphs[index].graphType==7"></ccv-grouped-bar-chart>
         <ccv-stacked-bar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==5||graphs[index].graphType==8"></ccv-stacked-bar-chart>
-        <ccv-bubble-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==9"></ccv-bubble-chart>
+        <ccv-scatter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==9"></ccv-scatter-chart>
         <ccv-donut-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==10"></ccv-donut-chart>
         <ccv-line-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==11"></ccv-line-chart>
         <ccv-pie-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==12"></ccv-pie-chart>
@@ -50,80 +29,6 @@
         <ccv-meter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==14"></ccv-meter-chart>
         <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
       </div>
-=======
-        <ccv-area-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-if="graphs[index].graphType==1"
-        ></ccv-area-chart>
-        <ccv-stacked-area-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==2"
-        ></ccv-stacked-area-chart>
-        <ccv-simple-bar-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==3||graphs[index].graphType==6"
-        ></ccv-simple-bar-chart>
-        <ccv-grouped-bar-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==4||graphs[index].graphType==7"
-        ></ccv-grouped-bar-chart>
-        <ccv-stacked-bar-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==5||graphs[index].graphType==8"
-        ></ccv-stacked-bar-chart>
-        <ccv-bubble-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==9"
-        ></ccv-bubble-chart>
-        <ccv-donut-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==10"
-        ></ccv-donut-chart>
-        <ccv-line-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==11"
-        ></ccv-line-chart>
-        <ccv-pie-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==12"
-        ></ccv-pie-chart>
-        <ccv-gauge-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==13"
-        ></ccv-gauge-chart>
-        <ccv-meter-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==14"
-        ></ccv-meter-chart>
-        <ccv-radar-chart
-          :data="graphs[index].datum"
-          :options="graphs[index].option"
-          v-bind:key="index"
-          v-else-if="graphs[index].graphType==15"
-        ></ccv-radar-chart>
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
       </VueDragResize>
     </div>
     <b-container fluid>
@@ -131,7 +36,7 @@
         <b-col></b-col>
         <b-col></b-col>
         <b-col>
-          <b-button v-b-toggle.sidebar-right size="lg">그래프 목록</b-button>
+          <b-button v-b-toggle.sidebar-right size="lg" variant="info">그래프 목록</b-button>
           <b-sidebar id="sidebar-right" title="그래프 목록" right shadow>
             <b-list-group>
               <b-list-group-item v-for="(graph, index) in graphs" v-bind:key="index" class="graphList">
@@ -176,7 +81,7 @@ import verticalStackedBarGraphData from "@/data/graphType/verticalStackedBarGrap
 import horizontalBarGraphData from "@/data/graphType/horizontalBarGraphTest.js";
 import horizontalGroupedBarGraphData from "@/data/graphType/horizontalGroupedBarGraphTest.js";
 import horizontalStackedBarGraphData from "@/data/graphType/horizontalStackedBarGraphTest.js";
-import bubbleGraphData from "@/data/graphType/bubbleGraphTest.js";
+import scatterGraphData from "@/data/graphType/scatterGraphTest.js";
 import donutGraphData from "@/data/graphType/donutGraphTest.js";
 //import lineGraphData from "@/data/graphType/lineGraphTest.js";
 import pieGraphData from "@/data/graphType/pieGraphTest.js";
@@ -203,12 +108,39 @@ export default {
       listContents:[],
       datum: [],
       items:[
-        {'title': '센서별',
-         'graphType': 11},
-        {'title': '강의실 별 전력 사용량 비교',
-         'graphType': 1},
-        {'title': '온도',
-         'graphType': 1}
+        {
+          'domain': "00"
+          'title': '센서별',
+          'loc1': "00",
+          'loc2': "00",
+          'value': "온도,습도",
+          'valType': "time",
+          'graphType': 1,
+          'range': 1,
+          'status': 0,
+        },
+        {
+          'domain': "00"
+          'title': '강의실 별 전력 사용량 비교',
+          'loc1': "00",
+          'loc2': "00",
+          'value': "온도,습도",
+          'valType': "time",
+          'graphType': 9,
+          'range': 1,
+          'status': 0,
+        },
+        {
+          'domain': "00"
+          'title': '온도',
+          'loc1': "00",
+          'loc2': "00",
+          'value': "온도,습도",
+          'valType': "time",
+          'graphType': 1,
+          'range': 1,
+          'status': 0,
+        }
       ]
     };
   },
@@ -264,7 +196,6 @@ export default {
     //area graph
     addGraph(graphType) {
       //area graph
-<<<<<<< HEAD
       if(graphType == 1){
         this.TCO =  {
           "title": this.graphTitle,
@@ -281,16 +212,12 @@ export default {
           "curve": "curveNatural",
           "height": "400"
         };
-=======
-      if (graphType == 1) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-<<<<<<< HEAD
           option: this.TCO,
           datum: this.datum
         })
@@ -313,15 +240,6 @@ export default {
           "curve": "curveMonotoneX",
           "height": "400"
         };
-=======
-          option: areaGraphData.options,
-          datum: areaGraphData.data
-        });
-      }
-
-      //stacked area graph
-      if (graphType == 2) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -334,7 +252,6 @@ export default {
       }
 
       // vertical bar graph
-<<<<<<< HEAD
       else if(graphType == 3){
         this.TCO = {
           "title": this.graphTitle,
@@ -349,9 +266,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 3) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -364,7 +278,6 @@ export default {
       }
 
       // vertical grouped bar graph
-<<<<<<< HEAD
       else if(graphType == 4){
         this.TCO = {
           "title": this.graphTitle,
@@ -380,9 +293,6 @@ export default {
           "height": "400"
         };
         this.TCO.title = this.graphTitle;
-=======
-      else if (graphType == 4) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -395,7 +305,6 @@ export default {
       }
 
       // vertical stacked bar graph
-<<<<<<< HEAD
       else if(graphType == 5){
         this.TCO = {
           "title": this.graphTitle,
@@ -411,9 +320,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 5) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -426,7 +332,6 @@ export default {
       }
 
       // horizontal bar graph
-<<<<<<< HEAD
       else if(graphType == 6){
         this.TCO = {
           "title": this.graphTitle,
@@ -441,9 +346,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 6) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -456,7 +358,6 @@ export default {
       }
 
       // horizontal grouped bar graph
-<<<<<<< HEAD
       else if(graphType == 7){
         this.TCO = {
           "title": this.graphTitle,
@@ -471,9 +372,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 7) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -486,7 +384,6 @@ export default {
       }
 
       // horizontal stacked bar graph
-<<<<<<< HEAD
       else if(graphType == 8){
         this.TCO = {
           "title": this.graphTitle,
@@ -502,9 +399,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 8) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -516,8 +410,7 @@ export default {
         });
       }
 
-      // bubble graph
-<<<<<<< HEAD
+      // scatter graph
       else if(graphType == 9){
         this.TCO = {
           "title": this.graphTitle,
@@ -530,14 +423,8 @@ export default {
               "mapsTo": "value"
             }
           },
-          "bubble": {
-            "radiusMapsTo": "surplus"
-          },
           "height": "400"
-        };
-=======
-      else if (graphType == 9) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
+        }
         this.graphs.push({
           width: 500,
           height: 400,
@@ -545,12 +432,11 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: bubbleGraphData.data
+          datum: scatterGraphData.data
         });
       }
 
       // donut graph
-<<<<<<< HEAD
       else if(graphType == 10){
         this.TCO = {
           "title": this.graphTitle,
@@ -566,9 +452,6 @@ export default {
           },
           "height": "400"
         };
-=======
-      else if (graphType == 10) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -581,7 +464,6 @@ export default {
       }
 
       // line graph
-<<<<<<< HEAD
       else if(graphType == 11){
         this.TCO = {
           "title": this.graphTitle,
@@ -598,16 +480,12 @@ export default {
           "curve": "curveMonotoneX",
           "height": "400"
         };
-=======
-      else if (graphType == 11) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
-<<<<<<< HEAD
           option: this.TCO,
           datum: this.datum
         })
@@ -626,15 +504,6 @@ export default {
           },
           "height": "400"
         };
-=======
-          option: lineGraphData.options,
-          datum: lineGraphData.data
-        });
-      }
-
-      // pie graph
-      else if (graphType == 12) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -647,7 +516,6 @@ export default {
       }
 
       // gauge graph
-<<<<<<< HEAD
       else if(graphType == 13){
         this.TCO = {
           "title": this.graphTitle,
@@ -659,9 +527,6 @@ export default {
             "status": "danger"
           }
         };
-=======
-      else if (graphType == 13) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -674,7 +539,6 @@ export default {
       }
 
       // meter graph
-<<<<<<< HEAD
       else if(graphType == 14){
         this.TCO = {
           "title": this.graphTitle,
@@ -708,9 +572,6 @@ export default {
           },
           "height": "100"
         };
-=======
-      else if (graphType == 14) {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         this.graphs.push({
           width: 500,
           height: 400,
@@ -722,22 +583,7 @@ export default {
         });
       }
 
-<<<<<<< HEAD
       else{
-=======
-      // radar graph
-      else if (graphType == 15) {
-        this.graphs.push({
-          width: 500,
-          height: 400,
-          top: Math.floor(Math.random() * 100) + 50,
-          left: Math.floor(Math.random() * 100) + 30,
-          graphType: graphType,
-          option: radarGraphData.options,
-          datum: radarGraphData.data
-        });
-      } else {
->>>>>>> 950fe6b8eae85ac7afc34144639c56959b7630c6
         console.log("잘못된 그래프");
       }
     },
