@@ -109,7 +109,7 @@ export default {
       datum: [],
       items:[
         {
-          'domain': "00"
+          'domain': "00",
           'title': '센서별',
           'loc1': "00",
           'loc2': "00",
@@ -120,7 +120,7 @@ export default {
           'status': 0,
         },
         {
-          'domain': "00"
+          'domain': "00",
           'title': '강의실 별 전력 사용량 비교',
           'loc1': "00",
           'loc2': "00",
@@ -131,7 +131,7 @@ export default {
           'status': 0,
         },
         {
-          'domain': "00"
+          'domain': "00",
           'title': '온도',
           'loc1': "00",
           'loc2': "00",
