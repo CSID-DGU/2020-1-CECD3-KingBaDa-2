@@ -80,6 +80,41 @@ router.get('/domain', (req, res, next) => {
       }
     })
 });
+router.delete('/domain', (req, res, next) => {
+    // console.log(req.param("admin_id"));
+    let user_id=req.body.admin_id;
+    let user_domain=req.body.user_domain;
+    let connection = mysql.createConnection({
+      host: '192.168.0.5',
+      port: port,
+      user: user,
+      password: password,
+      database: name
+    });
+    connection.connect();
+    let queryText = 'delete from DomainJob where (user_domain = \''+user_domain+'\')';
+    console.log(queryText);
+    connection.query(queryText, function(err, rows, fields){
+      connection.end();
+      if(!err){
+        // console.log(rows);
+        // console.log(fields);
+        let result = null;
+        try {
+          result = rows;
+        } catch (error) {
+          console.log(' >> query result not found');
+        }
+        // console.log(rows[0].user_permission);
+        // let result = 'rows : '+JSON.stringify(rows)+'<br><br>'+
+        // 'fields : '+JSON.stringify(fields);
+        res.send({data:result});
+      } else {
+        console.log('query error : '+err);
+        res.send(err);
+      }
+    })
+});
 router.post('/domain/job', (req, res, next) => {
     console.log(req.body.data)
     res.send({ success: true });
