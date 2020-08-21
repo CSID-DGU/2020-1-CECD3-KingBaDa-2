@@ -125,7 +125,6 @@ export default{
     "title": "Scatter (time series)",
     "axes": {
       "bottom": {
-        "title": "2019 Annual Sales Figures",
         "scaleType": "time",
         "mapsTo": "date"
       },
