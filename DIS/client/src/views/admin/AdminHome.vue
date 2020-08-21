@@ -13,101 +13,7 @@
       </div>
     </div>
     <b-tabs content-class="mt-3" align="center">
-      <b-tab title="항목 관리" active>
-        <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
-        <div class="w-75 mx-auto">
-          <b-form class="my-5" inline>
-            <b-form-select class="mx-5" v-model="selected.domain" :options="options.domain">
-              <template v-slot:first>
-                <b-form-select-option value="null">도메인 선택</b-form-select-option>
-              </template>
-            </b-form-select>
-            <div>
-              항목 이름 :
-              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputItem"></b-form-input>
-            </div>
-          </b-form>
-          <div>
-            <div>
-              <b-card-group deck>
-                <b-card title="dataset 설정">
-                  <b-button v-b-modal.modal-1 class="mx-2">dataset 설정</b-button>
-                  <template v-slot:footer>
-                    선택된 Dataset :
-                    <span
-                      v-for="dataset_item in selected.dataset"
-                      :key="dataset_item"
-                    >{{ dataset_item }}&nbsp;</span>
-                  </template>
-                </b-card>
-
-                <b-card title="value 설정">
-                  <b-button v-b-modal.modal-2 class="mx-2 mb-3">value 설정</b-button>
-                  <b-form-radio-group
-                    id="valTypegroup"
-                    v-model="selected.valType"
-                    name="radio-valType"
-                  >
-                    <b-form-radio value="sum">누적값</b-form-radio>
-                    <b-form-radio value="avg">평균값</b-form-radio>
-                    <b-form-radio value="max">최대값</b-form-radio>
-                    <b-form-radio value="min">최소값</b-form-radio>
-                    <b-form-radio value="time">시간별</b-form-radio>
-                  </b-form-radio-group>
-                  <template v-slot:footer>
-                    선택된 Value :
-                    <span
-                      v-for="value_item in selected.value"
-                      :key="value_item"
-                    >{{ value_item }}&nbsp;</span>
-                  </template>
-                </b-card>
-                <b-card title="그래프 설정">
-                  <b-button v-b-modal.modal-3 class="mx-2 mb-3">그래프 표시 범위 설정</b-button>
-
-                  <b-form-select class="my-2" v-model="selected.graph" :options="options.graph">
-                    <template v-slot:first>
-                      <b-form-select-option value="null">그래프 선택</b-form-select-option>
-                    </template>
-                  </b-form-select>
-
-                  <b-form-checkbox
-                    id="defaultCheck"
-                    v-model="selected.status"
-                    name="checkbox-1"
-                    value="defaultGraph"
-                  >디폴트 그래프 설정</b-form-checkbox>
-                  <template v-slot:footer>선택된 그래프 : {{selected.graph}}</template>
-                </b-card>
-              </b-card-group>
-            </div>
-          </div>
-          <b-button class="mx-2 my-5" @click="addItem">추가</b-button>
-          <b-button class="mx-2 my-5" @click="deleteItem">삭제</b-button>
-          <b-table
-            striped
-            hover
-            ref="selectableTable"
-            selectable
-            select-mode="single"
-            :items="items"
-            :fields="fields"
-            responsive="sm"
-          >
-            <template v-slot:cell(default)="{ rowSelected }">
-              <template v-if="rowSelected">
-                <span aria-hidden="true">&check;</span>
-                <span class="sr-only">Selected</span>
-              </template>
-              <template v-else>
-                <span aria-hidden="true">&nbsp;</span>
-                <span class="sr-only">Not selected</span>
-              </template>
-            </template>
-          </b-table>
-        </div>
-      </b-tab>
-      <b-tab title="도메인, 직종 관리">
+      <b-tab title="도메인, 직종 관리" active>
         <div class="w-75 mt-5 mx-auto">
           <b-card-group deck>
             <b-card title="도메인 관리">
@@ -148,6 +54,104 @@
               </b-form>
             </b-card>
           </b-card-group>
+        </div>
+      </b-tab>
+      <b-tab title="항목 관리">
+        <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
+        <div class="w-75 mx-auto">
+          <b-form class="my-5" inline>
+            <b-form-select class="mx-5" v-model="selected.domain" :options="options.domain">
+              <template v-slot:first>
+                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+              </template>
+            </b-form-select>
+            <div>
+              항목 이름 :
+              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputTitle"></b-form-input>
+            </div>
+          </b-form>
+          <div>
+            <div>
+              <b-card-group deck>
+                <b-card title="dataset 설정">
+                  <b-button v-b-modal.modal-1 class="mx-2">dataset 설정</b-button>
+                  <template v-slot:footer>
+                    선택된 Dataset :
+                    <span
+                      v-for="(dataset_item, index) in selected.dataset"
+                      :key="index"
+                    >{{ dataset_item}}&nbsp;</span>
+                  </template>
+                </b-card>
+
+                <b-card title="value 설정">
+                  <b-button v-b-modal.modal-2 class="mx-2 mb-3">value 설정</b-button>
+                  <b-form-radio-group
+                    id="valTypegroup"
+                    v-model="selected.valType"
+                    name="radio-valType"
+                  >
+                    <b-form-radio value="0">누적값</b-form-radio>
+                    <b-form-radio value="1">평균값</b-form-radio>
+                    <b-form-radio value="2">최대값</b-form-radio>
+                    <b-form-radio value="3">최소값</b-form-radio>
+                    <b-form-radio value="4">시간별</b-form-radio>
+                  </b-form-radio-group>
+                  <template v-slot:footer>
+                    선택된 Value :
+                    <span
+                      v-for="value_item in selected.value"
+                      :key="value_item"
+                    >{{ value_item }}&nbsp;</span>
+                  </template>
+                </b-card>
+                <b-card title="그래프 설정">
+                  <b-button v-b-modal.modal-3 class="mx-2 mb-3">그래프 표시 범위 설정</b-button>
+
+                  <b-form-select
+                    class="my-2"
+                    v-model="selected.graphType"
+                    :options="options.graphType"
+                  >
+                    <template v-slot:first>
+                      <b-form-select-option value="null">그래프 선택</b-form-select-option>
+                    </template>
+                  </b-form-select>
+
+                  <b-form-checkbox
+                    id="defaultCheck"
+                    v-model="selected.status"
+                    name="checkbox-1"
+                    value="1"
+                  >디폴트 그래프 설정</b-form-checkbox>
+                  <template v-slot:footer>선택된 그래프 : {{graphTypeParser(selected.graphType)}}</template>
+                </b-card>
+              </b-card-group>
+            </div>
+          </div>
+          <b-button class="mx-2 my-5" @click="addItem">추가</b-button>
+          <b-button class="mx-2 my-5" @click="deleteItem">삭제</b-button>
+          <b-table
+            striped
+            hover
+            ref="selectableTable"
+            selectable
+            select-mode="single"
+            :items="items"
+            :fields="fields"
+            responsive="sm"
+          >
+            <template v-slot:cell(default)="{ rowSelected }">
+              <template v-if="rowSelected">
+                <span aria-hidden="true">&check;</span>
+                <span class="sr-only">Selected</span>
+              </template>
+              <template v-else>
+                <span aria-hidden="true">&nbsp;</span>
+                <span class="sr-only">Not selected</span>
+              </template>
+            </template>
+          </b-table>
         </div>
       </b-tab>
       <b-tab title="요청 사항">
@@ -192,36 +196,71 @@
     <b-modal id="modal-3" title="range 설정" @cancel="resetValue">
       <b-form-group>
         <b-form-radio-group id="rangegroup" v-model="selected.range" name="radio-range">
-          <b-form-radio value="year">연간</b-form-radio>
-          <b-form-radio value="month">월간</b-form-radio>
-          <b-form-radio value="day">일간</b-form-radio>
-          <b-form-radio value="oneDay">하루</b-form-radio>
+          <b-form-radio value="0">연간</b-form-radio>
+          <b-form-radio value="1">월간</b-form-radio>
+          <b-form-radio value="2">일간</b-form-radio>
+          <b-form-radio value="3">하루</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
-      <div v-if="selected.range == 'year'">
-        <label for="sb-wrap">시작 날짜</label>
-        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+      <div v-if="selected.range == '0'">
+        <label for="sb-year-start">시작 날짜</label>
+        <b-form-spinbutton
+          class="my-3"
+          id="sb-year-start"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="start year"
+        ></b-form-spinbutton>
 
-        <label for="sb-wrap">끝 날짜</label>
-        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+        <label for="sb-year-end">끝 날짜</label>
+        <b-form-spinbutton
+          class="my-3"
+          id="sb-year-end"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="end year"
+        ></b-form-spinbutton>
       </div>
-      <div v-if="selected.range == 'month'">
-        <label for="sb-wrap">시작 날짜</label>
-        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
-        <b-form-spinbutton class="mb-3" id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+      <div v-if="selected.range == '1'">
+        <label for="sb-month-start">시작 날짜</label>
+        <b-form-spinbutton
+          class="mt-3"
+          id="sb-month-start1"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="start year"
+        ></b-form-spinbutton>
+        <b-form-spinbutton
+          class="mb-3"
+          id="sb-month-start2"
+          wrap
+          min="1"
+          max="12"
+          placeholder="start month"
+        ></b-form-spinbutton>
 
-        <label for="sb-wrap">끝 날짜</label>
-        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
-        <b-form-spinbutton id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+        <label for="sb-month-end">끝 날짜</label>
+        <b-form-spinbutton
+          class="mt-3"
+          id="sb-month-end1"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="end year"
+        ></b-form-spinbutton>
+        <b-form-spinbutton id="sb-month-end2" wrap min="1" max="12" placeholder="end month"></b-form-spinbutton>
       </div>
-      <div v-if="selected.range == 'day'">
+      <div v-if="selected.range == '2'">
         <label for="datepicker1">시작 날짜</label>
         <b-form-datepicker class="my-3" id="datepicker1" placeholder="시작날짜 선택" local="en"></b-form-datepicker>
 
         <label for="datepicker2">끝 날짜</label>
         <b-form-datepicker class="my-3" id="datepicker2" placeholder="끝날짜 선택" local="en"></b-form-datepicker>
       </div>
-      <div v-if="selected.range == 'oneDay'">
+      <div v-if="selected.range == '3'">
         <div>
           <label for="datepicker3">표시 날짜</label>
           <b-form-datepicker class="my-3" id="datepicker3" placeholder="표시날짜 선택" local="en"></b-form-datepicker>
@@ -245,48 +284,64 @@ export default {
     return {
       fields: [
         "domain",
-        "name",
-        "Dataset",
+        "title",
+        "dataset",
         "value",
         "valType",
-        "graph",
+        "graphType",
         "range",
         "status"
       ],
       admin_id: "admin1",
       inputDomain: "",
-      inputItem: "",
+      inputTitle: "",
       inputJob: "",
       dataset: null,
       value: null,
       row: [],
       job: [
-        { domain: "전력세이빙", type: "시설관리처" },
-        { domain: "전력세이빙", type: "총무처" }
+        // { domain: "전력세이빙", type: "시설관리처" },
+        // { domain: "전력세이빙", type: "총무처" }
       ],
       selected: {
         status: null,
         domain: null,
         dataset: [],
         value: [],
-        graph: null,
+        graphType: null,
         row: [],
         range: null,
         date: { start: null, end: null },
-        valType: "sum"
+        valType: "0"
       },
 
       options: {
         domain: [],
         dataset: [
           {
+            value: { loc1: "신공학관", loc2: "" },
+            text: "신공학관"
+          },
+          {
             value: { loc1: "신공학관", loc2: "testbed" },
             text: "신공학관_testbed"
           },
-          { value: "6114", text: "6114" },
-          { value: "2113", text: "2113" },
-          { value: "3321", text: "3321" },
-          { value: "5146", text: "5146" }
+          {
+            value: { loc1: "신공학관", loc2: "6144" },
+            text: "신공학관_6144"
+          },
+          {
+            value: { loc1: "신공학관", loc2: "2113" },
+            text: "신공학관_2113"
+          },
+          {
+            value: { loc1: "신공학관", loc2: "3321" },
+            text: "신공학관_3321"
+          },
+          {
+            value: { loc1: "신공학관", loc2: "5146" },
+            text: "신공학관_5146"
+          }
         ],
         value: [
           { value: "온도", text: "온도" },
@@ -294,52 +349,66 @@ export default {
           { value: "미세먼지", text: "미세먼지" },
           { value: "전력량", text: "전력량" }
         ],
-        graph: [
-          { value: "line", text: "line" },
-          { value: "bar", text: "bar" },
-          { value: "scatter", text: "scatter" },
-          { value: "pie", text: "pie" },
-          { value: "gauge", text: "gauge" }
+        graphType: [
+          { value: "1", text: "area" },
+          { value: "2", text: "stacked_area" },
+          { value: "3", text: "vertical_simple_bar" },
+          { value: "4", text: "vertical_grouped_bar" },
+          { value: "5", text: "vertical_stacked_bar" },
+          { value: "6", text: "horizontal_simple_bar" },
+          { value: "7", text: "horizontal_grouped_bar" },
+          { value: "8", text: "horizontal_stacked_bar" },
+          { value: "9", text: "scatter" },
+          { value: "10", text: "donut" },
+          { value: "11", text: "line" },
+          { value: "12", text: "pie" },
+          { value: "13", text: "gauge" },
+          { value: "14", text: "meter" }
         ]
       },
       items: [
         {
           domain: "전력세이빙",
-          name: "일간 온습도 비교",
-          Dataset: "testbed",
+          title: "일간 온습도 비교",
+          dataset: this.datasetParser([{ loc1: "신공학관", loc2: "testbed" }]),
           value: ["온도", "습도"],
-          valType: "sum",
-          graph: "scatter",
-          range: "day",
-          status: "default"
+          valType: this.valTypeParser("1"),
+          graphType: this.graphTypeParser("9"),
+          range: this.rangeParser("2"),
+          status: this.statusParser("1")
         },
         {
           domain: "전력세이빙",
-          name: "월간 습도 비교",
-          Dataset: "testbed",
-          value: "습도",
+          title: "월간 습도 비교",
+          dataset: [{ loc1: "신공학관", loc2: "testbed" }],
+          value: ["습도"],
           valType: "avg",
-          graph: "line",
+          graphType: "line",
           range: "month",
-          status: "default"
+          status: "1"
         },
         {
           domain: "전력세이빙",
-          name: "월간 전력량 비교",
-          Dataset: "testbed",
-          value: "전력량",
+          title: "월간 전력량 비교",
+          dataset: [{ loc1: "신공학관", loc2: "testbed" }],
+          value: ["전력량"],
           valType: "sum",
-          graph: "line",
+          graphType: "line",
           range: "month",
-          status: "default"
+          status: "1"
         },
         {
           domain: "전력세이빙",
-          name: "강의실별 전력량 비교",
-          Dataset: ["6114", "2113", "3321", "5146"],
-          value: "전력량",
+          title: "강의실별 전력량 비교",
+          dataset: this.datasetParser([
+            { loc1: "신공학관", loc2: "6144" },
+            { loc1: "신공학관", loc2: "2113" },
+            { loc1: "신공학관", loc2: "3321" },
+            { loc1: "신공학관", loc2: "5146" }
+          ]),
+          value: ["전력량"],
           valType: "sum",
-          graph: "pie",
+          graphType: "pie",
           range: "none"
         }
       ]
@@ -414,19 +483,19 @@ export default {
     getItem() {
       let tempArr;
       axios
-        .get("/api/admin/item?admin_id=" + this.admin_id)
+        .get("/api/admin/graph/item?admin_id=" + this.admin_id)
         .then(r => {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.items.push({
               domain: tempArr[n].domain,
-              name: tempArr[n].name,
-              Dataset: tempArr[n].Dataset,
-              value: tempArr[n].value,
-              valType: tempArr[n].valType,
-              graph: tempArr[n].graph,
-              range: tempArr[n].range,
-              status: tempArr[n].status
+              title: tempArr[n].title,
+              dataset: this.datasetParser(tempArr[n].datasets),
+              value: tempArr[n].values,
+              valType: this.valTypeParser(tempArr[n].valType),
+              graphType: this.graphTypeParser(tempArr[n].graphType),
+              range: this.rangeParser(tempArr[n].range),
+              status: this.statusParser(tempArr[n].status)
             });
           }
         })
@@ -436,25 +505,59 @@ export default {
     },
     addItem() {
       if (this.selected.domain == null) alert("도메인을 선택해주세요!");
-      else if (this.inputItem == "") alert("항목 이름을 입력해주세요!");
-      else if (this.selected.graph == null)
+      else if (this.inputTitle == "") alert("항목 이름을 입력해주세요!");
+      else if (this.selected.graphType == null)
         alert("그래프 종류를 선택해주세요!");
       else {
-        this.items.push({
-          domain: this.selected.domain,
-          name: this.inputItem,
-          Dataset: this.selected.dataset,
-          value: this.selected.value,
-          graph: this.selected.graph,
-          range: this.selected.range
-        });
-        if (this.selected.status == "defaultGraph") {
-          this.items[this.items.length - 1].status = "default";
-        }
+        axios
+          .post("/api/admin/graph/item", [
+            { admin_id: this.admin_id },
+            { domain: this.selected.domain },
+            { title: this.inputTitle },
+            { dataset: { datasets: this.selected.dataset } },
+            { value: { vaules: this.selected.value } },
+            { valType: this.selected.valType },
+            { graphType: this.selected.graphType },
+            { range: this.selected.range },
+            { status: this.selected.status }
+          ])
+          .then(r => {
+            console.log(r);
+            this.items.push({
+              domain: this.selected.domain,
+              title: this.inputTitle,
+              dataset: this.datasetParser(this.selected.dataset),
+              value: this.selected.value,
+              valType: this.valTypeParser(this.selected.valType),
+              graphType: this.graphTypeParser(this.selected.graphType),
+              range: this.rangeParser(this.selected.range),
+              status: this.statusParser(this.selected.status)
+            });
+          })
+          .catch(function(error) {
+            console.log(error.response);
+          });
       }
     },
     deleteItem() {
-      this.items.pop();
+      let obj = new Object();
+      obj = this.items.pop();
+      axios
+        .delete("/api/admin/graph/item", {
+          data: {
+            admin_id: this.admin_id,
+            title: obj.title
+          },
+          withCredentials: true
+        })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+          this.options.domain.push(obj);
+          console.log(error.response);
+        });
     },
     addJob() {
       if (this.inputJob != "" && this.selected.domain != null) {
@@ -507,7 +610,49 @@ export default {
     },
     logout() {
       this.$router.push("/");
+    },
+    statusParser(input) {
+      if (input == "1") return "default";
+      else return "";
+    },
+    datasetParser(input) {
+      let arr = [];
+      for (var n in input) {
+        if (input[n].loc2 == "") arr.push(input[n].loc1);
+        else arr.push(input[n].loc1 + "_" + input[n].loc2);
+      }
+      return arr;
+    },
+    valTypeParser(input) {
+      if (input == "0") return "누적값";
+      else if (input == "1") return "평균값";
+      else if (input == "2") return "최대값";
+      else if (input == "3") return "최소값";
+      else return "시간별";
+    },
+    rangeParser(input) {
+      if (input == "0") return "연간";
+      else if (input == "1") return "월간";
+      else if (input == "2") return "일간";
+      else return "하루";
+    },
+    graphTypeParser(input) {
+      if (input == "1") return "area";
+      else if (input == "2") return "stacked_area";
+      else if (input == "3") return "vertical_simple_bar";
+      else if (input == "4") return "vertical_grouped_bar";
+      else if (input == "5") return "vertical_stacked_bar";
+      else if (input == "6") return "horizontal_simple_bar";
+      else if (input == "7") return "horizontal_grouped_bar";
+      else if (input == "8") return "horizontal_stacked_bar";
+      else if (input == "9") return "scatter";
+      else if (input == "10") return "donut";
+      else if (input == "11") return "line";
+      else if (input == "12") return "pie";
+      else if (input == "13") return "gauge";
+      else return "meter";
     }
+
     // onRowSelected(items) {
     //   this.options.forEach(function(element, index) {
     //     console.log(index);

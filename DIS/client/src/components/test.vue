@@ -1,132 +1,111 @@
 <template>
   <div>
-    <b-card bg-variant="light" style="max-width: 70rem; margin: 0 auto;">
-      <div>공지사항</div>
-      <br />
-      <br />
-      <div class="search">
-        <b-form inline>
-          <b-form-select v-model="selected" :options="options"></b-form-select>
-          <b-form-input v-model="text"></b-form-input>
-          <b-button>검색</b-button>
-        </b-form>
-      </div>
-      <b-table
-        striped
-        hover
-        :items="items"
-        :per-page="perPage"
-        :current-page="currentPage"
-        :fields="fields"
-        @row-clicked="rowClick"
-      ></b-table>
-      <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="center"></b-pagination>
-      <b-button @click="writeContent">글쓰기</b-button>
-    </b-card>
+    <div class="title">
+      <div class="DIS">DIS</div>
+      <div class="subDIS">Dashboard Integration System</div>
+    </div>
+    <div id="login">
+      <input type="text" placeholder="아이디" v-model="id" /><br />
+      <input type="password" placeholder="비밀번호" v-model="password"/><br />
+      <button @click="loginUser">로그인</button><br />
+      <button @click="loginAdmin">회원가입</button>
+    </div>
+    <img src="../assets/bts.jpg" />
   </div>
 </template>
 
 <script>
-import data from "@/data/index.js";
+import axios from 'axios';
 
 export default {
-  name: "Notice",
   data() {
-    // 정렬 : https://blog.naver.com/haskim0716n/221681695401
-    let contentItems = data.Content.sort((a, b) => {
-      return a.content_id - b.content_id;
-    }); // 내림차순
-
-    // User 와 Content 의 user_id 의 같은 번호를 찾아 Content 에 기존자료 + 'user_name' 으로 추가한다.
-    let items = contentItems.map(contentItem => {
-      return {
-        ...contentItem,
-        user_name: data.User.filter(userItem => {
-          return contentItem.user_id === userItem.user_id;
-        })[0].name
-      };
-    });
-
     return {
-      currentPage: 1, // 현재 페이지
-      perPage: 10, // 페이지당 보여줄 갯수
-      // bootstrap 'b-table' 필드 설정
-      fields: [
-        {
-          key: "content_id",
-          label: "번호"
-        },
-        {
-          key: "title",
-          label: "제목"
-        },
-        {
-          key: "user_name",
-          label: "글쓴이"
-        },
-        {
-          key: "created_at",
-          label: "작성일"
-        }
-      ],
-      items: items,
-      selected: "",
-      options: [
-        { value: "a", text: "제목" },
-        { value: "b", text: "글쓴이" },
-        { value: "c", text: "작성일" }
-      ]
+      name: "Login",
+      id: "",
+      password: "",
     };
   },
   methods: {
-    // rowClick(item, index, e) {
-    //   this.$router.push({
-    //     path: `/board/detail/${item.content_id}`
-    //   });
-    // },
-    // writeContent() {
-    //   this.$router.push({
-    //     path: `/board/create`
-    //   });
-    // }
-  },
-  computed: {
-    rows() {
-      return this.items.length;
+    loginUser() {
+      const dt = {key:"name,value", or:[{name:"elc1,elc2"}],and:[{loc1:"00"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]}
+      axios.post("/api/elastic/elastic-complete", dt)
+      .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
+      .catch(function (error){
+        console.log(error.response);
+      });
+      this.$router.push("/id/main")
+    },
+    loginAdmin(){
+      // console.log('call login admin api');
+      let userData = {
+        id:this.id,
+        pw:this.password
+      }
+      axios.post("/api/sign/admin-login", userData)
+      .then((r) => {
+        // console.log("r: ", r);
+        if(r){
+          if(r.data.data==1){
+            this.$router.push("/AdminHome");
+          } else {
+            alert('id, password 확인');
+          }
+        } else {
+          alert('id, password 확인');
+        }
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
     }
   }
 };
-
-/*
-[예제] map --------------------
-const objArr = [{ a: "a" }, { b: "b" }];
-
-  0: {a: "a"}
-  1: {b: "b"}
-
-const altered = objArr.map(item => {
-  return {
-    ...item, // 기존자료 모두 추가
-    c: "c" // 신규추가
-  };
-});
-
-  0: {a: "a", c: "c"}
-  1: {b: "b", c: "c"}s
-
-[예제] filter--------------------
-const onlyA = altered.filter(item => {
-  return item.a === "a"; // 'a' 인 값만 리턴
-});
-
-  0: {a: "a", c: "c"}
-*/
 </script>
 
 <style scoped>
-.search {
-  float: right;
-  /* width: 200px;
-   display: inline; */
-}
+  #login{
+    margin-top: 30px;
+    font-family: "굴림", Helvetica, Arial, sans-serif;
+  }
+  .title {
+    position: relative;
+    margin-top: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    z-index: 2;
+    text-align: center;
+  }
+  .DIS{
+    font-size: 50px;
+    font-weight: bold;
+  }
+  .subDIS{
+    font-size: 30px;
+  }
+  input{
+    margin: 5px 0;
+    width: 20%;
+    padding: 10px;
+    background-color: #d9d9d956;
+  }
+  button{
+    margin-top: 10px;
+    width: 20%;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #6FCEDC;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    outline: 0;
+    border: 0;
+  }
+  img{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
 </style>
