@@ -80,7 +80,7 @@
                     <span
                       v-for="(dataset_item, index) in selected.dataset"
                       :key="index"
-                    >{{ dataset_item}}&nbsp;</span>
+                    >{{ dataset_item }}&nbsp;</span>
                   </template>
                 </b-card>
 
@@ -103,6 +103,8 @@
                       v-for="value_item in selected.value"
                       :key="value_item"
                     >{{ value_item }}&nbsp;</span>
+                    /
+                    {{ valTypeParser(selected.valType) }}
                   </template>
                 </b-card>
                 <b-card title="그래프 설정">
@@ -124,7 +126,9 @@
                     name="checkbox-1"
                     value="1"
                   >디폴트 그래프 설정</b-form-checkbox>
-                  <template v-slot:footer>선택된 그래프 : {{graphTypeParser(selected.graphType)}}</template>
+                  <template
+                    v-slot:footer
+                  >선택된 그래프 : {{ graphTypeParser(selected.graphType) }}&nbsp;/&nbsp;{{rangeParser(selected.range)}}</template>
                 </b-card>
               </b-card-group>
             </div>
@@ -312,7 +316,7 @@ export default {
         row: [],
         range: null,
         date: { start: null, end: null },
-        valType: "0"
+        valType: ""
       },
 
       options: {
@@ -515,7 +519,7 @@ export default {
             { domain: this.selected.domain },
             { title: this.inputTitle },
             { dataset: { datasets: this.selected.dataset } },
-            { value: { vaules: this.selected.value } },
+            { value: { values: this.selected.value } },
             { valType: this.selected.valType },
             { graphType: this.selected.graphType },
             { range: this.selected.range },
@@ -628,13 +632,15 @@ export default {
       else if (input == "1") return "평균값";
       else if (input == "2") return "최대값";
       else if (input == "3") return "최소값";
-      else return "시간별";
+      else if (input == "4") return "시간별";
+      else return "";
     },
     rangeParser(input) {
       if (input == "0") return "연간";
       else if (input == "1") return "월간";
       else if (input == "2") return "일간";
-      else return "하루";
+      else if (input == "3") return "하루";
+      else return "";
     },
     graphTypeParser(input) {
       if (input == "1") return "area";
@@ -650,7 +656,8 @@ export default {
       else if (input == "11") return "line";
       else if (input == "12") return "pie";
       else if (input == "13") return "gauge";
-      else return "meter";
+      else if (input == "14") return "meter";
+      else return "";
     }
 
     // onRowSelected(items) {
