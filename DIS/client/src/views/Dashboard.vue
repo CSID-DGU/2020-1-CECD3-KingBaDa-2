@@ -70,11 +70,10 @@
 
 <script>
 import VueDragResize from "vue-drag-resize";
-import graphSettings from "@/data/graphSettings.js";
 
 //import areaGraphData from "@/data/graphType/areaGraphTest.js";
 import stackedAreaGraphData from "@/data/graphType/stackedAreaGraphTest.js";
-import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
+//import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
 import verticalGroupedBarGraphData from "@/data/graphType/verticalGroupedBarGraphTest.js";
 import verticalStackedBarGraphData from "@/data/graphType/verticalStackedBarGraphTest.js";
 import horizontalBarGraphData from "@/data/graphType/horizontalBarGraphTest.js";
@@ -106,6 +105,19 @@ export default {
       dropdownText: "그래프 선택",
       listContents:[],
       datum: [],
+      itemsTest:[
+        {
+          'domain': "00",
+          'title': '센서별',
+          'loc1': "00",
+          'loc2': "00",
+          'value': "온도,습도",
+          'valType': "time",
+          'graphType': 11,
+          'range': 1,
+          'status': 0,
+        }
+      ],
       items:[
         {
           'domain': "00",
@@ -125,7 +137,7 @@ export default {
           'loc2': "00",
           'value': "온도,습도",
           'valType': "time",
-          'graphType': 9,
+          'graphType': 3,
           'range': 1,
           'status': 0,
         },
@@ -159,18 +171,56 @@ export default {
     //let dt = {key:"name,value", search:[{name:this.id},{location1:this.password}]}
     //this.elastic_part_###(dt);
 
+    //[{id:123},{password:123}]
+    //this.elastic_all_###(dt);
+
     //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
+    console.log(this.itemsTest[0]);
     let name = ["elc1","elc2"];
     let date = {"gte":"2020-01-01","lte":"2020-01-02"};
-    let dt = this.makeDatum(name, date);
-    console.log(dt);
-  },
-
-  created() {
-    this.graphs = graphSettings.graphs;
+    let dt = this.makeDatum_cal(name, date);
+    this.elastic_cal_sum(dt);
   },
 
   methods: {
+      //elastic-part용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
+        makeDatum_part(){
+
+        },
+
+      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아닐때)
+        makeDatum_cal(name, date){
+          let df = new Array();
+          name.forEach(data => {
+            let dt = new Array();
+            let nameObj = new Object();
+            let dateObj = new Object();
+            nameObj.name = data;
+            dateObj.date = date;
+            dt.push(nameObj);
+            dt.push(dateObj);
+            df.push(dt);
+          })
+          return df;
+        },
+
+      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아닐때)
+        // makeDatum_cal(name, date){
+        //   let df = new Array();
+        //   name.forEach(function(data){
+        //     let dt = new Array();
+        //     let nameObj = new Object();
+        //     let dateObj = new Object();
+        //     nameObj.name = data;
+        //     dateObj.date = date;
+        //     dt.push(nameObj);
+        //     dt.push(dateObj);
+        //     df.push(dt);
+        //   })
+        //   return df;
+        // },
+
+
     //센서 종류별로 데이터 받아오기
     elastic_part_model(dt){
       this.datum = [];
@@ -178,7 +228,7 @@ export default {
       axios.post("/api/elastic/elastic-part", dt)
       .then((r) => {
         let datumArray = new Array();
-        r.data.forEach(function(data){
+        r.data.forEach(data => {
           let object = new Object();
           object.group = data.model;
           object.date = data.date;
@@ -192,61 +242,76 @@ export default {
       });
     },
 
-    //센서 이름별로 데이터 받아오기
-    elastic_part_name(dt){
+    //일정 기간동안 센서 이름별로 계산된 최소값 받아오기
+    elastic_cal_min(dt){
       this.datum = [];
       // 데이터 받아오기
-      axios.post("/api/elastic/elastic-part", dt)
-      .then((r) => {
-        let datumArray = new Array();
-        r.data.forEach(function(data){
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
           let object = new Object();
-          object.group = data.name;
-          object.date = data.date;
-          object.value = data.value;
-          datumArray.push(object);
+          object.group = data[0].model;
+          object.value = r.data.min;
+          this.datum.push(object);
         })
-        this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
+        .catch(function (error){
+          console.log(error.response);
+        });
       })
-      .catch(function (error){
-        console.log(error.response);
-      });
     },
 
-    //일정 기간동안 센서 이름별로 계산된 값 받아오기
-    elastic_cal(dt){
+    //일정 기간동안 센서 이름별로 계산된 최대값 받아오기
+    elastic_cal_max(dt){
       this.datum = [];
       // 데이터 받아오기
-
-      axios.post("/api/elastic/elastic-cal", dt[0])
-      .then((r) => {
-        let object = new Object();
-        object.group = dt[0].name;
-        object.min = r.data.min;
-        object.max = r.data.max;
-        object.sum = r.data.sum;
-        object.avg = r.data.avg;
-        this.datum.push(object);
-        console.log(this.datum);
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].model;
+          object.value = r.data.max;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
       })
-      .catch(function (error){
-        console.log(error.response);
-      });
     },
 
-    makeDatum(name, date){
-      let df = new Array();
-      name.forEach(function(data){
-        let dt = new Array();
-        let nameObj = new Object();
-        let dateObj = new Object();
-        nameObj.name = data;
-        dateObj.date = date;
-        dt.push(nameObj);
-        dt.push(dateObj);
-        df.push(dt);
+    //일정 기간동안 센서 이름별로 계산된 평균값 받아오기
+    elastic_cal_avg(dt){
+      this.datum = [];
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].model;
+          object.value = r.data.avg;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
       })
-      return df;
+    },
+
+    //일정 기간동안 센서 이름별로 계산된 누적값 받아오기
+    elastic_cal_sum(dt){
+      this.datum = [];
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].model;
+          object.value = r.data.sum;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
     },
 
     resize(newRect, index) {
@@ -348,7 +413,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: verticalBarGraphData.data
+          datum: this.datum
         });
       }
 
