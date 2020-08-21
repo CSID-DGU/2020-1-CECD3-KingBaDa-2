@@ -52,6 +52,7 @@
                     <b-form-radio value="avg">평균값</b-form-radio>
                     <b-form-radio value="max">최대값</b-form-radio>
                     <b-form-radio value="min">최소값</b-form-radio>
+                    <b-form-radio value="time">시간별</b-form-radio>
                   </b-form-radio-group>
                   <template v-slot:footer>
                     선택된 Value :
@@ -164,7 +165,7 @@
         <b-list-group-item>
           <strong>추가 Dataset 목록</strong>
         </b-list-group-item>
-        <b-list-group-item v-for="dataset_item in selected.dataset" :key="dataset_item">
+        <b-list-group-item v-for="dataset_item in selected.dataset" :key="dataset_item.loc2">
           {{ dataset_item }}
           <b-button @click="deleteDatasetItem">삭제</b-button>
         </b-list-group-item>
@@ -215,22 +216,10 @@
       </div>
       <div v-if="selected.range == 'day'">
         <label for="datepicker1">시작 날짜</label>
-        <b-form-datepicker
-          class="my-3"
-          id="datepicker1"
-          placeholder="시작날짜 선택"
-          local="en"
-          dark="true"
-        ></b-form-datepicker>
+        <b-form-datepicker class="my-3" id="datepicker1" placeholder="시작날짜 선택" local="en"></b-form-datepicker>
 
         <label for="datepicker2">끝 날짜</label>
-        <b-form-datepicker
-          class="my-3"
-          dark="true"
-          id="datepicker2"
-          placeholder="끝날짜 선택"
-          local="en"
-        ></b-form-datepicker>
+        <b-form-datepicker class="my-3" id="datepicker2" placeholder="끝날짜 선택" local="en"></b-form-datepicker>
       </div>
       <div v-if="selected.range == 'oneDay'">
         <div>
@@ -288,12 +277,12 @@ export default {
       },
 
       options: {
-        domain: [
-          { value: "전력세이빙", text: "전력세이빙" },
-          { value: "헬스케어", text: "헬스케어" }
-        ],
+        domain: [],
         dataset: [
-          { value: "testbed", text: "testbed" },
+          {
+            value: { loc1: "신공학관", loc2: "testbed" },
+            text: "신공학관_testbed"
+          },
           { value: "6114", text: "6114" },
           { value: "2113", text: "2113" },
           { value: "3321", text: "3321" },
@@ -356,8 +345,9 @@ export default {
       ]
     };
   },
-  mounted() {
+  created() {
     this.getDomain();
+    this.getItem();
   },
   methods: {
     getDomain() {
@@ -365,11 +355,11 @@ export default {
       axios
         .get("/api/admin/domain?admin_id=" + this.admin_id)
         .then(r => {
-          tempArr = r.data;
+          tempArr = r.data.data;
           for (var n in tempArr) {
             this.options.domain.push({
-              domain: tempArr[n].user_domain,
-              type: tempArr[n].user_domain
+              value: tempArr[n].user_domain,
+              text: tempArr[n].user_domain
             });
           }
         })
@@ -399,32 +389,44 @@ export default {
       }
     },
     deleteDomain() {
+      let obj = new Object();
+      obj = this.options.domain.pop();
       axios
         .delete("/api/admin/domain", {
           data: {
             admin_id: this.admin_id,
-            user_domain: this.options.domain[this.options.domain - 1].value
+            user_domain: obj.value
           },
           withCredentials: true
         })
         .then(res => {
           console.log(res.data);
-          this.options.domain.pop();
         })
-        .catch(function(error) {
+        .catch(error => {
+          console.log(obj);
+          this.options.domain.push({
+            value: obj.value,
+            text: obj.value
+          });
           console.log(error.response);
         });
     },
     getItem() {
       let tempArr;
       axios
-        .get("/api/admin/domain?admin_id=" + this.admin_id)
+        .get("/api/admin/item?admin_id=" + this.admin_id)
         .then(r => {
-          tempArr = r.data;
+          tempArr = r.data.data;
           for (var n in tempArr) {
-            this.options.domain.push({
-              domain: tempArr[n].user_domain,
-              type: tempArr[n].user_domain
+            this.items.push({
+              domain: tempArr[n].domain,
+              name: tempArr[n].name,
+              Dataset: tempArr[n].Dataset,
+              value: tempArr[n].value,
+              valType: tempArr[n].valType,
+              graph: tempArr[n].graph,
+              range: tempArr[n].range,
+              status: tempArr[n].status
             });
           }
         })
