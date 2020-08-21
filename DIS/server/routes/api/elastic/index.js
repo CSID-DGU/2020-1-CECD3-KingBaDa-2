@@ -9,7 +9,7 @@ const elasticsearch = require('elasticsearch');
 router.post('/elastic-all', async function(req, res, next) {
     let search = req.body;
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
         size: 10000,
@@ -54,7 +54,7 @@ router.post('/elastic-part', async function(req, res, next) {
     let search = req.body.search;// 검색어
     let keysplit = key.split(',');
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
         size: 10000,
@@ -99,7 +99,7 @@ router.post('/elastic-part', async function(req, res, next) {
 router.post('/elastic-cal',async function(req, res, next) {
     let search =req.body;
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
         size: 10000,
