@@ -348,10 +348,10 @@ export default {
           }
         ],
         value: [
-          { value: "온도", text: "온도" },
-          { value: "습도", text: "습도" },
-          { value: "미세먼지", text: "미세먼지" },
-          { value: "전력량", text: "전력량" }
+          { value: "tmp", text: "tmp" },
+          { value: "hmd", text: "hmd" },
+          { value: "PM", text: "PM" },
+          { value: "elc", text: "elc" }
         ],
         graphType: [
           { value: "1", text: "area" },
@@ -375,7 +375,7 @@ export default {
           domain: "전력세이빙",
           title: "일간 온습도 비교",
           dataset: this.datasetParser([{ loc1: "신공학관", loc2: "testbed" }]),
-          value: ["온도", "습도"],
+          value: ["tmp", "hmd"],
           valType: this.valTypeParser("1"),
           graphType: this.graphTypeParser("9"),
           range: this.rangeParser("2"),
@@ -385,7 +385,7 @@ export default {
           domain: "전력세이빙",
           title: "월간 습도 비교",
           dataset: [{ loc1: "신공학관", loc2: "testbed" }],
-          value: ["습도"],
+          value: ["hmd"],
           valType: "avg",
           graphType: "line",
           range: "month",
@@ -395,7 +395,7 @@ export default {
           domain: "전력세이빙",
           title: "월간 전력량 비교",
           dataset: [{ loc1: "신공학관", loc2: "testbed" }],
-          value: ["전력량"],
+          value: ["elc"],
           valType: "sum",
           graphType: "line",
           range: "month",
@@ -410,7 +410,7 @@ export default {
             { loc1: "신공학관", loc2: "3321" },
             { loc1: "신공학관", loc2: "5146" }
           ]),
-          value: ["전력량"],
+          value: ["elc"],
           valType: "sum",
           graphType: "pie",
           range: "none"
