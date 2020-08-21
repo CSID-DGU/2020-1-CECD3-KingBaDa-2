@@ -158,7 +158,7 @@ export default {
     // 데이터 받아오기
     let dt = {key:"model,date,value", search:[{loc2:"00"}]}
 
-    axios.post("/api/elastic/get2", dt)
+    axios.post("/api/elastic/elastic-part", dt)
     .then((r) => {
       let datumArray = new Array();
       r.data.forEach(function(data){
