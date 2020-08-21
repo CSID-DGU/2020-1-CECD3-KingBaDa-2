@@ -448,7 +448,7 @@ export default {
     getItem() {
       let tempArr;
       axios
-        .get("/api/admin/graphItem?admin_id=" + this.admin_id)
+        .get("/api/admin/graph/item?admin_id=" + this.admin_id)
         .then(r => {
           tempArr = r.data.data;
           for (var n in tempArr) {
@@ -475,7 +475,7 @@ export default {
         alert("그래프 종류를 선택해주세요!");
       else {
         axios
-          .post("/api/admin/graphItem", [
+          .post("/api/admin/graph/item", [
             { admin_id: this.admin_id },
             { domain: this.selected.domain },
             { title: this.inputTitle },
@@ -508,7 +508,7 @@ export default {
       let obj = new Object();
       obj = this.items.pop();
       axios
-        .delete("/api/admin/graphItem", {
+        .delete("/api/admin/graph/item", {
           data: {
             admin_id: this.admin_id,
             title: obj.title
