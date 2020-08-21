@@ -5,14 +5,14 @@ const elasticsearch = require('elasticsearch');
 /*
 [{id:123},{password:123}]
 검색조건에 해당하는 모든 결과를 json으로 리턴
-*/ 
+*/
 router.post('/elastic-all', async function(req, res, next) {
     let search = req.body;
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
-        size: 10000,
+        size: 1000,
         query:{
             bool:{
                 must:[
@@ -47,17 +47,17 @@ router.post('/elastic-all', async function(req, res, next) {
 /*
 {key:"name,value", search:[{name:this.id},{location1:this.password}]}
 key는 검색한 결과에서 가져올 부분
-search는 검색조건 
+search는 검색조건
 */
 router.post('/elastic-part', async function(req, res, next) {
     let key = req.body.key; //결과로 받고싶은 필드명
     let search = req.body.search;// 검색어
     let keysplit = key.split(',');
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
-        size: 10000,
+        size: 50,
         query:{
             bool:{
                 must:[
@@ -78,7 +78,7 @@ router.post('/elastic-part', async function(req, res, next) {
     }).then(function(response) {
     let hits = response.hits.hits;//결과배열
     let jsonArray=new Array();
-    let json; 
+    let json;
     hits.forEach(function(element){ //검색결과 순회
         json = new Object();
         for(let i in keysplit){ //key들 순회
@@ -99,10 +99,10 @@ router.post('/elastic-part', async function(req, res, next) {
 router.post('/elastic-cal',async function(req, res, next) {
     let search =req.body;
     let client = elasticsearch.Client({
-    host: '1.223.111.140:9200'
+    host: '192.168.0.5:9200'
     });
     let frame ={
-        size: 10000,
+        size: 1000,
         query:{
             bool:{
                 must:[

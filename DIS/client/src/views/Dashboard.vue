@@ -27,7 +27,6 @@
         <ccv-pie-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==12"></ccv-pie-chart>
         <ccv-gauge-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==13"></ccv-gauge-chart>
         <ccv-meter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==14"></ccv-meter-chart>
-        <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
       </div>
       </VueDragResize>
     </div>
@@ -115,7 +114,7 @@ export default {
           'loc2': "00",
           'value': "온도,습도",
           'valType': "time",
-          'graphType': 1,
+          'graphType': 11,
           'range': 1,
           'status': 0,
         },
@@ -155,31 +154,101 @@ export default {
       this.listHeight = listEl.clientHeight;
     });
 
-    // 데이터 받아오기
-    let dt = {key:"model,date,value", search:[{loc2:"00"}]}
 
-    axios.post("/api/elastic/elastic-part", dt)
-    .then((r) => {
-      let datumArray = new Array();
-      r.data.forEach(function(data){
-        let object = new Object();
-        object.group = data.model;
-        object.date = data.date;
-        object.value = data.value;
-        datumArray.push(object);
-      })
-      this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
-    })
-    .catch(function (error){
-      console.log(error.response);
-    });
 
+    //let dt = {key:"name,value", search:[{name:this.id},{location1:this.password}]}
+    //this.elastic_part_###(dt);
+
+    //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
+    let name = ["elc1","elc2"];
+    let date = {"gte":"2020-01-01","lte":"2020-01-02"};
+    let dt = this.makeDatum(name, date);
+    console.log(dt);
   },
+
   created() {
     this.graphs = graphSettings.graphs;
   },
 
   methods: {
+    //센서 종류별로 데이터 받아오기
+    elastic_part_model(dt){
+      this.datum = [];
+      // 데이터 받아오기
+      axios.post("/api/elastic/elastic-part", dt)
+      .then((r) => {
+        let datumArray = new Array();
+        r.data.forEach(function(data){
+          let object = new Object();
+          object.group = data.model;
+          object.date = data.date;
+          object.value = data.value;
+          datumArray.push(object);
+        })
+        this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
+    },
+
+    //센서 이름별로 데이터 받아오기
+    elastic_part_name(dt){
+      this.datum = [];
+      // 데이터 받아오기
+      axios.post("/api/elastic/elastic-part", dt)
+      .then((r) => {
+        let datumArray = new Array();
+        r.data.forEach(function(data){
+          let object = new Object();
+          object.group = data.name;
+          object.date = data.date;
+          object.value = data.value;
+          datumArray.push(object);
+        })
+        this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
+    },
+
+    //일정 기간동안 센서 이름별로 계산된 값 받아오기
+    elastic_cal(dt){
+      this.datum = [];
+      // 데이터 받아오기
+
+      axios.post("/api/elastic/elastic-cal", dt[0])
+      .then((r) => {
+        let object = new Object();
+        object.group = dt[0].name;
+        object.min = r.data.min;
+        object.max = r.data.max;
+        object.sum = r.data.sum;
+        object.avg = r.data.avg;
+        this.datum.push(object);
+        console.log(this.datum);
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
+    },
+
+    makeDatum(name, date){
+      let df = new Array();
+      name.forEach(function(data){
+        let dt = new Array();
+        let nameObj = new Object();
+        let dateObj = new Object();
+        nameObj.name = data;
+        dateObj.date = date;
+        dt.push(nameObj);
+        dt.push(dateObj);
+        df.push(dt);
+      })
+      return df;
+    },
+
     resize(newRect, index) {
       this.graphs[index].width = newRect.width;
       this.graphs[index].height = newRect.height;
@@ -210,6 +279,9 @@ export default {
             }
           },
           "curve": "curveNatural",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
@@ -238,6 +310,9 @@ export default {
             }
           },
           "curve": "curveMonotoneX",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
@@ -478,6 +553,9 @@ export default {
             }
           },
           "curve": "curveMonotoneX",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
