@@ -13,7 +13,50 @@
       </div>
     </div>
     <b-tabs content-class="mt-3" align="center">
-      <b-tab title="항목 관리" active>
+      <b-tab title="도메인, 직종 관리" active>
+        <div class="w-75 mt-5 mx-auto">
+          <b-card-group deck>
+            <b-card title="도메인 관리">
+              <b-list-group>
+                <b-list-group-item>
+                  <strong>도메인</strong>
+                </b-list-group-item>
+                <b-list-group-item
+                  v-for="domain_item in options.domain"
+                  :key="domain_item.value"
+                >{{ domain_item.value }}</b-list-group-item>
+              </b-list-group>
+              <b-form class="my-5" inline>
+                <b-form-input v-model="inputDomain"></b-form-input>
+                <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
+                <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+              </b-form>
+            </b-card>
+            <b-card title="직종 관리">
+              <b-list-group>
+                <b-list-group-item>
+                  <strong>직종</strong>
+                </b-list-group-item>
+                <b-list-group-item v-for="jobs in job" :key="jobs.type">
+                  <b-badge>{{ jobs.domain }}</b-badge>
+                  {{ jobs.type }}
+                </b-list-group-item>
+              </b-list-group>
+              <b-form class="my-5" inline>
+                <b-form-select class="mr-5" v-model="selected.domain" :options="options.domain">
+                  <template v-slot:first>
+                    <b-form-select-option value="null">도메인 선택</b-form-select-option>
+                  </template>
+                </b-form-select>
+                <b-form-input v-model="inputJob"></b-form-input>
+                <b-button class="mx-2" @click="addJob">직종 추가</b-button>
+                <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
+              </b-form>
+            </b-card>
+          </b-card-group>
+        </div>
+      </b-tab>
+      <b-tab title="항목 관리">
         <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
         <div class="w-75 mx-auto">
           <b-form class="my-5" inline>
@@ -35,9 +78,9 @@
                   <template v-slot:footer>
                     선택된 Dataset :
                     <span
-                      v-for="dataset_item in selected.dataset"
-                      :key="dataset_item"
-                    >{{ dataset_item }}&nbsp;</span>
+                      v-for="(dataset_item, index) in selected.dataset"
+                      :key="index"
+                    >{{ dataset_item}}&nbsp;</span>
                   </template>
                 </b-card>
 
@@ -81,7 +124,7 @@
                     name="checkbox-1"
                     value="1"
                   >디폴트 그래프 설정</b-form-checkbox>
-                  <template v-slot:footer>선택된 그래프 : {{selected.graphType}}</template>
+                  <template v-slot:footer>선택된 그래프 : {{graphTypeParser(selected.graphType)}}</template>
                 </b-card>
               </b-card-group>
             </div>
@@ -109,49 +152,6 @@
               </template>
             </template>
           </b-table>
-        </div>
-      </b-tab>
-      <b-tab title="도메인, 직종 관리">
-        <div class="w-75 mt-5 mx-auto">
-          <b-card-group deck>
-            <b-card title="도메인 관리">
-              <b-list-group>
-                <b-list-group-item>
-                  <strong>도메인</strong>
-                </b-list-group-item>
-                <b-list-group-item
-                  v-for="domain_item in options.domain"
-                  :key="domain_item.value"
-                >{{ domain_item.value }}</b-list-group-item>
-              </b-list-group>
-              <b-form class="my-5" inline>
-                <b-form-input v-model="inputDomain"></b-form-input>
-                <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-                <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
-              </b-form>
-            </b-card>
-            <b-card title="직종 관리">
-              <b-list-group>
-                <b-list-group-item>
-                  <strong>직종</strong>
-                </b-list-group-item>
-                <b-list-group-item v-for="jobs in job" :key="jobs.type">
-                  <b-badge>{{ jobs.domain }}</b-badge>
-                  {{ jobs.type }}
-                </b-list-group-item>
-              </b-list-group>
-              <b-form class="my-5" inline>
-                <b-form-select class="mr-5" v-model="selected.domain" :options="options.domain">
-                  <template v-slot:first>
-                    <b-form-select-option value="null">도메인 선택</b-form-select-option>
-                  </template>
-                </b-form-select>
-                <b-form-input v-model="inputJob"></b-form-input>
-                <b-button class="mx-2" @click="addJob">직종 추가</b-button>
-                <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
-              </b-form>
-            </b-card>
-          </b-card-group>
         </div>
       </b-tab>
       <b-tab title="요청 사항">
@@ -202,30 +202,65 @@
           <b-form-radio value="3">하루</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
-      <div v-if="selected.range == 'year'">
-        <label for="sb-wrap">시작 날짜</label>
-        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+      <div v-if="selected.range == '0'">
+        <label for="sb-year-start">시작 날짜</label>
+        <b-form-spinbutton
+          class="my-3"
+          id="sb-year-start"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="start year"
+        ></b-form-spinbutton>
 
-        <label for="sb-wrap">끝 날짜</label>
-        <b-form-spinbutton class="my-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
+        <label for="sb-year-end">끝 날짜</label>
+        <b-form-spinbutton
+          class="my-3"
+          id="sb-year-end"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="end year"
+        ></b-form-spinbutton>
       </div>
-      <div v-if="selected.range == 'month'">
-        <label for="sb-wrap">시작 날짜</label>
-        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
-        <b-form-spinbutton class="mb-3" id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+      <div v-if="selected.range == '1'">
+        <label for="sb-month-start">시작 날짜</label>
+        <b-form-spinbutton
+          class="mt-3"
+          id="sb-month-start1"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="start year"
+        ></b-form-spinbutton>
+        <b-form-spinbutton
+          class="mb-3"
+          id="sb-month-start2"
+          wrap
+          min="1"
+          max="12"
+          placeholder="start month"
+        ></b-form-spinbutton>
 
-        <label for="sb-wrap">끝 날짜</label>
-        <b-form-spinbutton class="mt-3" id="sb-wrap" wrap min="2015" max="2030" placeholder="year"></b-form-spinbutton>
-        <b-form-spinbutton id="sb-wrap" wrap min="1" max="12" placeholder="month"></b-form-spinbutton>
+        <label for="sb-month-end">끝 날짜</label>
+        <b-form-spinbutton
+          class="mt-3"
+          id="sb-month-end1"
+          wrap
+          min="2015"
+          max="2030"
+          placeholder="end year"
+        ></b-form-spinbutton>
+        <b-form-spinbutton id="sb-month-end2" wrap min="1" max="12" placeholder="end month"></b-form-spinbutton>
       </div>
-      <div v-if="selected.range == 'day'">
+      <div v-if="selected.range == '2'">
         <label for="datepicker1">시작 날짜</label>
         <b-form-datepicker class="my-3" id="datepicker1" placeholder="시작날짜 선택" local="en"></b-form-datepicker>
 
         <label for="datepicker2">끝 날짜</label>
         <b-form-datepicker class="my-3" id="datepicker2" placeholder="끝날짜 선택" local="en"></b-form-datepicker>
       </div>
-      <div v-if="selected.range == 'oneDay'">
+      <div v-if="selected.range == '3'">
         <div>
           <label for="datepicker3">표시 날짜</label>
           <b-form-datepicker class="my-3" id="datepicker3" placeholder="표시날짜 선택" local="en"></b-form-datepicker>
@@ -277,7 +312,7 @@ export default {
         row: [],
         range: null,
         date: { start: null, end: null },
-        valType: "sum"
+        valType: "0"
       },
 
       options: {
@@ -455,8 +490,8 @@ export default {
             this.items.push({
               domain: tempArr[n].domain,
               title: tempArr[n].title,
-              dataset: this.datasetParser(tempArr[n].dataset),
-              value: tempArr[n].value,
+              dataset: this.datasetParser(tempArr[n].datasets),
+              value: tempArr[n].values,
               valType: this.valTypeParser(tempArr[n].valType),
               graphType: this.graphTypeParser(tempArr[n].graphType),
               range: this.rangeParser(tempArr[n].range),
@@ -479,8 +514,8 @@ export default {
             { admin_id: this.admin_id },
             { domain: this.selected.domain },
             { title: this.inputTitle },
-            { dataset: this.selected.dataset },
-            { value: this.selected.value },
+            { dataset: { datasets: this.selected.dataset } },
+            { value: { vaules: this.selected.value } },
             { valType: this.selected.valType },
             { graphType: this.selected.graphType },
             { range: this.selected.range },
