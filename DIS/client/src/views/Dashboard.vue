@@ -58,7 +58,7 @@
     </b-container>
     <b-modal id="addGraph" centered title="그래프 추가">
         <b-dropdown :text="dropdownText" block menu-class="w-100">
-          <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item.title, item.graphType)">{{item.title}}</b-dropdown-item>
+          <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item)">{{item.title}}</b-dropdown-item>
         </b-dropdown>
       <template v-slot:modal-footer="{cancel}">
         <b-button size="sm" variant="success" @click="addGraph(graphType)"> 그래프 생성 </b-button>
@@ -105,26 +105,14 @@ export default {
       dropdownText: "그래프 선택",
       listContents:[],
       datum: [],
-      itemsTest:[
-        {
-          'domain': "00",
-          'title': '센서별',
-          'loc1': "00",
-          'loc2': "00",
-          'value': "온도,습도",
-          'valType': "time",
-          'graphType': 11,
-          'range': 1,
-          'status': 0,
-        }
-      ],
+      clickedItem: null,
       items:[
         {
           'domain': "00",
           'title': '센서별',
           'loc1': "00",
-          'loc2': "00",
-          'value': "온도,습도",
+          'loc2': "all",
+          'value': ["elc", "tmp"],
           'valType': "time",
           'graphType': 11,
           'range': 1,
@@ -135,8 +123,8 @@ export default {
           'title': '강의실 별 전력 사용량 비교',
           'loc1': "00",
           'loc2': "00",
-          'value': "온도,습도",
-          'valType': "time",
+          'value': ["elc"],
+          'valType': "sum",
           'graphType': 3,
           'range': 1,
           'status': 0,
@@ -146,7 +134,7 @@ export default {
           'title': '온도',
           'loc1': "00",
           'loc2': "00",
-          'value': "온도,습도",
+          'value': ["elc"],
           'valType': "time",
           'graphType': 1,
           'range': 1,
@@ -167,65 +155,74 @@ export default {
     });
 
 
-
-    //let dt = {key:"name,value", search:[{name:this.id},{location1:this.password}]}
-    //this.elastic_part_###(dt);
-
-    //[{id:123},{password:123}]
-    //this.elastic_all_###(dt);
-
     //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
-    console.log(this.itemsTest[0]);
-    let name = ["elc1","elc2"];
-    let date = {"gte":"2020-01-01","lte":"2020-01-02"};
-    let dt = this.makeDatum_cal(name, date);
-    this.elastic_cal_sum(dt);
+
+    // cal
+    // let dt = [{model:"elc"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
+    // this.elastic_cal_min(dt);
+
+    console.log(this.makeDatum_cal(this.items[1]));
+    this.elastic_cal_sum(this.makeDatum_cal(this.items[1]))
+    // complete
+    //this.elastic_complete_model(this.makeDatum_complete(this.items[0]));
   },
 
   methods: {
-      //elastic-part용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
-        makeDatum_part(){
-
-        },
-
-      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아닐때)
-        makeDatum_cal(name, date){
-          let df = new Array();
-          name.forEach(data => {
-            let dt = new Array();
-            let nameObj = new Object();
-            let dateObj = new Object();
-            nameObj.name = data;
-            dateObj.date = date;
-            dt.push(nameObj);
-            dt.push(dateObj);
-            df.push(dt);
+      //elastic-complete용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
+        makeDatum_complete(itemConfig){
+          let dt = new Object();
+          let modelObject = new Object();
+          let orArr = new Array();
+          let andArr = new Array();
+          let nameStr = "";
+          itemConfig.value.forEach(data => {
+            nameStr = nameStr.concat(data,',');
           })
-          return df;
+          modelObject.model = nameStr;
+          orArr.push(modelObject);
+
+          if(itemConfig.loc1 != "all"){
+            let loc1Object = new Object();
+            loc1Object.loc1 = itemConfig.loc1;
+            andArr.push(loc1Object);
+          }
+          if(itemConfig.loc2 != "all"){
+            let loc2Object = new Object();
+            loc2Object.loc2 = itemConfig.loc2;
+            andArr.push(loc2Object);
+          }
+          dt.key = "model,date,value";
+          dt.or = orArr;
+          dt.and = andArr;
+          return dt;
         },
 
-      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아닐때)
-        // makeDatum_cal(name, date){
-        //   let df = new Array();
-        //   name.forEach(function(data){
-        //     let dt = new Array();
-        //     let nameObj = new Object();
-        //     let dateObj = new Object();
-        //     nameObj.name = data;
-        //     dateObj.date = date;
-        //     dt.push(nameObj);
-        //     dt.push(dateObj);
-        //     df.push(dt);
-        //   })
-        //   return df;
-        // },
+      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아니고 key가 없을 때)
+        makeDatum_cal(itemConfig){
+          let dt = [];
+          let loc1Arr = ["00","01"]
+          loc1Arr.forEach(data => {
+            let df = new Array();
+            let loc1Object = new Object();
+            let modelObject = new Object();
+            let dateObject = new Object();
 
+            loc1Object.loc1 = data;
+            modelObject.model = itemConfig.value[0];
+            dateObject.date = {"gte":"2020-01-01","lte":"2020-01-02"};
+            df.push(loc1Object);
+            df.push(modelObject);
+            df.push(dateObject);
+            dt.push(df);
+          })
+          return dt;
+        },
 
-    //센서 종류별로 데이터 받아오기
-    elastic_part_model(dt){
+    //센서 이름별로 데이터 받아오기
+    elastic_complete_model(dt){
       this.datum = [];
       // 데이터 받아오기
-      axios.post("/api/elastic/elastic-part", dt)
+      axios.post("/api/elastic/elastic-complete", dt)
       .then((r) => {
         let datumArray = new Array();
         r.data.forEach(data => {
@@ -250,14 +247,15 @@ export default {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
           let object = new Object();
-          object.group = data[0].model;
-          object.value = r.data.min;
+          object.group = data[0].loc1;
+          object.value = r.data.max;
           this.datum.push(object);
         })
         .catch(function (error){
           console.log(error.response);
         });
       })
+      console.log(this.datum);
     },
 
     //일정 기간동안 센서 이름별로 계산된 최대값 받아오기
@@ -268,7 +266,7 @@ export default {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
           let object = new Object();
-          object.group = data[0].model;
+          object.group = data[0].loc1;
           object.value = r.data.max;
           this.datum.push(object);
         })
@@ -286,7 +284,7 @@ export default {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
           let object = new Object();
-          object.group = data[0].model;
+          object.group = data[0].loc1;
           object.value = r.data.avg;
           this.datum.push(object);
         })
@@ -304,7 +302,7 @@ export default {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
           let object = new Object();
-          object.group = data[0].model;
+          object.group = data[0].loc1;
           object.value = r.data.sum;
           this.datum.push(object);
         })
@@ -321,13 +319,14 @@ export default {
       this.graphs[index].left = newRect.left;
     },
 
-    modalItemClick(title, graphType){
-      this.dropdownText = title;
-      this.graphTitle = title;
-      this.graphType = graphType;
+    modalItemClick(item){
+      this.dropdownText = item.title;
+      this.graphTitle = item.title;
+      this.graphType = item.graphType;
+      this.clickedItem = item;
     },
 
-    //area graph
+    // 그래프 추가
     addGraph(graphType) {
       //area graph
       if(graphType == 1){
