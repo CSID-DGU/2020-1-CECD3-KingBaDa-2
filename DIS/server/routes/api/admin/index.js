@@ -213,7 +213,7 @@ router.get('/graph/item', (req, res, next) => {
                                 "domain":obj.user_domain,
                                 "title":obj.graph_name,
                                 "datasets":JSON.parse(obj.graph_dataset).datasets,
-                                "values":JSON.parse(obj.graph_value).vaules,
+                                "values":JSON.parse(obj.graph_value).values,
                                 "graphType":obj.graph_type,
                                 "range":obj.graph_range,
                                 "status":obj.graph_status,
