@@ -148,7 +148,7 @@ router.post('/elastic-complete', async function(req, res, next) {
     let hits = response.hits.hits;//결과배열
     console.log(hits);
     let jsonArray=new Array();
-    let json; 
+    let json;
     hits.forEach(function(element){ //검색결과 순회
         json = new Object();
         for(let i in keysplit){ //key들 순회
