@@ -323,7 +323,7 @@ export default {
         domain: [],
         dataset: [
           {
-            value: { loc1: "신공학관", loc2: "" },
+            value: { loc1: "신공학관", loc2: "all" },
             text: "신공학관"
           },
           {
@@ -381,26 +381,26 @@ export default {
           range: this.rangeParser("2"),
           status: this.statusParser("1")
         },
-        {
-          domain: "전력세이빙",
-          title: "월간 습도 비교",
-          dataset: [{ loc1: "신공학관", loc2: "testbed" }],
-          value: ["hmd"],
-          valType: "avg",
-          graphType: "line",
-          range: "month",
-          status: "1"
-        },
-        {
-          domain: "전력세이빙",
-          title: "월간 전력량 비교",
-          dataset: [{ loc1: "신공학관", loc2: "testbed" }],
-          value: ["elc"],
-          valType: "sum",
-          graphType: "line",
-          range: "month",
-          status: "1"
-        },
+        // {
+        //   domain: "전력세이빙",
+        //   title: "월간 습도 비교",
+        //   dataset: [{ loc1: "신공학관", loc2: "testbed" }],
+        //   value: ["hmd"],
+        //   valType: "avg",
+        //   graphType: "line",
+        //   range: "month",
+        //   status: "1"
+        // },
+        // {
+        //   domain: "전력세이빙",
+        //   title: "월간 전력량 비교",
+        //   dataset: [{ loc1: "신공학관", loc2: "testbed" }],
+        //   value: ["elc"],
+        //   valType: "sum",
+        //   graphType: "line",
+        //   range: "month",
+        //   status: "1"
+        // },
         {
           domain: "전력세이빙",
           title: "강의실별 전력량 비교",
@@ -622,7 +622,7 @@ export default {
     datasetParser(input) {
       let arr = [];
       for (var n in input) {
-        if (input[n].loc2 == "") arr.push(input[n].loc1);
+        if (input[n].loc2 == "all") arr.push(input[n].loc1);
         else arr.push(input[n].loc1 + "_" + input[n].loc2);
       }
       return arr;
