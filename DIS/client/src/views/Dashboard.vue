@@ -27,7 +27,6 @@
         <ccv-pie-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==12"></ccv-pie-chart>
         <ccv-gauge-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==13"></ccv-gauge-chart>
         <ccv-meter-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==14"></ccv-meter-chart>
-        <ccv-radar-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-else-if="graphs[index].graphType==15"></ccv-radar-chart>
       </div>
       </VueDragResize>
     </div>
@@ -59,7 +58,7 @@
     </b-container>
     <b-modal id="addGraph" centered title="그래프 추가">
         <b-dropdown :text="dropdownText" block menu-class="w-100">
-          <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item.title, item.graphType)">{{item.title}}</b-dropdown-item>
+          <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item)">{{item.title}}</b-dropdown-item>
         </b-dropdown>
       <template v-slot:modal-footer="{cancel}">
         <b-button size="sm" variant="success" @click="addGraph(graphType)"> 그래프 생성 </b-button>
@@ -71,22 +70,21 @@
 
 <script>
 import VueDragResize from "vue-drag-resize";
-import graphSettings from "@/data/graphSettings.js";
 
-//import areaGraphData from "@/data/graphType/areaGraphTest.js";
-import stackedAreaGraphData from "@/data/graphType/stackedAreaGraphTest.js";
-import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
-import verticalGroupedBarGraphData from "@/data/graphType/verticalGroupedBarGraphTest.js";
-import verticalStackedBarGraphData from "@/data/graphType/verticalStackedBarGraphTest.js";
-import horizontalBarGraphData from "@/data/graphType/horizontalBarGraphTest.js";
-import horizontalGroupedBarGraphData from "@/data/graphType/horizontalGroupedBarGraphTest.js";
-import horizontalStackedBarGraphData from "@/data/graphType/horizontalStackedBarGraphTest.js";
-import scatterGraphData from "@/data/graphType/scatterGraphTest.js";
-import donutGraphData from "@/data/graphType/donutGraphTest.js";
-//import lineGraphData from "@/data/graphType/lineGraphTest.js";
-import pieGraphData from "@/data/graphType/pieGraphTest.js";
-import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
-import meterGraphData from "@/data/graphType/meterGraphTest.js";
+// //import areaGraphData from "@/data/graphType/areaGraphTest.js";
+// import stackedAreaGraphData from "@/data/graphType/stackedAreaGraphTest.js";
+// //import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
+// import verticalGroupedBarGraphData from "@/data/graphType/verticalGroupedBarGraphTest.js";
+// import verticalStackedBarGraphData from "@/data/graphType/verticalStackedBarGraphTest.js";
+// import horizontalBarGraphData from "@/data/graphType/horizontalBarGraphTest.js";
+// import horizontalGroupedBarGraphData from "@/data/graphType/horizontalGroupedBarGraphTest.js";
+// import horizontalStackedBarGraphData from "@/data/graphType/horizontalStackedBarGraphTest.js";
+// import scatterGraphData from "@/data/graphType/scatterGraphTest.js";
+// import donutGraphData from "@/data/graphType/donutGraphTest.js";
+// //import lineGraphData from "@/data/graphType/lineGraphTest.js";
+// import pieGraphData from "@/data/graphType/pieGraphTest.js";
+// import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
+// import meterGraphData from "@/data/graphType/meterGraphTest.js";
 
 import axios from 'axios';
 
@@ -107,15 +105,17 @@ export default {
       dropdownText: "그래프 선택",
       listContents:[],
       datum: [],
+      clickedItem: null,
+      clickedFlag: false, // 그래프 생성 시 선택하는 행동 말고 다른 행동들은 인식하지 않도록 하기 위한 flag
       items:[
         {
           'domain': "00",
           'title': '센서별',
           'loc1': "00",
-          'loc2': "00",
-          'value': "온도,습도",
+          'loc2': "all",
+          'value': ["elc", "tmp"],
           'valType': "time",
-          'graphType': 1,
+          'graphType': 11,
           'range': 1,
           'status': 0,
         },
@@ -124,9 +124,9 @@ export default {
           'title': '강의실 별 전력 사용량 비교',
           'loc1': "00",
           'loc2': "00",
-          'value': "온도,습도",
-          'valType': "time",
-          'graphType': 9,
+          'value': ["elc"],
+          'valType': "sum",
+          'graphType': 3,
           'range': 1,
           'status': 0,
         },
@@ -134,10 +134,43 @@ export default {
           'domain': "00",
           'title': '온도',
           'loc1': "00",
-          'loc2': "00",
-          'value': "온도,습도",
+          'loc2': "all",
+          'value': ["elc"],
           'valType': "time",
           'graphType': 1,
+          'range': 1,
+          'status': 0,
+        },
+        {
+          'domain': "00",
+          'title': '전력 사용량 파이그래프',
+          'loc1': "00",
+          'loc2': "00",
+          'value': ["elc"],
+          'valType': "sum",
+          'graphType': 12,
+          'range': 1,
+          'status': 0,
+        },
+        {
+          'domain': "00",
+          'title': '전력 사용량 세로그룹',
+          'loc1': "00",
+          'loc2': "00",
+          'value': ["elc"],
+          'valType': "avg",
+          'graphType': 4,
+          'range': 1,
+          'status': 0,
+        },
+        {
+          'domain': "00",
+          'title': '전력 사용량 가로스택 ',
+          'loc1': "00",
+          'loc2': "00",
+          'value': ["elc"],
+          'valType': "avg",
+          'graphType': 8,
           'range': 1,
           'status': 0,
         }
@@ -155,31 +188,231 @@ export default {
       this.listHeight = listEl.clientHeight;
     });
 
-    // 데이터 받아오기
-    let dt = {key:"model,date,value", search:[{loc2:"00"}]}
 
-    axios.post("/api/elastic/elastic-part", dt)
-    .then((r) => {
-      let datumArray = new Array();
-      r.data.forEach(function(data){
-        let object = new Object();
-        object.group = data.model;
-        object.date = data.date;
-        object.value = data.value;
-        datumArray.push(object);
-      })
-      this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
-    })
-    .catch(function (error){
-      console.log(error.response);
-    });
+    //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
 
+    // cal
+    // let dt = [{model:"elc"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
+    // this.elastic_cal_min(dt);
+
+    // console.log(this.makeDatum_cal(this.items[1]));
+    // this.elastic_cal_sum(this.makeDatum_cal(this.items[1]))
+    // complete
+    // this.elastic_complete_model(this.makeDatum_complete(this.items[0]));
   },
-  created() {
-    this.graphs = graphSettings.graphs;
+
+  updated(){
+    if(this.clickedFlag){
+      this.datum = [];
+      if(this.clickedItem.graphType == 1 || this.clickedItem.graphType == 2 || this.clickedItem.graphType == 9 || this.clickedItem.graphType == 11){
+        this.elastic_complete_model(this.makeDatum_complete(this.clickedItem));
+      }
+      else if(this.clickedItem.graphType == 4 || this.clickedItem.graphType == 5 || this.clickedItem.graphType == 7 || this.clickedItem.graphType == 8){
+        this.elastic_cal(this.makeDatum_cal(this.clickedItem));
+      }
+      else{
+        if(this.clickedItem.valType == "avg"){
+          this.elastic_cal_avg(this.makeDatum_cal(this.clickedItem));
+          console.log(this.datum);
+        }
+        else if(this.clickedItem.valType == "sum"){
+          this.elastic_cal_sum(this.makeDatum_cal(this.clickedItem));
+        }
+        else if(this.clickedItem.valType == "min"){
+          this.elastic_cal_min(this.makeDatum_cal(this.clickedItem));
+        }
+        else if(this.clickedItem.valType == "max"){
+          this.elastic_cal_max(this.makeDatum_cal(this.clickedItem));
+        }
+        else{
+          console.log("잘못된 항목");
+        }
+      }
+      this.clickedFlag = false;
+    }
   },
 
   methods: {
+      //elastic-complete용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
+        makeDatum_complete(itemConfig){
+          let dt = new Object();
+          let modelObject = new Object();
+          let orArr = new Array();
+          let andArr = new Array();
+          let nameStr = "";
+          itemConfig.value.forEach(data => {
+            nameStr = nameStr.concat(data,'1,');
+          })
+          modelObject.name = nameStr;
+          orArr.push(modelObject);
+
+          if(itemConfig.loc1 != "all"){
+            let loc1Object = new Object();
+            loc1Object.loc1 = itemConfig.loc1;
+            andArr.push(loc1Object);
+          }
+          if(itemConfig.loc2 != "all"){
+            let loc2Object = new Object();
+            loc2Object.loc2 = itemConfig.loc2;
+            andArr.push(loc2Object);
+          }
+          dt.key = "name,date,value";
+          dt.or = orArr;
+          dt.and = andArr;
+          return dt;
+        },
+
+      //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아니고 key가 없을 때)
+        makeDatum_cal(itemConfig){
+          let dt = [];
+          let loc1Arr = ["00","01"];
+          loc1Arr.forEach(data => {
+            let df = new Array();
+            let loc1Object = new Object();
+            let modelObject = new Object();
+            let dateObject = new Object();
+
+            loc1Object.loc1 = data;
+            modelObject.model = itemConfig.value[0];
+            dateObject.date = {"gte":"2020-01-01","lte":"2020-01-02"};
+            df.push(loc1Object);
+            df.push(modelObject);
+            df.push(dateObject);
+            dt.push(df);
+          })
+          return dt;
+        },
+
+    //센서 종류별로 데이터 받아오기
+    elastic_complete_model(dt){
+      // 데이터 받아오기
+      axios.post("/api/elastic/elastic-complete", dt)
+      .then((r) => {
+        let datumArray = new Array();
+        r.data.forEach(data => {
+          let object = new Object();
+          object.group = data.name;
+          object.date = data.date;
+          object.value = data.value;
+          datumArray.push(object);
+        })
+        this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
+      })
+      .catch(function (error){
+        console.log(error.response);
+      });
+    },
+
+    // min, max, avg, sum을 key로 만들어서 데이터 만들기
+    elastic_cal(dt){
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let minObject = new Object();
+          let maxObject = new Object();
+          let avgObject = new Object();
+          let sumObject = new Object();
+
+          minObject.group = data[0].loc1;
+          minObject.key = "min";
+          minObject.value = r.data.min;
+          this.datum.push(minObject);
+
+          maxObject.group = data[0].loc1;
+          maxObject.key = "max";
+          maxObject.value = r.data.max;
+          this.datum.push(maxObject);
+
+          avgObject.group = data[0].loc1;
+          avgObject.key = "avg";
+          avgObject.value = r.data.avg;
+          this.datum.push(avgObject);
+
+          sumObject.group = data[0].loc1;
+          sumObject.key = "sum";
+          sumObject.value = r.data.sum;
+          this.datum.push(sumObject);
+
+          console.log(this.datum);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
+    },
+
+
+    //일정 기간동안 센서 종류별로 계산된 최소값 받아오기
+    elastic_cal_min(dt){
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].loc1;
+          object.value = r.data.max;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
+    },
+
+    //일정 기간동안 센서 이름별로 계산된 최대값 받아오기
+    elastic_cal_max(dt){
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].loc1;
+          object.value = r.data.max;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
+    },
+
+    //일정 기간동안 센서 이름별로 계산된 평균값 받아오기
+    elastic_cal_avg(dt){
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          let object = new Object();
+          object.group = data[0].loc1;
+          object.value = r.data.avg;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
+    },
+
+    //일정 기간동안 센서 이름별로 계산된 누적값 받아오기
+    elastic_cal_sum(dt){
+    console.log(dt);
+      // 데이터 받아오기
+      dt.forEach(data => {
+        axios.post("/api/elastic/elastic-cal", data)
+        .then((r) => {
+          console.log(r);
+          let object = new Object();
+          object.group = data[0].loc1;
+          object.value = r.data.sum;
+          this.datum.push(object);
+        })
+        .catch(function (error){
+          console.log(error.response);
+        });
+      })
+    },
+
     resize(newRect, index) {
       this.graphs[index].width = newRect.width;
       this.graphs[index].height = newRect.height;
@@ -187,13 +420,15 @@ export default {
       this.graphs[index].left = newRect.left;
     },
 
-    modalItemClick(title, graphType){
-      this.dropdownText = title;
-      this.graphTitle = title;
-      this.graphType = graphType;
+    modalItemClick(item){
+      this.dropdownText = item.title;
+      this.graphTitle = item.title;
+      this.graphType = item.graphType;
+      this.clickedItem = item;
+      this.clickedFlag = true;
     },
 
-    //area graph
+    // 그래프 추가
     addGraph(graphType) {
       //area graph
       if(graphType == 1){
@@ -210,6 +445,9 @@ export default {
             }
           },
           "curve": "curveNatural",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
@@ -238,6 +476,9 @@ export default {
             }
           },
           "curve": "curveMonotoneX",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
@@ -247,7 +488,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: stackedAreaGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -273,7 +514,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: verticalBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -300,7 +541,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: verticalGroupedBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -327,7 +568,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: verticalStackedBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -353,7 +594,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: horizontalBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -379,7 +620,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: horizontalGroupedBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -406,7 +647,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: horizontalStackedBarGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -432,7 +673,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: scatterGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -459,7 +700,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: donutGraphData.data
+          datum: this.datum,
         });
       }
 
@@ -478,6 +719,9 @@ export default {
             }
           },
           "curve": "curveMonotoneX",
+          "points":{
+            "radius": "0",
+          },
           "height": "400"
         };
         this.graphs.push({
@@ -511,7 +755,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: pieGraphData.data
+          datum: this.datum
         });
       }
 
@@ -534,7 +778,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: gaugeGraphData.data
+          datum: this.datum
         });
       }
 
@@ -579,7 +823,7 @@ export default {
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,
           option: this.TCO,
-          datum: meterGraphData.data
+          datum: this.datum
         });
       }
 
