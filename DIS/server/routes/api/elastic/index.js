@@ -167,7 +167,7 @@ router.post('/elastic-complete', async function(req, res, next) {
 배열내의 date필드를 제외한 나머지부분이 조건, date필드의 경우 기간의 범위
 */
 router.post('/elastic-cal',async function(req, res, next) {
-    let search =[{loc1:"01"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}];
+    let search = req.body;
     let client = elasticsearch.Client({
     host: '192.168.0.5:9200'
     });
