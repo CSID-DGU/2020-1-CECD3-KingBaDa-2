@@ -4,13 +4,26 @@
       <b-tabs card>
         <b-tab v-for="building in buildings" :title="building.buildingName" v-bind:key="building">
           <div role="tablist">
-            <b-card no-body class="mb-1" v-for="(deviceInfo,index) in building.deviceInfos" v-bind:key="deviceInfo">
+            <b-card
+              no-body
+              class="mb-1"
+              v-for="(deviceInfo,index) in building.deviceInfos"
+              v-bind:key="deviceInfo"
+            >
               <b-card-header header-tag="header" class="p-1" role="tab">
                 <b-button block v-b-toggle="deviceInfo.class" variant="info">{{deviceInfo.class}}</b-button>
               </b-card-header>
               <b-collapse :id="deviceInfo.class" accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                  <b-card-text v-for="device in building.deviceInfos[index].devices" v-bind:key="device">{{device}}</b-card-text>
+                  <b-card-text
+                    v-for="device in building.deviceInfos[index].devices"
+                    v-bind:key="device"
+                  >
+                    {{device.name}}
+                    <b-form-checkbox v-model="device.state" name="check-button" switch>
+                      <b>{{ device.state }}</b>
+                    </b-form-checkbox>
+                  </b-card-text>
                 </b-card-body>
               </b-collapse>
             </b-card>
@@ -34,24 +47,22 @@ export default {
     };
   },
 
-  created(){
+  created() {
+    //전체ONOFF 구현
     this.buildings = controlData.buildings;
     console.log(this.buildings);
   },
 
-  mounted(){
-  },
+  mounted() {},
 
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
 <style scoped>
-.background{
+.background {
   position: absolute;
   left: 150px;
   right: 20px;
 }
-
 </style>
