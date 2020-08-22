@@ -22,8 +22,8 @@ router.post('/elastic-all', async function(req, res, next) {
             }
         }
     }
-    let obj=new Object();
     search.forEach(function(element){
+        let obj=new Object();
         obj.match=element;
         frame.query.bool.must.push(obj);
     });
@@ -67,8 +67,8 @@ router.post('/elastic-part', async function(req, res, next) {
             }
         }
     }
-    let obj=new Object();
     search.forEach(function(element){
+        let obj=new Object();
         obj.match=element;
         frame.query.bool.must.push(obj);
     });
@@ -129,8 +129,8 @@ router.post('/elastic-complete', async function(req, res, next) {
     });
     frame.query.bool.must=must;
     /////////////and////////////////
-    let obj2=new Object();
     and.forEach(function(element){
+        let obj2=new Object();
         if(element.hasOwnProperty("date")){
             let range = {range:{}};
             range.range=element;
@@ -167,7 +167,7 @@ router.post('/elastic-complete', async function(req, res, next) {
 배열내의 date필드를 제외한 나머지부분이 조건, date필드의 경우 기간의 범위
 */
 router.post('/elastic-cal',async function(req, res, next) {
-    let search =req.body;
+    let search =[{loc1:"01"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}];
     let client = elasticsearch.Client({
     host: '192.168.0.5:9200'
     });
@@ -181,8 +181,8 @@ router.post('/elastic-cal',async function(req, res, next) {
             }
         }
     }
-    let obj=new Object();
     search.forEach(function(element){
+        let obj=new Object();
         if(element.hasOwnProperty("date")){
             let range = {range:{}};
             range.range=element;
@@ -192,7 +192,6 @@ router.post('/elastic-cal',async function(req, res, next) {
             frame.query.bool.must.push(obj);
         }
     });
-    console.log(frame.query.bool.must);
     await client.search({
     index: 'test',
     type: '_doc',

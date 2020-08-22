@@ -27,8 +27,8 @@ export default {
   },
   methods: {
     loginUser() {
-      const dt = {key:"name,value", or:[{name:"elc1,elc2"}],and:[{loc1:"00"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]}
-      axios.post("/api/elastic/elastic-complete", dt)
+      const dt = [{loc1:"00"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
+      axios.post("/api/elastic/elastic-cal", dt)
       .then(r => console.log("r: ", JSON.stringify(r, null, 2)))
       .catch(function (error){
         console.log(error.response);
