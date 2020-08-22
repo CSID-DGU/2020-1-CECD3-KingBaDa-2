@@ -11,7 +11,10 @@
       <br />
     </b-card>
 
-    <b-modal id="modal-1" title="회원정보 변경"></b-modal>
+    <b-modal id="modal-1" title="회원정보 변경">
+      <div>이름 : {{userName}}</div>
+      <div>직종 : {{userDomain}}</div>
+    </b-modal>
   </div>
 </template>
 
