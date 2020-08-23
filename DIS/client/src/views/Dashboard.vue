@@ -107,74 +107,8 @@ export default {
       datum: [],
       clickedItem: null,
       clickedFlag: false, // 그래프 생성 시 선택하는 행동 말고 다른 행동들은 인식하지 않도록 하기 위한 flag
-      items:[
-        {
-          'domain': "00",
-          'title': '센서별',
-          'loc1': "00",
-          'loc2': "all",
-          'value': ["elc", "tmp"],
-          'valType': "time",
-          'graphType': 11,
-          'range': 1,
-          'status': 0,
-        },
-        {
-          'domain': "00",
-          'title': '강의실 별 전력 사용량 비교',
-          'loc1': "00",
-          'loc2': "00",
-          'value': ["elc"],
-          'valType': "sum",
-          'graphType': 3,
-          'range': 1,
-          'status': 0,
-        },
-        {
-          'domain': "00",
-          'title': '온도',
-          'loc1': "00",
-          'loc2': "all",
-          'value': ["elc"],
-          'valType': "time",
-          'graphType': 1,
-          'range': 1,
-          'status': 0,
-        },
-        {
-          'domain': "00",
-          'title': '전력 사용량 파이그래프',
-          'loc1': "00",
-          'loc2': "00",
-          'value': ["elc"],
-          'valType': "sum",
-          'graphType': 12,
-          'range': 1,
-          'status': 0,
-        },
-        {
-          'domain': "00",
-          'title': '전력 사용량 세로그룹',
-          'loc1': "00",
-          'loc2': "00",
-          'value': ["elc"],
-          'valType': "avg",
-          'graphType': 4,
-          'range': 1,
-          'status': 0,
-        },
-        {
-          'domain': "00",
-          'title': '전력 사용량 가로스택 ',
-          'loc1': "00",
-          'loc2': "00",
-          'value': ["elc"],
-          'valType': "avg",
-          'graphType': 8,
-          'range': 1,
-          'status': 0,
-        }
-      ]
+      items:[],
+      
     };
   },
 
@@ -188,6 +122,7 @@ export default {
       this.listHeight = listEl.clientHeight;
     });
 
+    this.getItem();
 
     //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
 
@@ -233,6 +168,24 @@ export default {
   },
 
   methods: {
+        getItem() {
+            axios.get("/api/admin/graph/item?admin_id=admin1")
+            .then((r) => {
+              r.data.data.forEach(data => {
+                let object = new Object();
+                object.title = data.title;
+                object.valType = data.domain;
+                object.loc1 = data.datasets[0].loc1;
+                object.loc2 = data.datasets[0].loc2;
+                object.graphType = data.graphType;
+                object.value = data.values;
+                object.range = data.range;
+                object.status = data.status;
+
+                this.items.push(object);
+              })
+            })
+          },
       //elastic-complete용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
         makeDatum_complete(itemConfig){
           let dt = new Object();
