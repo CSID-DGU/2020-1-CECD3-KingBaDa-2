@@ -345,6 +345,14 @@ export default {
           {
             value: { loc1: "신공학관", loc2: "5146" },
             text: "신공학관_5146"
+          },
+          {
+            value: { loc1: "00", loc2: "all" },
+            text: "00"
+          },
+          {
+            value: { loc1: "00", loc2: "00" },
+            text: "00_00"
           }
         ],
         value: [
@@ -376,7 +384,7 @@ export default {
           title: "일간 온습도 비교",
           dataset: this.datasetParser([{ loc1: "신공학관", loc2: "testbed" }]),
           value: ["tmp", "hmd"],
-          valType: this.valTypeParser("1"),
+          valType: "avg",
           graphType: this.graphTypeParser("9"),
           range: this.rangeParser("2"),
           status: this.statusParser("1")
@@ -492,11 +500,11 @@ export default {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.items.push({
-              domain: tempArr[n].domain,
+              domain: "전력세이빙",//tempArr[n].domain,
               title: tempArr[n].title,
               dataset: this.datasetParser(tempArr[n].datasets),
               value: tempArr[n].values,
-              valType: this.valTypeParser(tempArr[n].valType),
+              valType: tempArr[n].domain,//this.valTypeParser(tempArr[n].valType),
               graphType: this.graphTypeParser(tempArr[n].graphType),
               range: this.rangeParser(tempArr[n].range),
               status: this.statusParser(tempArr[n].status)

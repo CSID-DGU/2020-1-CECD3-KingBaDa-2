@@ -36,7 +36,7 @@
                     v-bind:key="device.name"
                   >
                     {{device.name}}
-                    <b-form-checkbox v-model="device.state" name="check-button" switch>
+                    <b-form-checkbox v-model="device.state"  name="check-button" switch>
                       <b v-if="device.state==true">on</b>
                       <b v-else>off</b>
                     </b-form-checkbox>
@@ -79,7 +79,19 @@ export default {
         else tempArr.devices[n].state = false;
       }
     }
-  }
+  },
+  // checkAll(i, index) {
+  //   let tempArr = this.buildings[i].deviceInfos[index];
+  //   console.log()
+  //   for (var n in tempArr.devices) {
+  //       if (tempArr.devices[n].state == true) 
+  //       {
+  //         tempArr.toggleAll = true;
+  //       return;
+  //       }
+  //     }
+  //     tempArr.toggleAll = false;
+  // }
 };
 </script>
 

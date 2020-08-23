@@ -21,7 +21,7 @@
         @row-clicked="rowClick"
       ></b-table>
       <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="center"></b-pagination>
-      <!-- <b-button @click="writeContent">글쓰기</b-button> -->
+      <b-button @click="writeContent">글쓰기</b-button>
     </b-card>
   </div>
 </template>
