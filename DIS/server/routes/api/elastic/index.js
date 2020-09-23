@@ -7,7 +7,7 @@ const e = require('express');
 [{id:123},{password:123}]
 검색조건에 해당하는 모든 결과를 json으로 리턴
 */
-router.post('/elastic-all', async function(req, res, next) {
+router.get('/elastic-all', async function(req, res, next) {
     let search = req.body;
     let client = elasticsearch.Client({
     host: '192.168.0.5:9200'
@@ -50,7 +50,7 @@ router.post('/elastic-all', async function(req, res, next) {
 key는 검색한 결과에서 가져올 부분
 search는 검색조건
 */
-router.post('/elastic-part', async function(req, res, next) {
+router.get('/elastic-part', async function(req, res, next) {
     let key = req.body.key; //결과로 받고싶은 필드명
     let search = req.body.search;// 검색어
     let keysplit = key.split(',');
@@ -94,7 +94,7 @@ router.post('/elastic-part', async function(req, res, next) {
     });
 });
 //{key:"name,value", or:[{name:"elc1,elc2"}],and:[{loc1:"00"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]}
-router.post('/elastic-complete', async function(req, res, next) {
+router.get('/elastic-complete', async function(req, res, next) {
     let key = req.body.key; //결과로 받고싶은 필드명
     let or = req.body.or;// 검색어
     let and = req.body.and;
@@ -166,7 +166,7 @@ router.post('/elastic-complete', async function(req, res, next) {
 [{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
 배열내의 date필드를 제외한 나머지부분이 조건, date필드의 경우 기간의 범위
 */
-router.post('/elastic-cal',async function(req, res, next) {
+router.get('/elastic-cal',async function(req, res, next) {
     let search = req.body;
     let client = elasticsearch.Client({
     host: '192.168.0.5:9200'
