@@ -28,7 +28,6 @@ router.get('/elastic-all', async function(req, res, next) {
         frame.query.bool.must.push(obj);
     });
     await client.search({
-    index: 'test',
     type: '_doc',
     body: frame,
     }).then(function(response) {
@@ -73,7 +72,6 @@ router.get('/elastic-part', async function(req, res, next) {
         frame.query.bool.must.push(obj);
     });
     await client.search({
-    index: 'test',
     type: '_doc',
     body: frame,
     }).then(function(response) {
@@ -141,7 +139,7 @@ router.get('/elastic-complete', async function(req, res, next) {
         }
     });
     await client.search({
-    index: 'test',
+    //index: 'test',
     type: '_doc',
     body: frame,
     }).then(function(response) {
@@ -193,7 +191,6 @@ router.get('/elastic-cal',async function(req, res, next) {
         }
     });
     await client.search({
-    index: 'test',
     type: '_doc',
     body: frame,
     }).then(function(response) {
