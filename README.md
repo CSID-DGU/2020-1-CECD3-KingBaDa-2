@@ -28,6 +28,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 Mobius에 연결된 센서및 디바이스의 정보를 가져와서 도메인과 유저의 요구에 맞는 시각화 자료를 제공한다. 
 프로그램 배포의 편의성을 위하여 docker를 사용한다.
 
+Kafka,MariaDB,Elasticsearch,Logstash,Kibana는 컨테이너로 동작합니다.
+Kafka - 큐에쌓인 IoT데이터 메시징
+Logstash - input: Kafka  output: Elasticsearch
+Elasticsearch -  IoT데이터 저장
+Kibana - Elasticsearch 테스트용
+MariaDB - 사용자, 센서정보 저장
+
 ## Developer
 
 2015112095 박규빈 (팀장)
