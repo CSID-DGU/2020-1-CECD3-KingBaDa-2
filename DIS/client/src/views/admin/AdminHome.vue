@@ -14,7 +14,7 @@
     </div>
     <b-tabs content-class="mt-3" align="center">
       <b-tab title="디바이스 관리" active>
-        <b-card title="디바이스 목록">
+        <b-card class="w-50 mx-auto" title="디바이스 목록">
           <b-list-group>
             <b-list-group-item>
               <strong>디바이스</strong>
@@ -23,9 +23,12 @@
             <b-list-group-item
               v-for="(device_item, index) in options.device"
               :key="index"
-              >{{ device_item.value }}
+              >시리얼 넘버 : {{ device_item.serialNumber }}
               <b-button class="mx-2">수정</b-button>
-              <b-button variant="light" class="deleteBtn"
+              <b-button
+                variant="light"
+                class="deleteBtn"
+                @click="deleteDevice(index)"
                 ><img src="../../assets/bin.png"/></b-button
             ></b-list-group-item>
           </b-list-group>
@@ -362,7 +365,12 @@
       </div>
       <div v-else></div>
     </b-modal>
-    <b-modal id="device-reg" title="디바이스 정보 입력" @cancel="resetValue">
+    <b-modal
+      id="device-reg"
+      title="디바이스 정보 입력"
+      @cancel="resetValue"
+      @ok="addDevice"
+    >
       <b-form class="my-2" inline
         >시리얼 넘버 :
         <b-form-input
@@ -395,9 +403,8 @@
           placeholder="제조사 정보"
         ></b-form-input
       ></b-form>
-      <b-form class="my-2" inline>필드 목록 : </b-form>
       <b-form-select
-        class="mr-5"
+        class="mr-5 my-2"
         v-model="selected.savedField"
         :options="options.savedField"
       >
@@ -407,14 +414,32 @@
           >
         </template>
       </b-form-select>
-      <b-button class="ml-3 mt-3" v-b-modal.device-field>필드 추가</b-button>
+      <b-list-group>
+        <b-list-group-item>
+          <strong>필드</strong>
+          <b-button v-b-modal.device-field class="mx-2">추가</b-button>
+        </b-list-group-item>
+        <b-list-group-item
+          v-for="(device_field, index) in options.field"
+          :key="index"
+          >{{ device_field.value }}
+          <b-button class="mx-2">수정</b-button>
+          <b-button variant="light" class="deleteBtn"
+            ><img src="../../assets/bin.png"/></b-button
+        ></b-list-group-item>
+      </b-list-group>
     </b-modal>
-    <b-modal id="device-field" title="디바이스 필드 입력" @cancel="resetValue">
+    <b-modal
+      id="device-field"
+      title="디바이스 필드 입력"
+      @cancel="resetValue"
+      @ok="addField"
+    >
       <b-form class="my-2" inline
         >필드 이름 :
         <b-form-input
           class="ml-3"
-          v-model="text"
+          v-model="inputfield1"
           placeholder="이름"
         ></b-form-input
       ></b-form>
@@ -422,7 +447,7 @@
         >필드 단위 :
         <b-form-input
           class="ml-3"
-          v-model="text"
+          v-model="inputfield2"
           placeholder="단위"
         ></b-form-input
       ></b-form>
@@ -459,6 +484,8 @@ export default {
       inputLoc1: "",
       inputLoc2: "",
       inputManu: "",
+      inputfield1: "",
+      inputfield2: "",
       dataset: null,
       value: null,
       row: [],
@@ -750,6 +777,83 @@ export default {
       }
       console.log(this.selected.domain);
     },
+    getDevice() {
+      let tempArr;
+      axios
+        .get("/api/admin/device?admin_id=" + this.admin_id)
+        .then(r => {
+          tempArr = r.data.data;
+          for (var n in tempArr) {
+            this.options.device.push({
+              serialNumber: tempArr[n].serialNumber,
+              loc1: tempArr[n].loc1,
+              loc2: tempArr[n].loc2,
+              manufacturer: tempArr[n].manufacturer,
+              fields: tempArr[n].fields
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response);
+        });
+    },
+    addDevice(bvModalEvt) {
+      if (this.inputSerial == "") alert("시리얼 넘버를 입력해주세요!");
+      else if (this.inputLoc1 == "") alert("건물명을 입력해 주세요!");
+      else if (this.inputLoc2 == "") alert("호수를 입력해 주세요!");
+      else if (this.inputManu == "") alert("제조사 정보를 입력해 주세요!");
+      else {
+        axios
+          .post("/api/admin/device", [
+            { serialNumber: this.inputSerial },
+            { loc1: this.inputLoc1 },
+            { loc2: this.inputLoc2 },
+            { manufacturer: this.inputManu },
+            { fields: { values: this.options.field } }
+          ])
+          .then(r => {
+            console.log(r);
+            this.options.device.push({
+              serialNumber: this.inputSerial,
+              loc1: this.inputLoc1,
+              loc2: this.inputLoc2,
+              manufacturer: this.inputManu,
+              fields: this.options.field
+            });
+            this.inputSerial = "";
+            this.inputLoc1 = "";
+            this.inputLoc2 = "";
+            this.inputManu = "";
+            this.options.field = null;
+          })
+          .catch(function(error) {
+            console.log(error.response);
+          });
+        return;
+      }
+      bvModalEvt.preventDefault();
+    },
+    deleteDevice(index) {
+      let obj = new Object();
+      obj = this.options.device[index];
+      this.options.device.splice(index, 1);
+      axios
+        .delete("/api/admin/device", {
+          data: {
+            admin_id: this.admin_id,
+            title: obj.title
+          },
+          withCredentials: true
+        })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+          this.options.device.push(obj);
+          console.log(error.response);
+        });
+    },
     deleteJob() {
       this.job.pop();
     },
@@ -783,6 +887,14 @@ export default {
         this.selected.value.lastIndexOf(value_item),
         1
       );
+    },
+    addField() {
+      this.options.field.push({
+        value: { name: this.inputfield1, unit: this.inputfield2 },
+        text: "이름 :" + this.inputfield1 + " 단위 : " + this.inputfield2
+      });
+      this.inputfield1 = "";
+      this.inputfield2 = "";
     },
     logout() {
       this.$router.push("/");
