@@ -18,7 +18,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+      ES_JAVA_OPTS: "-Xmx10240m -Xms10240m"
       # Use single node discovery in order to disable production mode and avoid bootstrap checks
       # see https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
@@ -44,7 +44,7 @@ services:
       - "5000:5000/udp"
       - "9600:9600"
     environment:
-      LS_JAVA_OPTS: "-Xmx1024m -Xms1024m"
+      LS_JAVA_OPTS: "-Xmx10240m -Xms10240m"
     networks:
       - elk
     depends_on:
