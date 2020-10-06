@@ -1,9 +1,6 @@
 <template>
   <div>
     <b-card bg-variant="light" style="max-width: 70rem; margin: 0 auto;">
-      <div>공지사항</div>
-      <br />
-      <br />
       <div class="search">
         <b-form inline>
           <b-form-select v-model="selected" :options="options"></b-form-select>

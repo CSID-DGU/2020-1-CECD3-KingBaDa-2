@@ -1,6 +1,8 @@
 <template>
   <div>
-    <p>메타 데이터 다운로드</p>
+    <div class="title">
+      데이터
+    </div>
     <b-row class="w-75 mx-auto frame">
       <b-col>
         파일형식
@@ -85,9 +87,9 @@ button {
 .frame {
   margin-top: 300px;
 }
-p {
-  margin-top: 50px;
-  font-weight: bold;
+.title{
+  color: #6FCEDC;
   font-size: 30px;
+  font-weight: bold;
 }
 </style>

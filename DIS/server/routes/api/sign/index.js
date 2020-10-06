@@ -18,7 +18,7 @@ router.post('/admin-login', (req, res, next) => {
   user_id=req.body.id;
   user_password=req.body.pw;
   let connection = mysql.createConnection({
-    host: '192.168.0.5',
+    host: '1.223.111.138',
     port: port,
     user: user,
     password: password,
