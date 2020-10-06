@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card bg-variant="light" style="max-width: 70rem; margin: 0 auto;">
-      <div>공지사항</div>
+      <div>공지 사항</div>
       <br />
       <br />
       <div class="search">
@@ -20,8 +20,13 @@
         :fields="fields"
         @row-clicked="rowClick"
       ></b-table>
-      <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" align="center"></b-pagination>
-      <b-button @click="writeContent">글쓰기</b-button>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        align="center"
+      ></b-pagination>
+      <!-- <b-button @click="writeContent">글쓰기</b-button> -->
     </b-card>
   </div>
 </template>
@@ -53,10 +58,6 @@ export default {
       // bootstrap 'b-table' 필드 설정
       fields: [
         {
-          key: "content_id",
-          label: "번호"
-        },
-        {
           key: "title",
           label: "제목"
         },
@@ -81,6 +82,14 @@ export default {
   },
   methods: {
     rowClick() {}
+    // calcToday() {
+    //   let date = new Date();
+
+    //   for (var i = 0; i < data.Content.length; i++) {
+    //     data.Content[i].created_at = date;
+    //   }
+    //   console.log(data.Content[2].created_at - 1);
+    // }
     // writeContent() {
     //   this.$router.push({
     //     path: `/board/create`

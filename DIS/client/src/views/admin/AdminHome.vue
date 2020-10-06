@@ -115,23 +115,25 @@
           <div>
             <div>
               <b-card-group deck>
-                <b-card title="dataset 설정">
+                <b-card title="데이터셋 설정">
                   <b-button v-b-modal.modal-1 class="mx-2"
-                    >dataset 설정</b-button
+                    >데이터셋 설정</b-button
                   >
                   <template v-slot:footer>
-                    선택된 Dataset :
                     <span
                       v-for="(dataset_item, index) in selected.dataset"
                       :key="index"
-                      >{{ dataset_item }}&nbsp;</span
+                      ><b-row
+                        ><b-col>{{ dataset_item.loc1 }}</b-col
+                        ><b-col>{{ dataset_item.loc2 }}</b-col></b-row
+                      ></span
                     >
                   </template>
                 </b-card>
 
-                <b-card title="value 설정">
+                <b-card title="값 설정">
                   <b-button v-b-modal.modal-2 class="mx-2 mb-3"
-                    >value 설정</b-button
+                    >값 설정</b-button
                   >
                   <b-form-radio-group
                     id="valTypegroup"
@@ -145,12 +147,16 @@
                     <b-form-radio value="4">시간별</b-form-radio>
                   </b-form-radio-group>
                   <template v-slot:footer>
-                    선택된 Value :
-                    <span v-for="value_item in selected.value" :key="value_item"
-                      >{{ value_item }}&nbsp;</span
-                    >
-                    /
-                    {{ valTypeParser(selected.valType) }}
+                    <b-row
+                      ><b-col
+                        ><span
+                          v-for="value_item in selected.value"
+                          :key="value_item"
+                          >{{ value_item }}&nbsp;</span
+                        ></b-col
+                      >
+                      <b-col>{{ valTypeParser(selected.valType) }}</b-col>
+                    </b-row>
                   </template>
                 </b-card>
                 <b-card title="그래프 설정">
@@ -177,12 +183,14 @@
                     value="1"
                     >디폴트 그래프 설정</b-form-checkbox
                   >
-                  <template v-slot:footer
-                    >선택된 그래프 :
-                    {{ graphTypeParser(selected.graphType) }}&nbsp;/&nbsp;{{
-                      rangeParser(selected.range)
-                    }}</template
-                  >
+                  <template v-slot:footer>
+                    <b-row
+                      ><b-col>{{ rangeParser(selected.range) }}</b-col
+                      ><b-col>{{
+                        graphTypeParser(selected.graphType)
+                      }}</b-col></b-row
+                    >
+                  </template>
                 </b-card>
               </b-card-group>
             </div>
@@ -212,24 +220,26 @@
           </b-table>
         </div>
       </b-tab>
-      <b-tab title="요청 사항">
+      <b-tab title="공지 사항 관리">
         <NoticeComp />
       </b-tab>
       <!-- <b-tab title="모달테스트"></b-tab> -->
     </b-tabs>
-    <b-modal id="modal-1" title="dataset 설정" @cancel="resetDataset">
+    <b-modal id="modal-1" title="데이터셋 설정" @cancel="resetDataset">
       <b-form-select
         @change="addDataset"
         v-model="dataset"
         :options="options.dataset"
       >
         <template v-slot:first>
-          <b-form-select-option value="null">dataset 선택</b-form-select-option>
+          <b-form-select-option value="null"
+            >데이터셋 선택</b-form-select-option
+          >
         </template>
       </b-form-select>
       <b-list-group class="my-3">
         <b-list-group-item>
-          <strong>추가 Dataset 목록</strong>
+          <strong>추가 데이터셋 목록</strong>
         </b-list-group-item>
         <b-list-group-item
           v-for="dataset_item in selected.dataset"
@@ -241,19 +251,19 @@
       </b-list-group>
       <b-button class="mx-2" @click="resetDataset">모두 삭제</b-button>
     </b-modal>
-    <b-modal id="modal-2" title="value 설정" @cancel="resetValue">
+    <b-modal id="modal-2" title="값 설정" @cancel="resetValue">
       <b-form-select
         @change="addValue"
         v-model="value"
         :options="options.value"
       >
         <template v-slot:first>
-          <b-form-select-option value="null">value 선택</b-form-select-option>
+          <b-form-select-option value="null">값 선택</b-form-select-option>
         </template>
       </b-form-select>
       <b-list-group class="my-3">
         <b-list-group-item>
-          <strong>추가 Value 목록</strong>
+          <strong>추가 값 목록</strong>
         </b-list-group-item>
         <b-list-group-item
           v-for="value_item in selected.value"
@@ -424,7 +434,10 @@
           :key="index"
           >{{ device_field.value }}
           <b-button class="mx-2">수정</b-button>
-          <b-button variant="light" class="deleteBtn"
+          <b-button
+            variant="light"
+            class="deleteBtn"
+            @click="deleteField(index)"
             ><img src="../../assets/bin.png"/></b-button
         ></b-list-group-item>
       </b-list-group>
@@ -895,6 +908,9 @@ export default {
       });
       this.inputfield1 = "";
       this.inputfield2 = "";
+    },
+    deleteField(index) {
+      this.options.field.splice(index, 1);
     },
     logout() {
       this.$router.push("/");
