@@ -37,6 +37,9 @@
         :parentLimitation="true"
         v-on:resizing="resize($event, index)"
         v-bind:key="index"
+        snapToGrid="true"
+        gridX="50"
+        gridY="50"
       >
       <div class="graphContainer">
         <ccv-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
@@ -362,7 +365,6 @@ export default {
       dt.forEach(data => {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
-          console.log(r);
           let object = new Object();
           object.group = data[0].loc1;
           object.value = r.data.sum;
