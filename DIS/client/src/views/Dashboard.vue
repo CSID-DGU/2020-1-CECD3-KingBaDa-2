@@ -1,5 +1,28 @@
 <template>
   <div>
+    <div class="title">
+      대시보드
+    </div>
+    <div>
+      <b-button class = "listBtn" v-b-toggle.sidebar-right variant="info" style = "width:200px"><img src="../assets/list.png">&nbsp;&nbsp;그래프 목록</b-button>
+    </div>
+    <b-sidebar id="sidebar-right" title="그래프 목록" right shadow>
+      <b-list-group>
+        <b-list-group-item v-for="(graph, index) in graphs" v-bind:key="index" class="graphList">
+          <b-row>
+            <b-col>
+              <div class="graphList">
+                {{graph.option.title}}
+              </div>
+            </b-col>
+            <b-col cols="3">
+              <b-button variant="light" class="deleteBtn" @click="deleteGraph(index)"><img src="../assets/bin.png"></b-button>
+            </b-col>
+          </b-row>
+          </b-list-group-item>
+        <b-list-group-item button v-b-modal.addGraph variant="info" style="font-weight:bold"> + 그래프 추가 </b-list-group-item>
+      </b-list-group>
+    </b-sidebar>
     <div class="list" id="list">
       <VueDragResize
         id="graphContainer"
@@ -14,6 +37,9 @@
         :parentLimitation="true"
         v-on:resizing="resize($event, index)"
         v-bind:key="index"
+        snapToGrid="true"
+        gridX="50"
+        gridY="50"
       >
       <div class="graphContainer">
         <ccv-area-chart :data="graphs[index].datum" :options="graphs[index].option" v-bind:key="index" v-if="graphs[index].graphType==1"></ccv-area-chart>
@@ -30,32 +56,6 @@
       </div>
       </VueDragResize>
     </div>
-    <b-container fluid>
-      <b-row>
-        <b-col></b-col>
-        <b-col></b-col>
-        <b-col>
-          <b-button v-b-toggle.sidebar-right size="lg" variant="info">그래프 목록</b-button>
-          <b-sidebar id="sidebar-right" title="그래프 목록" right shadow>
-            <b-list-group>
-              <b-list-group-item v-for="(graph, index) in graphs" v-bind:key="index" class="graphList">
-                <b-row>
-                  <b-col>
-                    <div class="graphList">
-                      {{graph.option.title}}
-                    </div>
-                  </b-col>
-                  <b-col cols="3">
-                    <b-button variant="light" class="deleteBtn" @click="deleteGraph(index)"><img src="../assets/bin.png"></b-button>
-                  </b-col>
-                </b-row>
-                </b-list-group-item>
-              <b-list-group-item button v-b-modal.addGraph variant="info" style="font-weight:bold"> + 그래프 추가 </b-list-group-item>
-            </b-list-group>
-          </b-sidebar>
-        </b-col>
-      </b-row>
-    </b-container>
     <b-modal id="addGraph" centered title="그래프 추가">
         <b-dropdown :text="dropdownText" block menu-class="w-100">
           <b-dropdown-item v-for="(item, index) in items" v-bind:key="index" @click="modalItemClick(item)">{{item.title}}</b-dropdown-item>
@@ -108,7 +108,7 @@ export default {
       clickedItem: null,
       clickedFlag: false, // 그래프 생성 시 선택하는 행동 말고 다른 행동들은 인식하지 않도록 하기 위한 flag
       items:[],
-      
+
     };
   },
 
@@ -137,6 +137,10 @@ export default {
   },
 
   updated(){
+    this.makeDatum_complete(this.items[0]);
+
+
+
     if(this.clickedFlag){
       this.datum = [];
       if(this.clickedItem.graphType == 1 || this.clickedItem.graphType == 2 || this.clickedItem.graphType == 9 || this.clickedItem.graphType == 11){
@@ -148,7 +152,6 @@ export default {
       else{
         if(this.clickedItem.valType == "avg"){
           this.elastic_cal_avg(this.makeDatum_cal(this.clickedItem));
-          console.log(this.datum);
         }
         else if(this.clickedItem.valType == "sum"){
           this.elastic_cal_sum(this.makeDatum_cal(this.clickedItem));
@@ -183,42 +186,53 @@ export default {
                 object.status = data.status;
 
                 this.items.push(object);
+
               })
             })
           },
+
+      //{key:"name,value", or:[{name:"elc1,elc2"}],and:[{loc1:"00"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]}
       //elastic-complete용 axios 삽입 데이터 형식 만들기 (valType이 "time" 일때)
         makeDatum_complete(itemConfig){
           let dt = new Object();
           let modelObject = new Object();
           let orArr = new Array();
           let andArr = new Array();
-          let nameStr = "";
-          itemConfig.value.forEach(data => {
-            nameStr = nameStr.concat(data,'1,');
+          let modelStr = '';
+          // itemConfig.value.forEach(data => {
+          //   nameStr = nameStr.concat(data,'1,');
+          // })
+          // modelObject.name = nameStr;
+          // orArr.push(modelObject);
+          itemConfig.value.forEach(data =>{
+            modelStr = modelStr.concat(data,',');
           })
-          modelObject.name = nameStr;
+          modelObject.model = modelStr;
           orArr.push(modelObject);
 
           if(itemConfig.loc1 != "all"){
             let loc1Object = new Object();
             loc1Object.loc1 = itemConfig.loc1;
             andArr.push(loc1Object);
+
+            if(itemConfig.loc2 != "all"){
+              let loc2Object = new Object();
+              loc2Object.loc2 = itemConfig.loc2;
+              andArr.push(loc2Object);
+            }
           }
-          if(itemConfig.loc2 != "all"){
-            let loc2Object = new Object();
-            loc2Object.loc2 = itemConfig.loc2;
-            andArr.push(loc2Object);
-          }
-          dt.key = "name,date,value";
+
+          dt.key = "name,date,value,model";
           dt.or = orArr;
           dt.and = andArr;
           return dt;
         },
 
+
       //elastic-cal용 axios 삽입 데이터 형식 만들기 (valType이 "time" 아니고 key가 없을 때)
         makeDatum_cal(itemConfig){
           let dt = [];
-          let loc1Arr = ["00","01"];
+          let loc1Arr = ["00","01","02"];
           loc1Arr.forEach(data => {
             let df = new Array();
             let loc1Object = new Object();
@@ -244,7 +258,7 @@ export default {
         let datumArray = new Array();
         r.data.forEach(data => {
           let object = new Object();
-          object.group = data.name;
+          object.group = data.model;
           object.date = data.date;
           object.value = data.value;
           datumArray.push(object);
@@ -286,8 +300,6 @@ export default {
           sumObject.key = "sum";
           sumObject.value = r.data.sum;
           this.datum.push(sumObject);
-
-          console.log(this.datum);
         })
         .catch(function (error){
           console.log(error.response);
@@ -349,12 +361,10 @@ export default {
 
     //일정 기간동안 센서 이름별로 계산된 누적값 받아오기
     elastic_cal_sum(dt){
-    console.log(dt);
       // 데이터 받아오기
       dt.forEach(data => {
         axios.post("/api/elastic/elastic-cal", data)
         .then((r) => {
-          console.log(r);
           let object = new Object();
           object.group = data[0].loc1;
           object.value = r.data.sum;
@@ -794,12 +804,18 @@ export default {
 <style scope>
 .list {
   position: absolute;
-  top: 50px;
-  bottom: 30px;
-  left: 160px;
-  right: 30px;
+  top: 80px;
+  bottom: 20px;
+  left: 120px;
+  right: 20px;
   box-shadow: 0 0 2px #aaa;
   background-color: white;
+}
+.listBtn{
+  float:right;
+  font-weight:bold;
+  font-size: 20px;
+  margin: -15px 20px 0px 0px;
 }
 .graphContainer{
   position: relative;
@@ -817,5 +833,9 @@ export default {
   background-color: transparent;
   border-color: transparent;
 }
-
+.title{
+  color: #6FCEDC;
+  font-size: 30px;
+  font-weight: bold;
+}
 </style>

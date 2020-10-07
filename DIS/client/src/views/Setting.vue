@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="title">
+      설정
+    </div>
     <b-card class="profile w-25 mx-auto">
       <div>
         <b-avatar variant="primary" src size="4rem"></b-avatar>
@@ -35,7 +38,7 @@ export default {
 }
 button {
   margin-top: 10px;
-  width: 30%;
+  width: 50%;
   cursor: pointer;
   padding: 10px;
   background-color: #6fcedc;
@@ -44,5 +47,10 @@ button {
   font-weight: bold;
   outline: 0;
   border: 0;
+}
+.title{
+  color: #6FCEDC;
+  font-size: 30px;
+  font-weight: bold;
 }
 </style>

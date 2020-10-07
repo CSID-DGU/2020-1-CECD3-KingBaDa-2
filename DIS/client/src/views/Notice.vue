@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="title">
+      공지사항
+    </div>
     <NoticeComp />
   </div>
 </template>
@@ -14,4 +17,10 @@ export default {
   }
 };
 </script>
-
+<style scope>
+.title{
+  color: #6FCEDC;
+  font-size: 30px;
+  font-weight: bold;
+}
+</style>
