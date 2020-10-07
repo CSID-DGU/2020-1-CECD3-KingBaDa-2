@@ -139,7 +139,7 @@ router.post('/elastic-complete', async function(req, res, next) {
         }
     });
     await client.search({
-    //index: 'test',
+
     type: '_doc',
     body: frame,
     }).then(function(response) {

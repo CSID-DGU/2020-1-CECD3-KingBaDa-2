@@ -1,5 +1,8 @@
 <template>
-  <div class="background">
+  <div>
+    <div class="title">
+      제어
+    </div>
     <b-card no-body>
       <b-tabs card>
         <b-tab
@@ -84,7 +87,7 @@ export default {
   //   let tempArr = this.buildings[i].deviceInfos[index];
   //   console.log()
   //   for (var n in tempArr.devices) {
-  //       if (tempArr.devices[n].state == true) 
+  //       if (tempArr.devices[n].state == true)
   //       {
   //         tempArr.toggleAll = true;
   //       return;
@@ -96,9 +99,9 @@ export default {
 </script>
 
 <style scoped>
-.background {
-  position: absolute;
-  left: 150px;
-  right: 20px;
+.title{
+  color: #6FCEDC;
+  font-size: 30px;
+  font-weight: bold;
 }
 </style>

@@ -35,7 +35,7 @@ router.post('/domain', (req, res, next) => {
     // console.log(req.body[0].admin_id);
     let admin_id=req.body[0].admin_id;
     let user_domain=req.body[1].user_domain;
-    
+
     let queryText = 'insert into DomainJob (user_id, user_domain) values (\''+ admin_id +'\',\''+ user_domain +'\')';
 
     pool.getConnection(function(err, connection){
@@ -69,7 +69,7 @@ router.post('/domain', (req, res, next) => {
 router.get('/domain', (req, res, next) => {
     // console.log(req.param("admin_id"));
     let admin_id=req.query.admin_id;
-    
+
     let queryText = 'select distinct user_domain from DomainJob where (user_id = \''+admin_id+'\')';
 
     // connection.connect();
@@ -191,7 +191,7 @@ router.post('/graph/item', (req, res, next) => {
 // get graph item
 router.get('/graph/item', (req, res, next) => {
     let admin_id=req.query.admin_id;
-    
+
     let queryText = 'select * from GraphData where (user_id = \''+admin_id+'\')';
 
     // connection.connect();
