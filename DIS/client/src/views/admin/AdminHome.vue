@@ -13,7 +13,30 @@
       </div>
     </div>
     <b-tabs content-class="mt-3" align="center">
-      <b-tab title="도메인, 직종 관리" active>
+      <b-tab title="디바이스 관리" active>
+        <b-card class="w-50 mx-auto" title="디바이스 목록">
+          <b-list-group>
+            <b-list-group-item>
+              <strong>디바이스</strong>
+              <b-button v-b-modal.device-reg class="mx-2">추가</b-button>
+            </b-list-group-item>
+            <b-list-group-item
+              v-for="(device_item, index) in options.device"
+              :key="index"
+              >시리얼 넘버 : {{ device_item.serialNumber }}
+              <b-button class="mx-2">수정</b-button>
+              <b-button
+                variant="light"
+                class="deleteBtn"
+                @click="deleteDevice(index)"
+                ><img src="../../assets/bin.png"/></b-button
+            ></b-list-group-item>
+          </b-list-group>
+          <b-form class="my-5" inline> </b-form>
+        </b-card>
+      </b-tab>
+
+      <b-tab title="도메인, 직종 관리">
         <div class="w-75 mt-5 mx-auto">
           <b-card-group deck>
             <b-card title="도메인 관리">
@@ -24,12 +47,15 @@
                 <b-list-group-item
                   v-for="domain_item in options.domain"
                   :key="domain_item.value"
-                >{{ domain_item.value }}</b-list-group-item>
+                  >{{ domain_item.value }}</b-list-group-item
+                >
               </b-list-group>
               <b-form class="my-5" inline>
                 <b-form-input v-model="inputDomain"></b-form-input>
                 <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-                <b-button class="mx-2" @click="deleteDomain">도메인 제거</b-button>
+                <b-button class="mx-2" @click="deleteDomain"
+                  >도메인 제거</b-button
+                >
               </b-form>
             </b-card>
             <b-card title="직종 관리">
@@ -43,9 +69,15 @@
                 </b-list-group-item>
               </b-list-group>
               <b-form class="my-5" inline>
-                <b-form-select class="mr-5" v-model="selected.domain" :options="options.domain">
+                <b-form-select
+                  class="mr-5"
+                  v-model="selected.domain"
+                  :options="options.domain"
+                >
                   <template v-slot:first>
-                    <b-form-select-option value="null">도메인 선택</b-form-select-option>
+                    <b-form-select-option value="null"
+                      >도메인 선택</b-form-select-option
+                    >
                   </template>
                 </b-form-select>
                 <b-form-input v-model="inputJob"></b-form-input>
@@ -60,32 +92,47 @@
         <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
         <div class="w-75 mx-auto">
           <b-form class="my-5" inline>
-            <b-form-select class="mx-5" v-model="selected.domain" :options="options.domain">
+            <b-form-select
+              class="mx-5"
+              v-model="selected.domain"
+              :options="options.domain"
+            >
               <template v-slot:first>
-                <b-form-select-option value="null">도메인 선택</b-form-select-option>
+                <b-form-select-option value="null"
+                  >도메인 선택</b-form-select-option
+                >
               </template>
             </b-form-select>
             <div>
               항목 이름 :
-              <b-form-input placeholder="추가할 항목 이름 입력" class="ml-3" v-model="inputTitle"></b-form-input>
+              <b-form-input
+                placeholder="추가할 항목 이름 입력"
+                class="ml-3"
+                v-model="inputTitle"
+              ></b-form-input>
             </div>
           </b-form>
           <div>
             <div>
               <b-card-group deck>
                 <b-card title="dataset 설정">
-                  <b-button v-b-modal.modal-1 class="mx-2">dataset 설정</b-button>
+                  <b-button v-b-modal.modal-1 class="mx-2"
+                    >dataset 설정</b-button
+                  >
                   <template v-slot:footer>
                     선택된 Dataset :
                     <span
                       v-for="(dataset_item, index) in selected.dataset"
                       :key="index"
-                    >{{ dataset_item }}&nbsp;</span>
+                      >{{ dataset_item }}&nbsp;</span
+                    >
                   </template>
                 </b-card>
 
                 <b-card title="value 설정">
-                  <b-button v-b-modal.modal-2 class="mx-2 mb-3">value 설정</b-button>
+                  <b-button v-b-modal.modal-2 class="mx-2 mb-3"
+                    >value 설정</b-button
+                  >
                   <b-form-radio-group
                     id="valTypegroup"
                     v-model="selected.valType"
@@ -99,16 +146,17 @@
                   </b-form-radio-group>
                   <template v-slot:footer>
                     선택된 Value :
-                    <span
-                      v-for="value_item in selected.value"
-                      :key="value_item"
-                    >{{ value_item }}&nbsp;</span>
+                    <span v-for="value_item in selected.value" :key="value_item"
+                      >{{ value_item }}&nbsp;</span
+                    >
                     /
                     {{ valTypeParser(selected.valType) }}
                   </template>
                 </b-card>
                 <b-card title="그래프 설정">
-                  <b-button v-b-modal.modal-3 class="mx-2 mb-3">그래프 표시 범위 설정</b-button>
+                  <b-button v-b-modal.modal-3 class="mx-2 mb-3"
+                    >그래프 표시 범위 설정</b-button
+                  >
 
                   <b-form-select
                     class="my-2"
@@ -116,7 +164,9 @@
                     :options="options.graphType"
                   >
                     <template v-slot:first>
-                      <b-form-select-option value="null">그래프 선택</b-form-select-option>
+                      <b-form-select-option value="null"
+                        >그래프 선택</b-form-select-option
+                      >
                     </template>
                   </b-form-select>
 
@@ -125,10 +175,14 @@
                     v-model="selected.status"
                     name="checkbox-1"
                     value="1"
-                  >디폴트 그래프 설정</b-form-checkbox>
-                  <template
-                    v-slot:footer
-                  >선택된 그래프 : {{ graphTypeParser(selected.graphType) }}&nbsp;/&nbsp;{{rangeParser(selected.range)}}</template>
+                    >디폴트 그래프 설정</b-form-checkbox
+                  >
+                  <template v-slot:footer
+                    >선택된 그래프 :
+                    {{ graphTypeParser(selected.graphType) }}&nbsp;/&nbsp;{{
+                      rangeParser(selected.range)
+                    }}</template
+                  >
                 </b-card>
               </b-card-group>
             </div>
@@ -164,7 +218,11 @@
       <!-- <b-tab title="모달테스트"></b-tab> -->
     </b-tabs>
     <b-modal id="modal-1" title="dataset 설정" @cancel="resetDataset">
-      <b-form-select @change="addDataset" v-model="dataset" :options="options.dataset">
+      <b-form-select
+        @change="addDataset"
+        v-model="dataset"
+        :options="options.dataset"
+      >
         <template v-slot:first>
           <b-form-select-option value="null">dataset 선택</b-form-select-option>
         </template>
@@ -173,7 +231,10 @@
         <b-list-group-item>
           <strong>추가 Dataset 목록</strong>
         </b-list-group-item>
-        <b-list-group-item v-for="dataset_item in selected.dataset" :key="dataset_item.loc2">
+        <b-list-group-item
+          v-for="dataset_item in selected.dataset"
+          :key="dataset_item.loc2"
+        >
           {{ dataset_item }}
           <b-button @click="deleteDatasetItem">삭제</b-button>
         </b-list-group-item>
@@ -181,7 +242,11 @@
       <b-button class="mx-2" @click="resetDataset">모두 삭제</b-button>
     </b-modal>
     <b-modal id="modal-2" title="value 설정" @cancel="resetValue">
-      <b-form-select @change="addValue" v-model="value" :options="options.value">
+      <b-form-select
+        @change="addValue"
+        v-model="value"
+        :options="options.value"
+      >
         <template v-slot:first>
           <b-form-select-option value="null">value 선택</b-form-select-option>
         </template>
@@ -190,7 +255,10 @@
         <b-list-group-item>
           <strong>추가 Value 목록</strong>
         </b-list-group-item>
-        <b-list-group-item v-for="value_item in selected.value" :key="value_item">
+        <b-list-group-item
+          v-for="value_item in selected.value"
+          :key="value_item"
+        >
           {{ value_item }}
           <b-button @click="deleteValueItem">삭제</b-button>
         </b-list-group-item>
@@ -199,7 +267,11 @@
     </b-modal>
     <b-modal id="modal-3" title="range 설정" @cancel="resetValue">
       <b-form-group>
-        <b-form-radio-group id="rangegroup" v-model="selected.range" name="radio-range">
+        <b-form-radio-group
+          id="rangegroup"
+          v-model="selected.range"
+          name="radio-range"
+        >
           <b-form-radio value="0">연간</b-form-radio>
           <b-form-radio value="1">월간</b-form-radio>
           <b-form-radio value="2">일간</b-form-radio>
@@ -255,22 +327,130 @@
           max="2030"
           placeholder="end year"
         ></b-form-spinbutton>
-        <b-form-spinbutton id="sb-month-end2" wrap min="1" max="12" placeholder="end month"></b-form-spinbutton>
+        <b-form-spinbutton
+          id="sb-month-end2"
+          wrap
+          min="1"
+          max="12"
+          placeholder="end month"
+        ></b-form-spinbutton>
       </div>
       <div v-if="selected.range == '2'">
         <label for="datepicker1">시작 날짜</label>
-        <b-form-datepicker class="my-3" id="datepicker1" placeholder="시작날짜 선택" local="en"></b-form-datepicker>
+        <b-form-datepicker
+          class="my-3"
+          id="datepicker1"
+          placeholder="시작날짜 선택"
+          local="en"
+        ></b-form-datepicker>
 
         <label for="datepicker2">끝 날짜</label>
-        <b-form-datepicker class="my-3" id="datepicker2" placeholder="끝날짜 선택" local="en"></b-form-datepicker>
+        <b-form-datepicker
+          class="my-3"
+          id="datepicker2"
+          placeholder="끝날짜 선택"
+          local="en"
+        ></b-form-datepicker>
       </div>
       <div v-if="selected.range == '3'">
         <div>
           <label for="datepicker3">표시 날짜</label>
-          <b-form-datepicker class="my-3" id="datepicker3" placeholder="표시날짜 선택" local="en"></b-form-datepicker>
+          <b-form-datepicker
+            class="my-3"
+            id="datepicker3"
+            placeholder="표시날짜 선택"
+            local="en"
+          ></b-form-datepicker>
         </div>
       </div>
       <div v-else></div>
+    </b-modal>
+    <b-modal
+      id="device-reg"
+      title="디바이스 정보 입력"
+      @cancel="resetValue"
+      @ok="addDevice"
+    >
+      <b-form class="my-2" inline
+        >시리얼 넘버 :
+        <b-form-input
+          class="ml-3"
+          v-model="inputSerial"
+          placeholder="시리얼 넘버"
+        ></b-form-input
+      ></b-form>
+      <b-form class="my-2" inline
+        >위치1(건물) :
+        <b-form-input
+          class="ml-3"
+          v-model="inputLoc1"
+          placeholder="위치1"
+        ></b-form-input
+      ></b-form>
+      <b-form class="my-2" inline
+        >위치2(호수) :
+        <b-form-input
+          class="ml-3"
+          v-model="inputLoc2"
+          placeholder="위치2"
+        ></b-form-input
+      ></b-form>
+      <b-form class="my-2" inline
+        >제조사 정보 :
+        <b-form-input
+          class="ml-3"
+          v-model="inputManu"
+          placeholder="제조사 정보"
+        ></b-form-input
+      ></b-form>
+      <b-form-select
+        class="mr-5 my-2"
+        v-model="selected.savedField"
+        :options="options.savedField"
+      >
+        <template v-slot:first>
+          <b-form-select-option value="null"
+            >필드 설정값 불러오기</b-form-select-option
+          >
+        </template>
+      </b-form-select>
+      <b-list-group>
+        <b-list-group-item>
+          <strong>필드</strong>
+          <b-button v-b-modal.device-field class="mx-2">추가</b-button>
+        </b-list-group-item>
+        <b-list-group-item
+          v-for="(device_field, index) in options.field"
+          :key="index"
+          >{{ device_field.value }}
+          <b-button class="mx-2">수정</b-button>
+          <b-button variant="light" class="deleteBtn"
+            ><img src="../../assets/bin.png"/></b-button
+        ></b-list-group-item>
+      </b-list-group>
+    </b-modal>
+    <b-modal
+      id="device-field"
+      title="디바이스 필드 입력"
+      @cancel="resetValue"
+      @ok="addField"
+    >
+      <b-form class="my-2" inline
+        >필드 이름 :
+        <b-form-input
+          class="ml-3"
+          v-model="inputfield1"
+          placeholder="이름"
+        ></b-form-input
+      ></b-form>
+      <b-form class="my-2" inline
+        >필드 단위 :
+        <b-form-input
+          class="ml-3"
+          v-model="inputfield2"
+          placeholder="단위"
+        ></b-form-input
+      ></b-form>
     </b-modal>
   </div>
 </template>
@@ -300,6 +480,12 @@ export default {
       inputDomain: "",
       inputTitle: "",
       inputJob: "",
+      inputSerial: "",
+      inputLoc1: "",
+      inputLoc2: "",
+      inputManu: "",
+      inputfield1: "",
+      inputfield2: "",
       dataset: null,
       value: null,
       row: [],
@@ -316,10 +502,15 @@ export default {
         row: [],
         range: null,
         date: { start: null, end: null },
-        valType: ""
+        valType: "",
+        savedField: null,
+        field: null
       },
 
       options: {
+        savedField: [],
+        field: [],
+        device: [],
         domain: [],
         dataset: [
           {
@@ -500,11 +691,11 @@ export default {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.items.push({
-              domain: "전력세이빙",//tempArr[n].domain,
+              domain: "전력세이빙", //tempArr[n].domain,
               title: tempArr[n].title,
               dataset: this.datasetParser(tempArr[n].datasets),
               value: tempArr[n].values,
-              valType: tempArr[n].domain,//this.valTypeParser(tempArr[n].valType),
+              valType: tempArr[n].domain, //this.valTypeParser(tempArr[n].valType),
               graphType: this.graphTypeParser(tempArr[n].graphType),
               range: this.rangeParser(tempArr[n].range),
               status: this.statusParser(tempArr[n].status)
@@ -586,6 +777,83 @@ export default {
       }
       console.log(this.selected.domain);
     },
+    getDevice() {
+      let tempArr;
+      axios
+        .get("/api/admin/device?admin_id=" + this.admin_id)
+        .then(r => {
+          tempArr = r.data.data;
+          for (var n in tempArr) {
+            this.options.device.push({
+              serialNumber: tempArr[n].serialNumber,
+              loc1: tempArr[n].loc1,
+              loc2: tempArr[n].loc2,
+              manufacturer: tempArr[n].manufacturer,
+              fields: tempArr[n].fields
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response);
+        });
+    },
+    addDevice(bvModalEvt) {
+      if (this.inputSerial == "") alert("시리얼 넘버를 입력해주세요!");
+      else if (this.inputLoc1 == "") alert("건물명을 입력해 주세요!");
+      else if (this.inputLoc2 == "") alert("호수를 입력해 주세요!");
+      else if (this.inputManu == "") alert("제조사 정보를 입력해 주세요!");
+      else {
+        axios
+          .post("/api/admin/device", [
+            { serialNumber: this.inputSerial },
+            { loc1: this.inputLoc1 },
+            { loc2: this.inputLoc2 },
+            { manufacturer: this.inputManu },
+            { fields: { values: this.options.field } }
+          ])
+          .then(r => {
+            console.log(r);
+            this.options.device.push({
+              serialNumber: this.inputSerial,
+              loc1: this.inputLoc1,
+              loc2: this.inputLoc2,
+              manufacturer: this.inputManu,
+              fields: this.options.field
+            });
+            this.inputSerial = "";
+            this.inputLoc1 = "";
+            this.inputLoc2 = "";
+            this.inputManu = "";
+            this.options.field = null;
+          })
+          .catch(function(error) {
+            console.log(error.response);
+          });
+        return;
+      }
+      bvModalEvt.preventDefault();
+    },
+    deleteDevice(index) {
+      let obj = new Object();
+      obj = this.options.device[index];
+      this.options.device.splice(index, 1);
+      axios
+        .delete("/api/admin/device", {
+          data: {
+            admin_id: this.admin_id,
+            title: obj.title
+          },
+          withCredentials: true
+        })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+          this.options.device.push(obj);
+          console.log(error.response);
+        });
+    },
     deleteJob() {
       this.job.pop();
     },
@@ -619,6 +887,14 @@ export default {
         this.selected.value.lastIndexOf(value_item),
         1
       );
+    },
+    addField() {
+      this.options.field.push({
+        value: { name: this.inputfield1, unit: this.inputfield2 },
+        text: "이름 :" + this.inputfield1 + " 단위 : " + this.inputfield2
+      });
+      this.inputfield1 = "";
+      this.inputfield2 = "";
     },
     logout() {
       this.$router.push("/");
@@ -697,5 +973,9 @@ export default {
 }
 .big-font {
   font-size: 32px;
+}
+.deleteBtn {
+  background-color: transparent;
+  border-color: transparent;
 }
 </style>
