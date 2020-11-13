@@ -189,4 +189,4 @@ pnpm-debug.log*
 .travis/
 
 ### config file ###
-server/config
+config/
