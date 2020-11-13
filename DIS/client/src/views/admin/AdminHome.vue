@@ -96,6 +96,7 @@
                     <b-form inline>
                       <b-form-select
                         class="mx-5"
+                        @change="getJob"
                         v-model="selected.domain"
                         :options="options.domain"
                       >
@@ -468,6 +469,14 @@
         ></b-form-input
       ></b-form>
       <b-form class="my-2" inline
+        >센서 이름 :
+        <b-form-input
+          class="ml-4"
+          v-model="inputName"
+          placeholder="센서 이름"
+        ></b-form-input
+      ></b-form>
+      <b-form class="my-2" inline
         >위치1(건물) :
         <b-form-input
           class="ml-3"
@@ -578,6 +587,7 @@ export default {
       inputTitle: "",
       inputJob: "",
       inputSerial: "",
+      inputName: "",
       inputLoc1: "",
       inputLoc2: "",
       inputManu: "",
@@ -860,12 +870,45 @@ export default {
           console.log(error.response);
         });
     },
+    getJob() {
+      let tempArr;
+      axios
+        .get(
+          "/api/admin/domain/job?admin_id=" +
+            this.admin_id +
+            "&domain=" +
+            this.selected.domain
+        )
+        .then(r => {
+          tempArr = r.data.data;
+          for (var n in tempArr) {
+            this.job.push({
+              domain: tempArr[n].user_domain,
+              type: tempArr[n].domain_job
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response);
+        });
+    },
     addJob() {
       if (this.inputJob != "" && this.selected.domain != null) {
-        this.job.push({
-          domain: this.selected.domain,
-          type: this.inputJob
-        });
+        axios
+          .post("/api/admin/domain/job", [
+            { user_domain: this.selected.domain },
+            { domain_job: this.inputJob }
+          ])
+          .then(r => {
+            console.log(r);
+            this.items.push({
+              domain: this.selected.domain,
+              type: this.inputJob
+            });
+          })
+          .catch(function(error) {
+            console.log(error.response);
+          });
       } else if (this.selected.domain == null) {
         alert("도메인을 선택하세요!");
       } else if (this.selected.domain == "null") {
@@ -883,6 +926,7 @@ export default {
           for (var n in tempArr) {
             this.options.device.push({
               serialNumber: tempArr[n].serialNumber,
+              sensorName: tempArr[n].sensorName,
               loc1: tempArr[n].loc1,
               loc2: tempArr[n].loc2,
               manufacturer: tempArr[n].manufacturer,
@@ -903,6 +947,7 @@ export default {
         axios
           .post("/api/admin/device", [
             { serialNumber: this.inputSerial },
+            { sensorName: this.inputName },
             { loc1: this.inputLoc1 },
             { loc2: this.inputLoc2 },
             { manufacturer: this.inputManu },
@@ -912,12 +957,14 @@ export default {
             console.log(r);
             this.options.device.push({
               serialNumber: this.inputSerial,
+              sensorName: this.inputName,
               loc1: this.inputLoc1,
               loc2: this.inputLoc2,
               manufacturer: this.inputManu,
               fields: this.options.field
             });
             this.inputSerial = "";
+            this.inputName = "";
             this.inputLoc1 = "";
             this.inputLoc2 = "";
             this.inputManu = "";
