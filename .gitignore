@@ -186,8 +186,7 @@ pnpm-debug.log*
 *.sw?
 
 ### docker add ###
-
 .travis/
 
-# config file
-config
+### config file ###
+server/config
