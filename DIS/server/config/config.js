@@ -33,11 +33,11 @@ const config = {
       port: 3000
     },
     db: {
-      host: 'localhost',
-      port: 3306,
-      name: 'bts_test',
-      user: 'root',
-      password: 'password',
+      host: 'localhost',    // your db host
+      port: 3306,           // your db port
+      name: 'bts_test',    // your db name
+      user: 'root',         // your db user
+      password: 'password', // your db password
     }
 };
 
