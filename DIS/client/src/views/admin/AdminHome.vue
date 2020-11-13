@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="background-color:#6FCEDC">
+  <div style="background: linear-gradient(to right, #2193b0, #6dd5ed);">
+    <div style="background: linear-gradient(to right, #2193b0, #6dd5ed);">
       <div class="white-font big-font">관리자페이지</div>
       <div>
         <b-button
@@ -12,219 +12,289 @@
         </b-button>
       </div>
     </div>
-    <b-tabs content-class="mt-3" align="center">
-      <b-tab title="디바이스 관리" active>
-        <b-card class="w-50 mx-auto" title="디바이스 목록">
-          <b-list-group>
-            <b-list-group-item>
-              <strong>디바이스</strong>
-              <b-button v-b-modal.device-reg class="mx-2">추가</b-button>
-            </b-list-group-item>
-            <b-list-group-item
-              v-for="(device_item, index) in options.device"
-              :key="index"
-              >시리얼 넘버 : {{ device_item.serialNumber }}
-              <b-button class="mx-2">수정</b-button>
-              <b-button
-                variant="light"
-                class="deleteBtn"
-                @click="deleteDevice(index)"
-                ><img src="../../assets/bin.png"/></b-button
-            ></b-list-group-item>
-          </b-list-group>
-          <b-form class="my-5" inline> </b-form>
-        </b-card>
-      </b-tab>
+    <b-card
+      no-body
+      class="centered mt-3 mx-5"
+      style=" background: linear-gradient(to right, #ECE9E6, #ffffff);"
+    >
+      <b-tabs
+        pills
+        card
+        vertical
+        content-class="mt-3"
+        align="center"
+        class="centered"
+      >
+        <b-tab title="디바이스 관리" active>
+          <b-card
+            class="w-50 my-5 mx-auto"
+            bg-variant="light"
+            title="디바이스 목록"
+          >
+            <b-list-group>
+              <b-list-group-item>
+                <strong>디바이스</strong>
+                <b-button
+                  pill
+                  variant="outline-info"
+                  v-b-modal.device-reg
+                  class="mx-2"
+                  >추가</b-button
+                >
+              </b-list-group-item>
+              <b-list-group-item
+                v-for="(device_item, index) in options.device"
+                :key="index"
+                >시리얼 넘버 : {{ device_item.serialNumber }}
+                <b-button pill variant="outline-danger" class="mx-2"
+                  >수정</b-button
+                >
+                <b-button
+                  variant="light"
+                  class="deleteBtn"
+                  @click="deleteDevice(index)"
+                  ><img src="../../assets/bin.png"/></b-button
+              ></b-list-group-item>
+            </b-list-group>
+            <b-form class="my-5" inline> </b-form>
+          </b-card>
+        </b-tab>
 
-      <b-tab title="도메인, 직종 관리">
-        <div class="w-75 mt-5 mx-auto">
-          <b-card-group deck>
-            <b-card title="도메인 관리">
-              <b-list-group>
-                <b-list-group-item>
-                  <strong>도메인</strong>
-                </b-list-group-item>
-                <b-list-group-item
-                  v-for="domain_item in options.domain"
-                  :key="domain_item.value"
-                  >{{ domain_item.value }}</b-list-group-item
-                >
-              </b-list-group>
-              <b-form class="my-5" inline>
-                <b-form-input v-model="inputDomain"></b-form-input>
-                <b-button class="mx-2" @click="addDomain">도메인 추가</b-button>
-                <b-button class="mx-2" @click="deleteDomain"
-                  >도메인 제거</b-button
-                >
-              </b-form>
-            </b-card>
-            <b-card title="직종 관리">
-              <b-list-group>
-                <b-list-group-item>
-                  <strong>직종</strong>
-                </b-list-group-item>
-                <b-list-group-item v-for="jobs in job" :key="jobs.type">
-                  <b-badge>{{ jobs.domain }}</b-badge>
-                  {{ jobs.type }}
-                </b-list-group-item>
-              </b-list-group>
-              <b-form class="my-5" inline>
-                <b-form-select
-                  class="mr-5"
-                  v-model="selected.domain"
-                  :options="options.domain"
-                >
-                  <template v-slot:first>
-                    <b-form-select-option value="null"
-                      >도메인 선택</b-form-select-option
-                    >
-                  </template>
-                </b-form-select>
-                <b-form-input v-model="inputJob"></b-form-input>
-                <b-button class="mx-2" @click="addJob">직종 추가</b-button>
-                <b-button class="mx-2" @click="deleteJob">직종 제거</b-button>
-              </b-form>
-            </b-card>
-          </b-card-group>
-        </div>
-      </b-tab>
-      <b-tab title="항목 관리">
-        <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
-        <div class="w-75 mx-auto">
-          <b-form class="my-5" inline>
-            <b-form-select
-              class="mx-5"
-              v-model="selected.domain"
-              :options="options.domain"
-            >
-              <template v-slot:first>
-                <b-form-select-option value="null"
-                  >도메인 선택</b-form-select-option
-                >
-              </template>
-            </b-form-select>
-            <div>
-              항목 이름 :
-              <b-form-input
-                placeholder="추가할 항목 이름 입력"
-                class="ml-3"
-                v-model="inputTitle"
-              ></b-form-input>
-            </div>
-          </b-form>
-          <div>
-            <div>
-              <b-card-group deck>
-                <b-card title="데이터셋 설정">
-                  <b-button v-b-modal.modal-1 class="mx-2"
-                    >데이터셋 설정</b-button
+        <b-tab title="도메인, 직종 관리">
+          <div class="w-75 mt-5 mx-auto">
+            <b-card-group deck>
+              <b-card title="도메인 관리" bg-variant="light">
+                <b-list-group>
+                  <b-list-group-item>
+                    <strong>도메인</strong>
+                  </b-list-group-item>
+                  <b-list-group-item
+                    v-for="(domain_item, index) in options.domain"
+                    :key="domain_item.value"
+                    >{{ domain_item.value }}
+                    <b-button
+                      variant="light"
+                      class="deleteBtn"
+                      @click="deleteDomain(index)"
+                      ><img src="../../assets/bin.png"/></b-button
+                  ></b-list-group-item>
+                </b-list-group>
+                <b-form class="my-5" inline>
+                  <b-form-input v-model="inputDomain"></b-form-input>
+                  <b-button
+                    pill
+                    variant="outline-info"
+                    class="mx-2"
+                    @click="addDomain"
+                    >도메인 추가</b-button
                   >
-                  <template v-slot:footer>
-                    <span
-                      v-for="(dataset_item, index) in selected.dataset"
-                      :key="index"
-                      ><b-row
-                        ><b-col>{{ dataset_item.loc1 }}</b-col
-                        ><b-col>{{ dataset_item.loc2 }}</b-col></b-row
-                      ></span
-                    >
-                  </template>
-                </b-card>
-
-                <b-card title="값 설정">
-                  <b-button v-b-modal.modal-2 class="mx-2 mb-3"
-                    >값 설정</b-button
-                  >
-                  <b-form-radio-group
-                    id="valTypegroup"
-                    v-model="selected.valType"
-                    name="radio-valType"
-                  >
-                    <b-form-radio value="0">누적값</b-form-radio>
-                    <b-form-radio value="1">평균값</b-form-radio>
-                    <b-form-radio value="2">최대값</b-form-radio>
-                    <b-form-radio value="3">최소값</b-form-radio>
-                    <b-form-radio value="4">시간별</b-form-radio>
-                  </b-form-radio-group>
-                  <template v-slot:footer>
-                    <b-row
-                      ><b-col
-                        ><span
-                          v-for="value_item in selected.value"
-                          :key="value_item"
-                          >{{ value_item }}&nbsp;</span
-                        ></b-col
+                </b-form>
+              </b-card>
+              <b-card title="직종 관리" bg-variant="light">
+                <b-list-group>
+                  <b-list-group-item>
+                    <b-form inline>
+                      <b-form-select
+                        class="mx-5"
+                        v-model="selected.domain"
+                        :options="options.domain"
                       >
-                      <b-col>{{ valTypeParser(selected.valType) }}</b-col>
-                    </b-row>
-                  </template>
-                </b-card>
-                <b-card title="그래프 설정">
-                  <b-button v-b-modal.modal-3 class="mx-2 mb-3"
-                    >그래프 표시 범위 설정</b-button
+                        <template v-slot:first>
+                          <b-form-select-option value="null"
+                            >도메인 선택</b-form-select-option
+                          >
+                        </template>
+                      </b-form-select>
+                      <strong class="mr-5 ml-4">직종</strong>
+                    </b-form>
+                  </b-list-group-item>
+                  <b-list-group-item v-for="(jobs, index) in job" :key="index">
+                    <b-badge>{{ jobs.domain }}</b-badge>
+                    {{ jobs.type }}
+                    <b-button
+                      variant="light"
+                      class="deleteBtn"
+                      @click="deleteJob(index)"
+                      ><img src="../../assets/bin.png"
+                    /></b-button>
+                  </b-list-group-item>
+                </b-list-group>
+                <b-form class="my-5" inline>
+                  <b-form-input v-model="inputJob"></b-form-input>
+                  <b-button
+                    pill
+                    variant="outline-info"
+                    class="mx-2"
+                    @click="addJob"
+                    >직종 추가</b-button
                   >
-
-                  <b-form-select
-                    class="my-2"
-                    v-model="selected.graphType"
-                    :options="options.graphType"
+                </b-form>
+              </b-card>
+            </b-card-group>
+          </div>
+        </b-tab>
+        <b-tab title="항목 관리">
+          <!-- 표 row별 수정 및 삭제, 조건별 필터 추가 구현 필요 -->
+          <div class="w-75 mx-auto">
+            <b-form class="my-5" inline>
+              <b-form-select
+                class="mx-5"
+                v-model="selected.domain"
+                :options="options.domain"
+              >
+                <template v-slot:first>
+                  <b-form-select-option value="null"
+                    >도메인 선택</b-form-select-option
                   >
-                    <template v-slot:first>
-                      <b-form-select-option value="null"
-                        >그래프 선택</b-form-select-option
+                </template>
+              </b-form-select>
+              <div>
+                항목 이름 :
+                <b-form-input
+                  placeholder="추가할 항목 이름 입력"
+                  class="ml-3"
+                  v-model="inputTitle"
+                ></b-form-input>
+              </div>
+            </b-form>
+            <div>
+              <div>
+                <b-card-group deck>
+                  <b-card bg-variant="light" title="데이터셋 설정">
+                    <b-button
+                      pill
+                      variant="outline-info"
+                      v-b-modal.modal-1
+                      class="mx-2"
+                      >데이터셋 설정</b-button
+                    >
+                    <template v-slot:footer>
+                      <span
+                        v-for="(dataset_item, index) in selected.dataset"
+                        :key="index"
+                        ><b-row
+                          ><b-col>{{ dataset_item.loc1 }}</b-col
+                          ><b-col>{{ dataset_item.loc2 }}</b-col></b-row
+                        ></span
                       >
                     </template>
-                  </b-form-select>
+                  </b-card>
 
-                  <b-form-checkbox
-                    id="defaultCheck"
-                    v-model="selected.status"
-                    name="checkbox-1"
-                    value="1"
-                    >디폴트 그래프 설정</b-form-checkbox
-                  >
-                  <template v-slot:footer>
-                    <b-row
-                      ><b-col>{{ rangeParser(selected.range) }}</b-col
-                      ><b-col>{{
-                        graphTypeParser(selected.graphType)
-                      }}</b-col></b-row
+                  <b-card bg-variant="light" title="값 설정">
+                    <b-button
+                      pill
+                      variant="outline-info"
+                      v-b-modal.modal-2
+                      class="mx-2 mb-3"
+                      >값 설정</b-button
                     >
-                  </template>
-                </b-card>
-              </b-card-group>
+                    <b-form-radio-group
+                      id="valTypegroup"
+                      v-model="selected.valType"
+                      name="radio-valType"
+                    >
+                      <b-form-radio value="0">누적값</b-form-radio>
+                      <b-form-radio value="1">평균값</b-form-radio>
+                      <b-form-radio value="2">최대값</b-form-radio>
+                      <b-form-radio value="3">최소값</b-form-radio>
+                      <b-form-radio value="4">시간별</b-form-radio>
+                    </b-form-radio-group>
+                    <template v-slot:footer>
+                      <b-row
+                        ><b-col
+                          ><span
+                            v-for="value_item in selected.value"
+                            :key="value_item"
+                            >{{ value_item }}&nbsp;</span
+                          ></b-col
+                        >
+                        <b-col>{{ valTypeParser(selected.valType) }}</b-col>
+                      </b-row>
+                    </template>
+                  </b-card>
+                  <b-card bg-variant="light" title="그래프 설정">
+                    <b-button
+                      pill
+                      variant="outline-info"
+                      v-b-modal.modal-3
+                      class="mx-2 mb-3"
+                      >그래프 표시 범위 설정</b-button
+                    >
+
+                    <b-form-select
+                      class="my-2"
+                      v-model="selected.graphType"
+                      :options="options.graphType"
+                    >
+                      <template v-slot:first>
+                        <b-form-select-option value="null"
+                          >그래프 선택</b-form-select-option
+                        >
+                      </template>
+                    </b-form-select>
+
+                    <b-form-checkbox
+                      id="defaultCheck"
+                      v-model="selected.status"
+                      name="checkbox-1"
+                      value="1"
+                      >디폴트 그래프 설정</b-form-checkbox
+                    >
+                    <template v-slot:footer>
+                      <b-row
+                        ><b-col>{{ rangeParser(selected.range) }}</b-col
+                        ><b-col>{{
+                          graphTypeParser(selected.graphType)
+                        }}</b-col></b-row
+                      >
+                    </template>
+                  </b-card>
+                </b-card-group>
+              </div>
             </div>
+            <b-button
+              pill
+              variant="outline-info"
+              class="mx-2 my-5"
+              @click="addItem"
+              >추가</b-button
+            >
+            <b-button
+              pill
+              variant="outline-danger"
+              class="mx-2 my-5"
+              @click="deleteItem"
+              >삭제</b-button
+            >
+            <b-table
+              striped
+              hover
+              ref="selectableTable"
+              selectable
+              select-mode="single"
+              :items="items"
+              :fields="fields"
+              responsive="sm"
+            >
+              <template v-slot:cell(default)="{ rowSelected }">
+                <template v-if="rowSelected">
+                  <span aria-hidden="true">&check;</span>
+                  <span class="sr-only">Selected</span>
+                </template>
+                <template v-else>
+                  <span aria-hidden="true">&nbsp;</span>
+                  <span class="sr-only">Not selected</span>
+                </template>
+              </template>
+            </b-table>
           </div>
-          <b-button class="mx-2 my-5" @click="addItem">추가</b-button>
-          <b-button class="mx-2 my-5" @click="deleteItem">삭제</b-button>
-          <b-table
-            striped
-            hover
-            ref="selectableTable"
-            selectable
-            select-mode="single"
-            :items="items"
-            :fields="fields"
-            responsive="sm"
-          >
-            <template v-slot:cell(default)="{ rowSelected }">
-              <template v-if="rowSelected">
-                <span aria-hidden="true">&check;</span>
-                <span class="sr-only">Selected</span>
-              </template>
-              <template v-else>
-                <span aria-hidden="true">&nbsp;</span>
-                <span class="sr-only">Not selected</span>
-              </template>
-            </template>
-          </b-table>
-        </div>
-      </b-tab>
-      <b-tab title="공지 사항 관리">
-        <NoticeComp />
-      </b-tab>
-      <!-- <b-tab title="모달테스트"></b-tab> -->
-    </b-tabs>
+        </b-tab>
+        <b-tab title="공지 사항 관리">
+          <NoticeComp />
+        </b-tab>
+        <!-- <b-tab title="모달테스트"></b-tab> -->
+      </b-tabs>
+    </b-card>
     <b-modal id="modal-1" title="데이터셋 설정" @cancel="resetDataset">
       <b-form-select
         @change="addDataset"
@@ -246,10 +316,14 @@
           :key="dataset_item.loc2"
         >
           {{ dataset_item }}
-          <b-button @click="deleteDatasetItem">삭제</b-button>
+          <b-button pill variant="outline-danger" @click="deleteDatasetItem"
+            >삭제</b-button
+          >
         </b-list-group-item>
       </b-list-group>
-      <b-button class="mx-2" @click="resetDataset">모두 삭제</b-button>
+      <b-button pill variant="outline-danger" class="mx-2" @click="resetDataset"
+        >모두 삭제</b-button
+      >
     </b-modal>
     <b-modal id="modal-2" title="값 설정" @cancel="resetValue">
       <b-form-select
@@ -270,10 +344,14 @@
           :key="value_item"
         >
           {{ value_item }}
-          <b-button @click="deleteValueItem">삭제</b-button>
+          <b-button pill variant="outline-danger" @click="deleteValueItem"
+            >삭제</b-button
+          >
         </b-list-group-item>
       </b-list-group>
-      <b-button class="mx-2" @click="resetValue">모두 삭제</b-button>
+      <b-button pill variant="outline-danger" class="mx-2" @click="resetValue"
+        >모두 삭제</b-button
+      >
     </b-modal>
     <b-modal id="modal-3" title="range 설정" @cancel="resetValue">
       <b-form-group>
@@ -427,13 +505,19 @@
       <b-list-group>
         <b-list-group-item>
           <strong>필드</strong>
-          <b-button v-b-modal.device-field class="mx-2">추가</b-button>
+          <b-button
+            pill
+            variant="outline-info"
+            v-b-modal.device-field
+            class="mx-2"
+            >추가</b-button
+          >
         </b-list-group-item>
         <b-list-group-item
           v-for="(device_field, index) in options.field"
           :key="index"
           >{{ device_field.value }}
-          <b-button class="mx-2">수정</b-button>
+          <b-button pill variant="outline-danger" class="mx-2">수정</b-button>
           <b-button
             variant="light"
             class="deleteBtn"
@@ -673,9 +757,10 @@ export default {
         alert("도메인을 입력하세요!");
       }
     },
-    deleteDomain() {
+    deleteDomain(index) {
       let obj = new Object();
-      obj = this.options.domain.pop();
+      obj = this.options.domain[index];
+      this.options.domain.splice(index, 1);
       axios
         .delete("/api/admin/domain", {
           data: {
@@ -788,7 +873,6 @@ export default {
       } else {
         alert("직종을 입력하세요!");
       }
-      console.log(this.selected.domain);
     },
     getDevice() {
       let tempArr;
@@ -867,8 +951,10 @@ export default {
           console.log(error.response);
         });
     },
-    deleteJob() {
-      this.job.pop();
+    deleteJob(index) {
+      // let obj = new Object();
+      // obj = this.job[index];
+      this.job.splice(index, 1);
     },
     addDataset() {
       this.selected.dataset.push(this.dataset);
@@ -993,5 +1079,13 @@ export default {
 .deleteBtn {
   background-color: transparent;
   border-color: transparent;
+}
+.centered {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; */
+  height: 89vh;
 }
 </style>
