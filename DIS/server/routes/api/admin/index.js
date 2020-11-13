@@ -137,13 +137,110 @@ router.delete('/domain', (req, res, next) => {
 });
 // post domain job
 router.post('/domain/job', (req, res, next) => {
-    console.log(req.body.data)
-    res.send({ success: true });
+    // console.log(req.body.data);
+    let user_id=req.body[0].admin_id;
+    let user_domain=req.body[1].user_domain;
+    let domain_job=req.body[2].domain_job;
+
+    let queryText = 'update DomainJob set domain_job=\''+ domain_job +'\' where (user_id = \''+ user_id +'\' and user_domain = \''+user_domain+'\' and domain_job = \''+ domain_job +'\')';
+
+    pool.getConnection(function(err, connection){
+        if(!err){
+            connection.query(queryText, function(err, rows, fields){
+                if(!err){
+                  // console.log(rows);
+                  // console.log(fields);
+                  let result = null;
+                  try {
+                    result = rows;
+                  } catch (error) {
+                    console.log(' >> query result not found');
+                  }
+                  // console.log(rows[0].user_permission);
+                  // let result = 'rows : '+JSON.stringify(rows)+'<br><br>'+
+                  // 'fields : '+JSON.stringify(fields);
+                  res.send({data:result});
+                } else {
+                  console.log(err);
+                  res.send(err);
+                }
+            });
+        } else {
+            console.log(err);
+        }
+        connection.release();
+    });
 });
 // get domain job
 router.get('/domain/job', (req, res, next) => {
-    console.log(req.params);
-    res.send({ success: true });
+    // console.log(req.params);
+    let admin_id=req.query.admin_id;
+
+    let queryText = 'select distinct domain_job from DomainJob where (domain_job is not null)';
+
+    // connection.connect();
+    pool.getConnection(function(err, connection){
+        if(!err){
+            connection.query(queryText, function(err, rows, fields){
+                if(!err){
+                // console.log(rows);
+                // console.log(fields);
+                    let result = null;
+                    try {
+                        result = rows;
+                    } catch (error) {
+                        console.log(' >> query result not found');
+                    }
+                // console.log(rows[0].user_permission);
+                // let result = 'rows : '+JSON.stringify(rows)+'<br><br>'+
+                // 'fields : '+JSON.stringify(fields);
+                    res.send({data:result});
+                } else {
+                    console.log(err);
+                    res.send(err);
+                }
+            });
+        } else {
+            console.log(err);
+        }
+        connection.release();
+    });
+});
+
+router.delete('/domain/job', (req, res, next) => {
+    // console.log(req.params);
+    let user_id=req.body.admin_id;
+    let user_domain=req.body.user_domain;
+    let domain_job=req.body.domain_job;
+
+    let queryText = 'update DomainJob set domain_job=NULL where (user_id = \''+ user_id +'\' and user_domain = \''+user_domain+'\' and domain_job = \''+ domain_job +'\')';
+    
+    pool.getConnection(function(err, connection){
+        if(!err){
+            connection.query(queryText, function(err, rows, fields){
+                if(!err){
+                  // console.log(rows);
+                  // console.log(fields);
+                  let result = null;
+                  try {
+                    result = rows;
+                  } catch (error) {
+                    console.log(' >> query result not found');
+                  }
+                  // console.log(rows[0].user_permission);
+                  // let result = 'rows : '+JSON.stringify(rows)+'<br><br>'+
+                  // 'fields : '+JSON.stringify(fields);
+                  res.send({data:result});
+                } else {
+                  console.log(err);
+                  res.send(err);
+                }
+            });
+        } else {
+            console.log(err);
+        }
+        connection.release();
+    });
 });
 
 // graph data(item) management API
