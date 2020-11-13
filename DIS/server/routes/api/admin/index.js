@@ -142,7 +142,7 @@ router.post('/domain/job', (req, res, next) => {
     let user_domain=req.body[1].user_domain;
     let domain_job=req.body[2].domain_job;
 
-    let queryText = 'update DomainJob set domain_job=\''+ domain_job +'\' where (user_id = \''+ user_id +'\' and user_domain = \''+user_domain+'\' and domain_job = \''+ domain_job +'\')';
+    let queryText = 'update DomainJob set domain_job=\''+ domain_job +'\' where (user_id = \''+ user_id +'\' and user_domain = \''+user_domain+'\')';
 
     pool.getConnection(function(err, connection){
         if(!err){
