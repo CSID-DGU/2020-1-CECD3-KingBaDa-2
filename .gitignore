@@ -188,3 +188,5 @@ pnpm-debug.log*
 ### docker add ###
 
 .travis/
+
+/config
