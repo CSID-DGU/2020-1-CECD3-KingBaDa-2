@@ -175,8 +175,9 @@ router.post('/domain/job', (req, res, next) => {
 router.get('/domain/job', (req, res, next) => {
     // console.log(req.params);
     let admin_id=req.query.admin_id;
+    let user_domain=req.query.user_domain;
 
-    let queryText = 'select distinct domain_job from DomainJob where (domain_job is not null)';
+    let queryText = 'select distinct domain_job from DomainJob where (user_id = \''+ admin_id +'\' and user_domain = \''+ user_domain +'\' and domain_job is not null)';
 
     // connection.connect();
     pool.getConnection(function(err, connection){
@@ -251,12 +252,12 @@ router.post('/graph/item', (req, res, next) => {
     title=req.body[2].title;
     dataset=JSON.stringify(req.body[3].dataset);
     value=JSON.stringify(req.body[4].value);
-    valType=req.body[5].valType;
-    graphType=req.body[6].graphType;
-    range=req.body[7].range;
-    status=req.body[8].status;
+    graphType=req.body[5].graphType;
+    range=req.body[6].range;
+    status=req.body[7].status;
+    valType=req.body[8].valType;
 
-    let queryText = 'insert into GraphData (user_id, user_domain, graph_name, graph_dataset, graph_value, graph_type, graph_range, graph_status) values(\''+ admin_id +'\',\''+ domain +'\',\''+ title +'\',\''+ dataset +'\',\''+ value +'\','+ graphType +','+ range +','+ status +')';
+    let queryText = 'insert into GraphData (user_id, user_domain, graph_name, graph_value, graph_location, graph_type, graph_range, graph_status, value_type) values(\''+ admin_id +'\',\''+ domain +'\',\''+ title +'\',\''+ value +'\',\''+ dataset +'\','+ graphType +','+ range +','+ status +','+ valType +')';
 
     pool.getConnection(function(err, connection){
         if(!err){
@@ -364,4 +365,5 @@ router.delete('/graph/item', (req, res, next) => {
     });
 });
 
+router.
 module.exports = router;
