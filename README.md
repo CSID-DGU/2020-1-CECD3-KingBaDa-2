@@ -29,7 +29,7 @@ Mobius에 연결된 센서및 디바이스의 정보를 가져와서 도메인�
 프로그램 배포의 편의성을 위하여 docker를 사용한다.
 
 Kafka,MariaDB,Elasticsearch,Logstash,Kibana는 컨테이너로 동작합니다.<br>
-Kafka - 큐에쌓인 IoT데이터 메시징<br>
+Kafka - 큐에 쌓인 IoT데이터 메시징<br>
 Logstash - input: Kafka  output: Elasticsearch<br>
 Elasticsearch -  IoT데이터 저장<br>
 Kibana - Elasticsearch 테스트용<br>
