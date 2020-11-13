@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <div class="title">
-      <div class="DIS">DIS</div>
-      <div class="subDIS">Dashboard Integration System</div>
-    </div>
-    <div id="login">
-      <input type="text" placeholder="아이디" v-model="id" /><br />
-      <input type="password" placeholder="비밀번호" v-model="password" /><br />
-      <button @click="loginUser">로그인</button><br />
-      <button>회원가입</button>
-    </div>
-    <img src="../assets/bts.jpg" />
+  <div style="position: absolute; width: 100%; height: 100%; background:#6fcedc">
+    <b-card class="cardSize shadow-lg p-3 mb-5 bg-white rounded-1">
+      <div class="title">
+        <div class="DIS">DIS</div>
+        <div class="subDIS">Dashboard Integration System</div>
+      </div>
+      <div id="login">
+        <input type="text" placeholder="아이디" v-model="id" /><br />
+        <input type="password" placeholder="비밀번호" v-model="password" /><br />
+        <b-button @click="loginUser">로그인</b-button><br />
+        <b-button>회원가입</b-button>
+      </div>
+        <img src="../assets/bts.jpg" class="BTSLogo"/>
+    </b-card>
   </div>
 </template>
 
@@ -72,8 +74,7 @@ export default {
 }
 .title {
   position: relative;
-  margin-top: 200px;
-  top: 50%;
+  top: 50px;
   left: 50%;
   transform: translate(-50%, -50%);
   color: black;
@@ -87,15 +88,28 @@ export default {
 .subDIS {
   font-size: 30px;
 }
+.BTSLogo{
+  margin-top: 30px;
+  width: 200px;
+}
+.cardSize{
+  position: relative;
+  top: 20%;
+  margin: auto;
+  width: 800px;
+  height: 500px;
+  border-radius: 50px;
+}
 input {
   margin: 5px 0;
-  width: 20%;
+  width: 60%;
   padding: 10px;
   background-color: #d9d9d956;
 }
 button {
   margin-top: 10px;
-  width: 20%;
+  width: 30%;
+  height: 5%;
   cursor: pointer;
   padding: 10px;
   background-color: #6fcedc;
@@ -105,9 +119,5 @@ button {
   outline: 0;
   border: 0;
 }
-img {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
+
 </style>

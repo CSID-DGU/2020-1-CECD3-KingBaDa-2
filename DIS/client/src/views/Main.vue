@@ -69,6 +69,7 @@ export default {
 }
 .backimg {
   position: relative;
+  width: 100%;
   background-size: cover;
 }
 .backimg .title {
