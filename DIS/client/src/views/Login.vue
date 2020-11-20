@@ -8,8 +8,90 @@
       <div id="login">
         <input type="text" placeholder="아이디" v-model="id" /><br />
         <input type="password" placeholder="비밀번호" v-model="password" /><br />
-        <b-button @click="loginUser">로그인</b-button><br />
-        <b-button>회원가입</b-button>
+        <b-button class="LoginPageBtn" @click="loginUser">로그인</b-button><br />
+        <b-button class="LoginPageBtn" v-b-modal.register>회원가입</b-button>
+        <b-modal id="register" centered no-close-on-esc no-close-on-backdrop title="회원가입" v-model="modalShow">
+          <form ref="form" text-centered @submit.stop.prevent="handleSubmit">
+            <b-form-group
+              :state="form.nameState"
+              label="이름"
+              label-for="name-input"
+              invalid-feedback="이름을 입력하세요"
+            >
+              <b-form-input
+                id="name-input"
+                v-model="form.name"
+                :state="form.nameState"
+                required
+              >
+              </b-form-input>
+            </b-form-group>
+            <b-form-group
+              :state="form.idState"
+              label="아이디"
+              label-for="id-input"
+              invalid-feedback="아이디를 입력하세요"
+            >
+              <b-form-input
+                id="id-input"
+                v-model="form.id"
+                :state="form.idState"
+                required
+              >
+              </b-form-input>
+            </b-form-group>
+            <b-form-group
+              :state="form.passwordState"
+              label="비밀번호"
+              label-for="password-input"
+              invalid-feedback="비밀번호를 입력하세요"
+            >
+              <b-form-input
+                id="password_input"
+                v-model="form.password"
+                :state="form.passwordState"
+                required
+              >
+              </b-form-input>
+            </b-form-group>
+            <b-form-group
+              :state="password2State"
+              label="비밀번호 재확인"
+              label-for="password2-input"
+              invalid-feedback="비밀번호가 다릅니다"
+            >
+              <b-form-input
+                id="password2_input"
+                v-model="form.password2"
+                :state="form.password2State"
+                required
+              >
+              </b-form-input>
+            </b-form-group>
+          </form>
+          <template #modal-footer>
+            <div class="w-100">
+              <b-button
+                variant="secondary"
+                size="lg"
+                class="float-right"
+                style="margin-right: 20px"
+                @click="resetModal"
+              >
+                닫기
+              </b-button>
+              <b-button
+                variant="info"
+                size="lg"
+                class="float-right"
+                style="margin-right: 30px; width: 100px"
+                @click="resetModal"
+              >
+                확인
+              </b-button>
+            </div>
+          </template>
+        </b-modal>
       </div>
         <img src="../assets/bts.jpg" class="BTSLogo"/>
     </b-card>
@@ -22,9 +104,15 @@ import axios from "axios";
 export default {
   data() {
     return {
-      name: "Login",
+      modalShow: false,
       id: "",
-      password: ""
+      password: "",
+      form:{
+        name: '',
+        id: '',
+        password: '',
+        password2: '',
+      }
     };
   },
   methods: {
@@ -62,7 +150,14 @@ export default {
           });
         this.$router.push("/id/main");
       }
-    }
+    },
+    resetModal() {
+        this.form.name = '';
+        this.form.id = '';
+        this.form.password = '';
+        this.form.password2 = '';
+        this.modalShow = false;
+      },
   }
 };
 </script>
@@ -100,14 +195,8 @@ export default {
   height: 500px;
   border-radius: 50px;
 }
-input {
-  margin: 5px 0;
-  width: 60%;
-  padding: 10px;
-  background-color: #d9d9d956;
-}
-button {
-  margin-top: 10px;
+.LoginPageBtn {
+  margin-top: 20px;
   width: 30%;
   height: 5%;
   cursor: pointer;
@@ -119,5 +208,12 @@ button {
   outline: 0;
   border: 0;
 }
+input {
+  margin: 5px 0;
+  width: 60%;
+  padding: 10px;
+  background-color: #d9d9d956;
+}
+
 
 </style>

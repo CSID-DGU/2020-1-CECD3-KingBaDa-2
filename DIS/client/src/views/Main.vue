@@ -1,17 +1,13 @@
 <template>
   <div class="main">
     <div class="backimg">
-      <img src="../assets/backg1.jpg" width="100%"/>
-      <div class="title">
-        <div class="DIS">DIS</div>
-        <div class="subDIS">Dashboard Integration System</div>
-      </div>
+      <img src="../assets/backg.jpg" width="100%"/>
       <br />
       <br />
       <br />
     </div>
     <div>
-      <b-button pill variant="info" size="lg" @click="toDashboard">
+      <b-button pill variant="info" size="lg" style="width: 300px" @click="toDashboard">
         <img class="icon-img" src="../assets/icon/dashboard.png" />
         <br />대시보드 조회
       </b-button>
@@ -80,13 +76,6 @@ export default {
   color: black;
   z-index: 2;
   text-align: center;
-}
-.DIS{
-  font-size: 50px;
-  font-weight: bold;
-}
-.subDIS{
-  font-size: 30px;
 }
 .icon-img {
   width: auto;

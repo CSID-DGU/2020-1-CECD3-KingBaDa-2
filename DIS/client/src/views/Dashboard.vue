@@ -100,14 +100,55 @@ export default {
       listWidth: 0, //컨테이너 가로
       listHeight: 0, //컨테이너 세로
       graphTitle: "", //그래프 제목
-      graphType: 0, //그래프 타입
+      graphType: 1, //그래프 타입
       TCO: null, //제목 변경된 그래프 옵션
       dropdownText: "그래프 선택",
       listContents:[],
       datum: [],
       clickedItem: null,
       clickedFlag: false, // 그래프 생성 시 선택하는 행동 말고 다른 행동들은 인식하지 않도록 하기 위한 flag
-      items:[],
+      items:[
+        {
+          title : "test",
+          valType : "test",
+          loc1 : "00",
+          loc2 : "00",
+          graphType : 1,
+          value : ["temp"],
+          range : 0,
+          status : "test"
+        },
+        {
+          title : "test2",
+          valType : "test2",
+          loc1 : "00",
+          loc2 : "00",
+          graphType : 2,
+          value : ["temp"],
+          range : 0,
+          status : "test"
+        },
+        {
+          title : "test3",
+          valType : "test3",
+          loc1 : "00",
+          loc2 : "00",
+          graphType : 9,
+          value : ["temp"],
+          range : 0,
+          status : "test"
+        },
+        {
+          title : "test4",
+          valType : "test4",
+          loc1 : "00",
+          loc2 : "00",
+          graphType : 11,
+          value : ["temp"],
+          range : 0,
+          status : "test"
+        }
+      ],
 
     };
   },
@@ -122,18 +163,16 @@ export default {
       this.listHeight = listEl.clientHeight;
     });
 
-    this.getItem();
+
+
+    // this.getItem();
 
     //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
 
-    // cal
-    // let dt = [{model:"elc"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
-    // this.elastic_cal_min(dt);
+    //complete
+    // let dt = {key:"name,temp,humid,co2,date,elec", or:[],and:[{name:"integrated_sensor1"}]};
+    // this.elastic_complete_model(dt);
 
-    // console.log(this.makeDatum_cal(this.items[1]));
-    // this.elastic_cal_sum(this.makeDatum_cal(this.items[1]))
-    // complete
-    // this.elastic_complete_model(this.makeDatum_complete(this.items[0]));
   },
 
   updated(){
@@ -175,6 +214,7 @@ export default {
             axios.get("/api/admin/graph/item?admin_id=admin1")
             .then((r) => {
               r.data.data.forEach(data => {
+
                 let object = new Object();
                 object.title = data.title;
                 object.valType = data.domain;
@@ -207,7 +247,7 @@ export default {
           itemConfig.value.forEach(data =>{
             modelStr = modelStr.concat(data,',');
           })
-          modelObject.model = modelStr;
+          modelObject.model = "integrated";
           orArr.push(modelObject);
 
           if(itemConfig.loc1 != "all"){
@@ -220,9 +260,13 @@ export default {
               loc2Object.loc2 = itemConfig.loc2;
               andArr.push(loc2Object);
             }
+            let dateObject = new Object();
+            dateObject.date = {"gte":"2020-10-01","lte":"2020-10-02"};
+
+            andArr.push(dateObject);
           }
 
-          dt.key = "name,date,value,model";
+          dt.key = "name,date,value,temp,humid,co2";
           dt.or = orArr;
           dt.and = andArr;
           return dt;
@@ -255,13 +299,28 @@ export default {
       // 데이터 받아오기
       axios.post("/api/elastic/elastic-complete", dt)
       .then((r) => {
+        console.log(r);
         let datumArray = new Array();
         r.data.forEach(data => {
-          let object = new Object();
-          object.group = data.model;
-          object.date = data.date;
-          object.value = data.value;
-          datumArray.push(object);
+          let tempObject = new Object();
+          tempObject.group = "temp";
+          tempObject.date = data.date;
+          tempObject.value = data.temp;
+          datumArray.push(tempObject);
+
+
+          let humidObject = new Object();
+          humidObject.group = "humid";
+          humidObject.date = data.date;
+          humidObject.value = data.humid;
+          datumArray.push(humidObject);
+
+
+          let co2Object = new Object();
+          co2Object.group = "co2";
+          co2Object.date = data.date;
+          co2Object.value = data.co2;
+          datumArray.push(co2Object);
         })
         this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
       })
@@ -393,6 +452,7 @@ export default {
 
     // 그래프 추가
     addGraph(graphType) {
+      console.log(this.datum);
       //area graph
       if(graphType == 1){
         this.TCO =  {
