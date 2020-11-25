@@ -7,20 +7,20 @@ export default {
           class: "5103",
           toggleAll: true,
           devices: [
-            { name: "온도1", state: true },
-            { name: "온도2", state: true },
-            { name: "온도3", state: false },
-            { name: "온도4", state: true },
+            { name: "에어컨", state: true, img: require("@/assets/air.png") },
+            { name: "빔프로젝트", state: true, img: require("@/assets/beam.png") },
+            { name: "콘센트", state: false, img: require("@/assets/cons.png") },
+            { name: "전등", state: true, img: require("@/assets/light.png") }
           ],
         },
         {
           class: "5104",
           toggleAll: true,
           devices: [
-            { name: "온도1", state: false },
-            { name: "온도2", state: true },
-            { name: "온도3", state: false },
-            { name: "온도4", state: true },
+            { name: "에어컨", state: false, img: require("@/assets/air.png") },
+            { name: "빔프로젝트", state: true, img: require("@/assets/beam.png") },
+            { name: "콘센트", state: false, img: require("@/assets/cons.png") },
+            { name: "전등", state: true, img: require("@/assets/light.png") }
           ],
         },
       ],
@@ -32,20 +32,20 @@ export default {
           class: "123",
           toggleAll: true,
           devices: [
-            { name: "온도1", state: false },
-            { name: "온도2", state: true },
-            { name: "온도3", state: false },
-            { name: "온도4", state: true },
+            { name: "에어컨", state: false, img: require("@/assets/air.png") },
+            { name: "빔프로젝트", state: true, img: require("@/assets/beam.png") },
+            { name: "콘센트", state: false, img: require("@/assets/cons.png") },
+            { name: "전등", state: true, img: require("@/assets/light.png") }
           ],
         },
         {
           class: "456",
           toggleAll: true,
           devices: [
-            { name: "온도1", state: false },
-            { name: "온도2", state: true },
-            { name: "온도3", state: false },
-            { name: "온도4", state: true },
+            { name: "에어컨", state: false, img: require("@/assets/air.png") },
+            { name: "빔프로젝트", state: true, img: require("@/assets/beam.png") },
+            { name: "콘센트", state: false, img: require("@/assets/cons.png") },
+            { name: "전등", state: true, img: require("@/assets/light.png") }
           ],
         },
       ],
