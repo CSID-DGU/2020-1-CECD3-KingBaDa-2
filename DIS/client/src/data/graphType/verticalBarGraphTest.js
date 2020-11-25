@@ -1,28 +1,28 @@
 export default{
   data:[
     {
-      "group": "Qty",
+      "group": "신공학관",
       "value": 65000
     },
     {
-      "group": "More",
+      "group": "과학관",
       "value": 29123
     },
     {
-      "group": "Sold",
+      "group": "정보문화관",
       "value": 35213
     },
     {
-      "group": "Restocking",
+      "group": "원흥관",
       "value": 51213
     },
     {
-      "group": "Misc",
-      "value": 16932
+      "group": "본관",
+      "value": 24521
     }
   ],
   options:{
-    "title": "Simple bar (discrete)",
+    "title": "건물별 전력 사용량",
     "axes": {
       "left": {
         "mapsTo": "value"

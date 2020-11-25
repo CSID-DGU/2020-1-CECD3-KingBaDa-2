@@ -1,32 +1,28 @@
 export default{
   data:[
     {
-      "group": "2V2N 9KYPM version 1",
-      "value": 20000
-    },
-    {
-      "group": "L22I P66EP L22I P66EP L22I P66EP",
+      "group": "신공학관",
       "value": 65000
     },
     {
-      "group": "JQAI 2M4L1",
-      "value": 75000
+      "group": "과학관",
+      "value": 29123
     },
     {
-      "group": "J9DZ F37AP",
-      "value": 1200
+      "group": "정보문화관",
+      "value": 35213
     },
     {
-      "group": "YEL48 Q6XK YEL48",
-      "value": 10000
+      "group": "원흥관",
+      "value": 51213
     },
     {
-      "group": "Misc",
-      "value": 25000
+      "group": "본관",
+      "value": 24521
     }
   ],
   options:{
-    "title": "Pie (centered)",
+    "title": "건물 전력 사용량(pie)",
     "resizable": true,
     "legend": {
       "alignment": "center"

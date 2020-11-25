@@ -73,7 +73,7 @@ import VueDragResize from "vue-drag-resize";
 
 // //import areaGraphData from "@/data/graphType/areaGraphTest.js";
 // import stackedAreaGraphData from "@/data/graphType/stackedAreaGraphTest.js";
-// //import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
+import verticalBarGraphData from "@/data/graphType/verticalBarGraphTest.js";
 // import verticalGroupedBarGraphData from "@/data/graphType/verticalGroupedBarGraphTest.js";
 // import verticalStackedBarGraphData from "@/data/graphType/verticalStackedBarGraphTest.js";
 // import horizontalBarGraphData from "@/data/graphType/horizontalBarGraphTest.js";
@@ -82,8 +82,8 @@ import VueDragResize from "vue-drag-resize";
 // import scatterGraphData from "@/data/graphType/scatterGraphTest.js";
 // import donutGraphData from "@/data/graphType/donutGraphTest.js";
 // //import lineGraphData from "@/data/graphType/lineGraphTest.js";
-// import pieGraphData from "@/data/graphType/pieGraphTest.js";
-// import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
+import pieGraphData from "@/data/graphType/pieGraphTest.js";
+import gaugeGraphData from "@/data/graphType/gaugeGraphTest.js";
 // import meterGraphData from "@/data/graphType/meterGraphTest.js";
 
 import axios from 'axios';
@@ -109,38 +109,8 @@ export default {
       clickedFlag: false, // 그래프 생성 시 선택하는 행동 말고 다른 행동들은 인식하지 않도록 하기 위한 flag
       items:[
         {
-          title : "test",
+          title : "실시간 전력사용량",
           valType : "test",
-          loc1 : "00",
-          loc2 : "00",
-          graphType : 1,
-          value : ["temp"],
-          range : 0,
-          status : "test"
-        },
-        {
-          title : "test2",
-          valType : "test2",
-          loc1 : "00",
-          loc2 : "00",
-          graphType : 2,
-          value : ["temp"],
-          range : 0,
-          status : "test"
-        },
-        {
-          title : "test3",
-          valType : "test3",
-          loc1 : "00",
-          loc2 : "00",
-          graphType : 9,
-          value : ["temp"],
-          range : 0,
-          status : "test"
-        },
-        {
-          title : "test4",
-          valType : "test4",
           loc1 : "00",
           loc2 : "00",
           graphType : 11,
@@ -163,9 +133,37 @@ export default {
       this.listHeight = listEl.clientHeight;
     });
 
+    this.getItem();
 
+    this.graphs.push({
+      width: 300,
+      height: 200,
+      top: 50,
+      left: 100,
+      graphType: 13,
+      option: gaugeGraphData.options,
+      datum: gaugeGraphData.data
+    });
 
-    // this.getItem();
+    this.graphs.push({
+      width: 500,
+      height: 500,
+      top: 300,
+      left: 100,
+      graphType: 5,
+      option: verticalBarGraphData.options,
+      datum: verticalBarGraphData.data
+    });
+
+    this.graphs.push({
+      width: 500,
+      height: 400,
+      top: 400,
+      left: 800,
+      graphType: 12,
+      option: pieGraphData.options,
+      datum: pieGraphData.data
+    });
 
     //[{name:"elc1"},{date:{"gte":"2020-01-01","lte":"2020-01-02"}}]
 
@@ -261,7 +259,7 @@ export default {
               andArr.push(loc2Object);
             }
             let dateObject = new Object();
-            dateObject.date = {"gte":"2020-10-01","lte":"2020-10-02"};
+            dateObject.date = {"gte":"2020-11-25","lte":"2020-11-25"};
 
             andArr.push(dateObject);
           }
@@ -303,24 +301,17 @@ export default {
         let datumArray = new Array();
         r.data.forEach(data => {
           let tempObject = new Object();
-          tempObject.group = "temp";
+          tempObject.group = "신공학관";
           tempObject.date = data.date;
           tempObject.value = data.temp;
           datumArray.push(tempObject);
 
 
           let humidObject = new Object();
-          humidObject.group = "humid";
+          humidObject.group = "원흥관";
           humidObject.date = data.date;
           humidObject.value = data.humid;
           datumArray.push(humidObject);
-
-
-          let co2Object = new Object();
-          co2Object.group = "co2";
-          co2Object.date = data.date;
-          co2Object.value = data.co2;
-          datumArray.push(co2Object);
         })
         this.datum = datumArray.sort((function(a,b){return new Date(b.date) - new Date(a.date)}));
       })
@@ -471,6 +462,7 @@ export default {
           "points":{
             "radius": "0",
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -502,6 +494,7 @@ export default {
           "points":{
             "radius": "0",
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -528,6 +521,7 @@ export default {
               "scaleType": "labels"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -554,6 +548,7 @@ export default {
               "mapsTo": "key"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.TCO.title = this.graphTitle;
@@ -582,6 +577,7 @@ export default {
               "scaleType": "labels"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -608,6 +604,7 @@ export default {
               "mapsTo": "value"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -634,6 +631,7 @@ export default {
               "mapsTo": "value"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -661,6 +659,7 @@ export default {
               "mapsTo": "value"
             }
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -687,6 +686,7 @@ export default {
               "mapsTo": "value"
             }
           },
+          "width": "100%",
           "height": "400"
         }
         this.graphs.push({
@@ -714,6 +714,7 @@ export default {
             },
             "alignment": "center"
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -745,13 +746,14 @@ export default {
           "points":{
             "radius": "0",
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
           width: 500,
           height: 400,
-          top: Math.floor(Math.random() * 100) + 50,
-          left: Math.floor(Math.random() * 100) + 30,
+          top: 50,
+          left: 800,
           graphType: graphType,
           option: this.TCO,
           datum: this.datum
@@ -769,6 +771,7 @@ export default {
           "pie": {
             "alignment": "center"
           },
+          "width": "100%",
           "height": "400"
         };
         this.graphs.push({
@@ -837,11 +840,12 @@ export default {
               ]
             }
           },
+          "width": "100%",
           "height": "100"
         };
         this.graphs.push({
           width: 500,
-          height: 400,
+          height: 100,
           top: Math.floor(Math.random() * 100) + 50,
           left: Math.floor(Math.random() * 100) + 30,
           graphType: graphType,

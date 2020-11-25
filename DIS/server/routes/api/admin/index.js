@@ -215,7 +215,7 @@ router.delete('/domain/job', (req, res, next) => {
     let domain_job=req.body.domain_job;
 
     let queryText = 'update DomainJob set domain_job=NULL where (user_id = \''+ user_id +'\' and user_domain = \''+user_domain+'\' and domain_job = \''+ domain_job +'\')';
-    
+
     pool.getConnection(function(err, connection){
         if(!err){
             connection.query(queryText, function(err, rows, fields){
@@ -365,5 +365,4 @@ router.delete('/graph/item', (req, res, next) => {
     });
 });
 
-router.
 module.exports = router;

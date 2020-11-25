@@ -35,9 +35,9 @@ const config = {
     db: {
       host: 'localhost',    // your db host
       port: 3306,           // your db port
-      name: 'bts_test',    // your db name
+      name: 'bts_test2',    // your db name
       user: 'root',         // your db user
-      password: 'password', // your db password
+      password: 'bts0508*', // your db password
     }
 };
 

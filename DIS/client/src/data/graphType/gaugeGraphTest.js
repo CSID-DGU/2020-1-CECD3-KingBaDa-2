@@ -10,7 +10,7 @@ export default{
     }
   ],
   options:{
-    "title": "Gauge semicircular -- danger status",
+    "title": "전월 대비 전력 이용량",
     "resizable": true,
     "height": "250",
     "width": "100%",
