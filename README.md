@@ -61,10 +61,10 @@ Mobius에 저장된 IoT데이터를 Kafka를 통해 가져와 Logstash에 넣는
 
 ## Developer
 
-2015112095 박규빈 (팀장) [https://github.com/kb829][GITa]
-2014112037 윤재문 [https://github.com/dss1111][GITb]
-2014112105 차민형 [https://github.com/moongchi95][GITc]
-2015112096 강인솔 [https://github.com/insolk][GITd]
+2015112095 박규빈 (팀장) [https://github.com/kb829][GITa] <br>
+2014112037 윤재문 [https://github.com/dss1111][GITb] <br>
+2014112105 차민형 [https://github.com/moongchi95][GITc] <br>
+2015112096 강인솔 [https://github.com/insolk][GITd] <br>
 
 
    [mobius]: <http://developers.iotocean.org/archives/module/mobius>
