@@ -1,6 +1,6 @@
 <template>
-  <div style="background: linear-gradient(to right, #2193b0, #6dd5ed);">
-    <div style="background: linear-gradient(to right, #2193b0, #6dd5ed);">
+  <div style="background: linear-gradient(to right, #2193b0, #6dd5ed)">
+    <div style="background: linear-gradient(to right, #2193b0, #6dd5ed)">
       <div class="white-font big-font">관리자페이지</div>
       <div>
         <b-button
@@ -15,7 +15,7 @@
     <b-card
       no-body
       class="centered mt-3 mx-5"
-      style=" background: linear-gradient(to right, #ECE9E6, #ffffff);"
+      style="background: linear-gradient(to right, #ece9e6, #ffffff)"
     >
       <b-tabs
         pills
@@ -53,7 +53,7 @@
                   variant="light"
                   class="deleteBtn"
                   @click="deleteDevice(index)"
-                  ><img src="../../assets/bin.png"/></b-button
+                  ><img src="../../assets/bin.png" /></b-button
               ></b-list-group-item>
             </b-list-group>
             <b-form class="my-5" inline> </b-form>
@@ -76,7 +76,7 @@
                       variant="light"
                       class="deleteBtn"
                       @click="deleteDomain(index)"
-                      ><img src="../../assets/bin.png"/></b-button
+                      ><img src="../../assets/bin.png" /></b-button
                   ></b-list-group-item>
                 </b-list-group>
                 <b-form class="my-5" inline>
@@ -364,7 +364,7 @@
           <b-form-radio value="0">연간</b-form-radio>
           <b-form-radio value="1">월간</b-form-radio>
           <b-form-radio value="2">일간</b-form-radio>
-          <b-form-radio value="3">하루</b-form-radio>
+          <b-form-radio value="3">실시간</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
       <div v-if="selected.range == '0'">
@@ -375,7 +375,7 @@
           wrap
           min="2015"
           max="2030"
-          placeholder="start year"
+          value="2015"
         ></b-form-spinbutton>
 
         <label for="sb-year-end">끝 날짜</label>
@@ -385,7 +385,7 @@
           wrap
           min="2015"
           max="2030"
-          placeholder="end year"
+          value="2030"
         ></b-form-spinbutton>
       </div>
       <div v-if="selected.range == '1'">
@@ -396,7 +396,7 @@
           wrap
           min="2015"
           max="2030"
-          placeholder="start year"
+          value="2015"
         ></b-form-spinbutton>
         <b-form-spinbutton
           class="mb-3"
@@ -404,7 +404,7 @@
           wrap
           min="1"
           max="12"
-          placeholder="start month"
+          value="1"
         ></b-form-spinbutton>
 
         <label for="sb-month-end">끝 날짜</label>
@@ -414,14 +414,14 @@
           wrap
           min="2015"
           max="2030"
-          placeholder="end year"
+          value="2030"
         ></b-form-spinbutton>
         <b-form-spinbutton
           id="sb-month-end2"
           wrap
           min="1"
           max="12"
-          placeholder="end month"
+          value="12"
         ></b-form-spinbutton>
       </div>
       <div v-if="selected.range == '2'">
@@ -441,7 +441,7 @@
           local="en"
         ></b-form-datepicker>
       </div>
-      <div v-if="selected.range == '3'">
+      <!-- <div v-if="selected.range == '3'">
         <div>
           <label for="datepicker3">표시 날짜</label>
           <b-form-datepicker
@@ -451,7 +451,7 @@
             local="en"
           ></b-form-datepicker>
         </div>
-      </div>
+      </div> -->
       <div v-else></div>
     </b-modal>
     <b-modal
@@ -531,7 +531,7 @@
             variant="light"
             class="deleteBtn"
             @click="deleteField(index)"
-            ><img src="../../assets/bin.png"/></b-button
+            ><img src="../../assets/bin.png" /></b-button
         ></b-list-group-item>
       </b-list-group>
     </b-modal>
@@ -568,7 +568,7 @@ import axios from "axios";
 export default {
   name: "AdminHome",
   components: {
-    NoticeComp
+    NoticeComp,
   },
   data() {
     return {
@@ -580,7 +580,7 @@ export default {
         "valType",
         "graphType",
         "range",
-        "status"
+        "status",
       ],
       admin_id: "admin1",
       inputDomain: "",
@@ -611,7 +611,7 @@ export default {
         date: { start: null, end: null },
         valType: "",
         savedField: null,
-        field: null
+        field: null,
       },
 
       options: {
@@ -622,42 +622,42 @@ export default {
         dataset: [
           {
             value: { loc1: "신공학관", loc2: "all" },
-            text: "신공학관"
+            text: "신공학관",
           },
           {
             value: { loc1: "신공학관", loc2: "testbed" },
-            text: "신공학관_testbed"
+            text: "신공학관_testbed",
           },
           {
             value: { loc1: "신공학관", loc2: "6144" },
-            text: "신공학관_6144"
+            text: "신공학관_6144",
           },
           {
             value: { loc1: "신공학관", loc2: "2113" },
-            text: "신공학관_2113"
+            text: "신공학관_2113",
           },
           {
             value: { loc1: "신공학관", loc2: "3321" },
-            text: "신공학관_3321"
+            text: "신공학관_3321",
           },
           {
             value: { loc1: "신공학관", loc2: "5146" },
-            text: "신공학관_5146"
+            text: "신공학관_5146",
           },
           {
             value: { loc1: "00", loc2: "all" },
-            text: "00"
+            text: "00",
           },
           {
             value: { loc1: "00", loc2: "00" },
-            text: "00_00"
-          }
+            text: "00_00",
+          },
         ],
         value: [
           { value: "tmp", text: "tmp" },
           { value: "hmd", text: "hmd" },
           { value: "PM", text: "PM" },
-          { value: "elc", text: "elc" }
+          { value: "elc", text: "elc" },
         ],
         graphType: [
           { value: "1", text: "area" },
@@ -673,8 +673,8 @@ export default {
           { value: "11", text: "line" },
           { value: "12", text: "pie" },
           { value: "13", text: "gauge" },
-          { value: "14", text: "meter" }
-        ]
+          { value: "14", text: "meter" },
+        ],
       },
       items: [
         {
@@ -685,7 +685,7 @@ export default {
           valType: "avg",
           graphType: this.graphTypeParser("9"),
           range: this.rangeParser("2"),
-          status: this.statusParser("1")
+          status: this.statusParser("1"),
         },
         // {
         //   domain: "전력세이빙",
@@ -714,14 +714,14 @@ export default {
             { loc1: "신공학관", loc2: "6144" },
             { loc1: "신공학관", loc2: "2113" },
             { loc1: "신공학관", loc2: "3321" },
-            { loc1: "신공학관", loc2: "5146" }
+            { loc1: "신공학관", loc2: "5146" },
           ]),
           value: ["elc"],
           valType: "sum",
           graphType: "pie",
-          range: "none"
-        }
-      ]
+          range: "none",
+        },
+      ],
     };
   },
   created() {
@@ -733,16 +733,16 @@ export default {
       let tempArr;
       axios
         .get("/api/admin/domain?admin_id=" + this.admin_id)
-        .then(r => {
+        .then((r) => {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.options.domain.push({
               value: tempArr[n].user_domain,
-              text: tempArr[n].user_domain
+              text: tempArr[n].user_domain,
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error.response);
         });
     },
@@ -751,16 +751,16 @@ export default {
         axios
           .post("/api/admin/domain", [
             { admin_id: this.admin_id },
-            { user_domain: this.inputDomain }
+            { user_domain: this.inputDomain },
           ])
-          .then(r => {
+          .then((r) => {
             console.log(r);
             this.options.domain.push({
               value: this.inputDomain,
-              text: this.inputDomain
+              text: this.inputDomain,
             });
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error.response);
           });
       } else {
@@ -775,18 +775,18 @@ export default {
         .delete("/api/admin/domain", {
           data: {
             admin_id: this.admin_id,
-            user_domain: obj.value
+            user_domain: obj.value,
           },
-          withCredentials: true
+          withCredentials: true,
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(obj);
           this.options.domain.push({
             value: obj.value,
-            text: obj.value
+            text: obj.value,
           });
           console.log(error.response);
         });
@@ -795,7 +795,7 @@ export default {
       let tempArr;
       axios
         .get("/api/admin/graph/item?admin_id=" + this.admin_id)
-        .then(r => {
+        .then((r) => {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.items.push({
@@ -806,11 +806,11 @@ export default {
               valType: tempArr[n].domain, //this.valTypeParser(tempArr[n].valType),
               graphType: this.graphTypeParser(tempArr[n].graphType),
               range: this.rangeParser(tempArr[n].range),
-              status: this.statusParser(tempArr[n].status)
+              status: this.statusParser(tempArr[n].status),
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error.response);
         });
     },
@@ -830,9 +830,9 @@ export default {
             { valType: this.selected.valType },
             { graphType: this.selected.graphType },
             { range: this.selected.range },
-            { status: this.selected.status }
+            { status: this.selected.status },
           ])
-          .then(r => {
+          .then((r) => {
             console.log(r);
             this.items.push({
               domain: this.selected.domain,
@@ -842,10 +842,10 @@ export default {
               valType: this.valTypeParser(this.selected.valType),
               graphType: this.graphTypeParser(this.selected.graphType),
               range: this.rangeParser(this.selected.range),
-              status: this.statusParser(this.selected.status)
+              status: this.statusParser(this.selected.status),
             });
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error.response);
           });
       }
@@ -857,14 +857,14 @@ export default {
         .delete("/api/admin/graph/item", {
           data: {
             admin_id: this.admin_id,
-            title: obj.title
+            title: obj.title,
           },
-          withCredentials: true
+          withCredentials: true,
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.options.domain.push(obj);
           console.log(error.response);
@@ -879,16 +879,16 @@ export default {
             "&domain=" +
             this.selected.domain
         )
-        .then(r => {
+        .then((r) => {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.job.push({
               domain: tempArr[n].user_domain,
-              type: tempArr[n].domain_job
+              type: tempArr[n].domain_job,
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error.response);
         });
     },
@@ -897,16 +897,16 @@ export default {
         axios
           .post("/api/admin/domain/job", [
             { user_domain: this.selected.domain },
-            { domain_job: this.inputJob }
+            { domain_job: this.inputJob },
           ])
-          .then(r => {
+          .then((r) => {
             console.log(r);
             this.items.push({
               domain: this.selected.domain,
-              type: this.inputJob
+              type: this.inputJob,
             });
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error.response);
           });
       } else if (this.selected.domain == null) {
@@ -921,7 +921,7 @@ export default {
       let tempArr;
       axios
         .get("/api/admin/device?admin_id=" + this.admin_id)
-        .then(r => {
+        .then((r) => {
           tempArr = r.data.data;
           for (var n in tempArr) {
             this.options.device.push({
@@ -930,11 +930,11 @@ export default {
               loc1: tempArr[n].loc1,
               loc2: tempArr[n].loc2,
               manufacturer: tempArr[n].manufacturer,
-              fields: tempArr[n].fields
+              fields: tempArr[n].fields,
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error.response);
         });
     },
@@ -951,9 +951,9 @@ export default {
             { loc1: this.inputLoc1 },
             { loc2: this.inputLoc2 },
             { manufacturer: this.inputManu },
-            { fields: { values: this.options.field } }
+            { fields: { values: this.options.field } },
           ])
-          .then(r => {
+          .then((r) => {
             console.log(r);
             this.options.device.push({
               serialNumber: this.inputSerial,
@@ -961,7 +961,7 @@ export default {
               loc1: this.inputLoc1,
               loc2: this.inputLoc2,
               manufacturer: this.inputManu,
-              fields: this.options.field
+              fields: this.options.field,
             });
             this.inputSerial = "";
             this.inputName = "";
@@ -970,7 +970,7 @@ export default {
             this.inputManu = "";
             this.options.field = null;
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error.response);
           });
         return;
@@ -985,14 +985,14 @@ export default {
         .delete("/api/admin/device", {
           data: {
             admin_id: this.admin_id,
-            title: obj.title
+            title: obj.title,
           },
-          withCredentials: true
+          withCredentials: true,
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.options.device.push(obj);
           console.log(error.response);
@@ -1037,7 +1037,7 @@ export default {
     addField() {
       this.options.field.push({
         value: { name: this.inputfield1, unit: this.inputfield2 },
-        text: "이름 :" + this.inputfield1 + " 단위 : " + this.inputfield2
+        text: "이름 :" + this.inputfield1 + " 단위 : " + this.inputfield2,
       });
       this.inputfield1 = "";
       this.inputfield2 = "";
@@ -1072,7 +1072,7 @@ export default {
       if (input == "0") return "연간";
       else if (input == "1") return "월간";
       else if (input == "2") return "일간";
-      else if (input == "3") return "하루";
+      else if (input == "3") return "실시간";
       else return "";
     },
     graphTypeParser(input) {
@@ -1091,7 +1091,7 @@ export default {
       else if (input == "13") return "gauge";
       else if (input == "14") return "meter";
       else return "";
-    }
+    },
 
     // onRowSelected(items) {
     //   this.options.forEach(function(element, index) {
@@ -1101,7 +1101,7 @@ export default {
     //     }
     //   });
     // },
-  }
+  },
 };
 </script>
 
