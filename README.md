@@ -63,10 +63,10 @@ Docker-compose up -d
 
 ## Developer
 
-2015112095 박규빈 (팀장) [https://github.com/kb829][GITa] <br>
-2014112037 윤재문 [https://github.com/dss1111][GITb] <br>
-2014112105 차민형 [https://github.com/moongchi95][GITc] <br>
-2015112096 강인솔 [https://github.com/insolk][GITd] <br>
+2015112095 박규빈 (팀장) <br> [https://github.com/kb829][GITa] <br><br>
+2014112037 윤재문 <br> [https://github.com/dss1111][GITb] <br><br>
+2014112105 차민형 <br> [https://github.com/moongchi95][GITc] <br><br>
+2015112096 강인솔 <br> [https://github.com/insolk][GITd] <br><br>
 
 
    [mobius]: <http://developers.iotocean.org/archives/module/mobius>
