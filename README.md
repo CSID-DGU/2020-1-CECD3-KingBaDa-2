@@ -1,5 +1,8 @@
 # 오픈소스 기반 "ELK" Tool을 연계 대시보드 사용자 맞춤형 시각화 
-
+## Study
+2020 한국멀티미디어학회 추계학술대회 논문 등록  
+A Study on the IoT Integrated Management and Data Visualization
+Platform for User-Customized Flexible Visualization
 ## Overview
 테스트 환경에 설치된 oneM2M 표준을 기반으로한 Mobius플랫폼과 연동되는 시각화 플랫폼이다.
 Mobius에 저장된 IoT데이터를 Kafka를 통해 가져와 Logstash에 넣는다. 수집된 로그는 Elasticsearch에 저장되며 저장된 데이터들중 사용자의 관심사에 맞는 데이터를 가져와 시각화 한다. 
