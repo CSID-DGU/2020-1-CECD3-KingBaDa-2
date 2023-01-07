@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@carbon/charts-vue": "^0.34.9",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.1.0",
     "carbon-components": "^10.17.0",
